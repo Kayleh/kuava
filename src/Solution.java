@@ -1,42 +1,35 @@
-/*
- *  $ codeforce  2022-08-20
- *
- *  Copyright 2022  Kayleh. All rights reserved.
- *  @see {@link https://github.com/Kayleh/kuava}
- *
- */
-
-import java.util.Stack;
-
-class Solution {
-    public String smallestNumber(String pattern) {
-        Stack<Integer> stack = new Stack<>();
-        StringBuilder res = new StringBuilder();
-        int num = 1;
-
-        for (int i = 0; i < pattern.length(); i++) {
-            if (pattern.charAt(i) == 'D') {
-                // 如果为下降，则将当前数字压入栈中
-                stack.push(num);
-            } else if (pattern.charAt(i) == 'I') {
-                res.append(num);
-                while (!stack.isEmpty()) {
-                    res.append(stack.pop());
-                }
+public class Solution {
+    public String largestPalindromic(String s) {
+        int len = s.length();
+        if (len < 2) {
+            return s;
+        }
+        int maxLen = 1;
+        String res = s.substring(0, 1);
+        for (int i = 0; i < len - 1; i++) {
+            String oddStr = centerSpread(s, i, i);
+            String evenStr = centerSpread(s, i, i + 1);
+            String maxLenStr = oddStr.length() > evenStr.length() ? oddStr : evenStr;
+            if (maxLenStr.length() > maxLen) {
+                maxLen = maxLenStr.length();
+                res = maxLenStr;
             }
-            num++;
         }
-
-        stack.add(num);
-        while (!stack.isEmpty()) {
-            res.append(stack.pop());
-        }
-        return res.toString();
+        return res;
     }
 
-    public static void main(String[] args) {
-        Solution solution = new Solution();
-        System.out.println(solution.smallestNumber("DID"));
+    private String centerSpread(String s, int left, int right) {
+        int len = s.length();
+        int i = left;
+        int j = right;
+        while (i >= 0 && j < len) {
+            if (s.charAt(i) == s.charAt(j)) {
+                i--;
+                j++;
+            } else {
+                break;
+            }
+        }
+        return s.substring(i + 1, j);
     }
 }
-
