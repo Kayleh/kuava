@@ -6,13 +6,7 @@
  *
  */
 
-package template.Java.a1算法基础;
-
-import template.Java.eg.路径总和III;
-import template.Java.struct.NTreeNode;
-import template.Java.struct.TreeNode;
-
-import java.util.List;
+package template.cplusplus;
 
 /**
  * Recursion
@@ -26,7 +20,6 @@ import java.util.List;
 public class A3递归_分治 {
 
     /* Recursion 递归 */
-    // (写递归的要点明白一个函数的作用并相信它能完成这个任务，千万不要跳进这个函数里面企图探究更多细节， 否则就会陷入无穷的细节无法自拔，人脑能压几个栈啊。)
 
     /**
      * @param n
@@ -44,25 +37,6 @@ public class A3递归_分治 {
         return n * factorial(n - 1);
     }
 
-    /**
-     * 遍历一颗二叉树
-     */
-    void traverse(TreeNode root) {
-        if (root == null) return;
-        traverse(root.left);
-        traverse(root.right);
-    }
-
-    /**
-     * 遍历一颗N叉树
-     */
-    void traverse(NTreeNode root) {
-        if (root == null) return;
-        List<NTreeNode> children = root.children;
-        for (NTreeNode child : children) {
-            traverse(child);
-        }
-    }
 
     /* Divide and Conquer 分治 */
 
@@ -74,18 +48,15 @@ public class A3递归_分治 {
      * - 分解到某个容易求解的边界之后，进行递归求解。
      * - 将子问题的解合并成原问题的解。
      */
-    void merge_sort(int[] arr) {
-        /*if (可以很容易处理) return;
+    /*void merge_sort(一个数组) {
+        if (可以很容易处理) return;
         merge_sort(左半个数组);
         merge_sort(右半个数组);
-        merge(左半个数组, 右半个数组);*/
+        merge(左半个数组, 右半个数组);
+    }*/
+    public static void main(String[] args) {
+        System.out.println(factorial(5));
+        System.out.println(factorial(25));
     }
 
-
-    /**
-     * e.g.
-     *
-     * @see template.Java.eg.路径总和III
-     */
-    路径总和III test;
 }

@@ -6,7 +6,7 @@
  *
  */
 
-import java.util.Scanner;
+import java.util.*;
 
 public final class Solution_template {
     public static void main(String[] args) {
