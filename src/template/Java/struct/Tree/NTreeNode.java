@@ -1,12 +1,12 @@
 /*
- *  $ codeforce  2022-08-26
+ *  $ codeforce  2022-08-27
  *
  *  Copyright 2022  Kayleh. All rights reserved.
  *  @see {@link https://github.com/Kayleh/kuava}
  *
  */
 
-package template.Java.struct;
+package template.Java.struct.Tree;
 
 import java.util.List;
 

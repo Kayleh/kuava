@@ -1,42 +1,29 @@
 /*
- *  $ codeforce  2022-08-26
+ *  $ codeforce  2022-08-27
  *
  *  Copyright 2022  Kayleh. All rights reserved.
  *  @see {@link https://github.com/Kayleh/kuava}
  *
  */
 
-package template.Java.struct;
+package template.Java.struct.Tree;
 
 import javafx.util.Pair;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.List;
+import java.util.*;
 
 /**
- * @brief 二叉树节点
+ * @brief 满二叉树
  */
-public class TreeNode {
-    public int val;
-    public TreeNode left;
-    public TreeNode right;
-
-    public TreeNode(int x) {
-        val = x;
-    }
-
-
+public class fullTree {
     /**
      * 对二叉树编号(满二叉树)
      */
     public void number() {
         List<List<Pair<Integer, TreeNode>>> ans = new ArrayList<>();
         //bfs(ans, this, 1);
-        dfs(ans, this, 1);
+//        dfs(ans, this, 1);
     }
-
 
     void bfs(List<List<Pair<Integer, TreeNode>>> ans, TreeNode root, int index) {
         if (root == null) {
@@ -67,12 +54,20 @@ public class TreeNode {
         }
     }
 
-    private void dfs(List<List<Pair<Integer, TreeNode>>> ans, TreeNode treeNode, int i) {
-        if (treeNode == null) {
-            return;
-        }
+    Map<Integer, Integer> map = new HashMap<>();
+    int ans;
 
-        dfs(ans, treeNode.left, i << 1);
-        dfs(ans, treeNode.right, i << 1 + 1);
+    public int widthOfBinaryTree(TreeNode root) {
+        dfs(root, 1, 0);
+        return ans;
+    }
+
+    void dfs(TreeNode root, int u, int depth) {
+        if (root == null) return;
+        if (!map.containsKey(depth)) map.put(depth, u);
+        ans = Math.max(ans, u - map.get(depth) + 1);
+        u = u - map.get(depth) + 1;
+        dfs(root.left, u << 1, depth + 1);
+        dfs(root.right, u << 1 | 1, depth + 1);
     }
 }

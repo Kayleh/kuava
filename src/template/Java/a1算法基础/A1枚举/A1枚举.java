@@ -1,12 +1,12 @@
 /*
- *  $ codeforce  2022-08-20
+ *  $ codeforce  2022-08-29
  *
  *  Copyright 2022  Kayleh. All rights reserved.
  *  @see {@link https://github.com/Kayleh/kuava}
  *
  */
 
-package template.Java.a1算法基础;
+package template.Java.a1算法基础.A1枚举;
 
 public class A1枚举 {
     /* code */

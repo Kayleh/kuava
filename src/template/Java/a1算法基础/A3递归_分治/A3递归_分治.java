@@ -6,11 +6,11 @@
  *
  */
 
-package template.Java.a1算法基础;
+package template.Java.a1算法基础.A3递归_分治;
 
 import template.Java.eg.路径总和III;
-import template.Java.struct.NTreeNode;
-import template.Java.struct.TreeNode;
+import template.Java.struct.Tree.NTreeNode;
+import template.Java.struct.Tree.TreeNode;
 
 import java.util.List;
 

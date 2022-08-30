@@ -6,7 +6,7 @@
  *
  */
 
-package template.Java.a1算法基础;
+package template.Java.a1算法基础.A2模拟;
 
 public class A2模拟 {
 

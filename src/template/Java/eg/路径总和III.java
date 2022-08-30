@@ -35,7 +35,7 @@ package template.Java.eg;//给定一个二叉树的根节点 root ，和一个�
 // Related Topics 树 深度优先搜索 二叉树 👍 1442 👎 0
 
 
-import template.Java.struct.TreeNode;
+import template.Java.struct.Tree.TreeNode;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 public class 路径总和III {
