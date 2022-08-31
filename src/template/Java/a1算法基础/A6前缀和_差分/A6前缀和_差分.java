@@ -1,15 +1,15 @@
 /*
- *  $ codeforce  2022-08-21
+ *  $ codeforce  2022-08-30
  *
  *  Copyright 2022  Kayleh. All rights reserved.
  *  @see {@link https://github.com/Kayleh/kuava}
  *
  */
 
-package template.Java.a1算法基础;
+package template.Java.a1算法基础.A6前缀和_差分;
 
 
-public class temp前缀和_差分 {
+public class A6前缀和_差分 {
     /**
      * @brief 前缀和
      * <p>
@@ -82,6 +82,23 @@ public class temp前缀和_差分 {
             return res;
         }
     }
+
+
+    ///region 树上差分
+    /**
+     * 树上差分可以理解为对树上的某一段路径进行差分操作，这里的路径可以类比一维数组的区间进行理解。
+     * 例如在对树上的一些路径进行频繁操作，并且询问某条边或者某个点在经过操作后的值的时候，就可以运用树上差分思想了。
+     */
+
+    /**
+     * @brief 点差分
+     */
+
+
+    /**
+     * @brief 边差分
+     */
+    //endregion
 
 
 }
