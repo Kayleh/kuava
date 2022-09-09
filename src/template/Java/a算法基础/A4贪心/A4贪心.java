@@ -6,7 +6,7 @@
  *
  */
 
-package template.Java.a1算法基础.A4贪心;
+package template.Java.a算法基础.A4贪心;
 
 /**
  * @brief 贪心算法

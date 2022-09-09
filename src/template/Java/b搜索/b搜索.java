@@ -1,15 +1,11 @@
 /*
- *  $ codeforce  2022-08-25
+ *  $ codeforce  2022-09-05
  *
  *  Copyright 2022  Kayleh. All rights reserved.
  *  @see {@link https://github.com/Kayleh/kuava}
  *
  */
+package template.Java.b搜索;
 
-package template.Java.a1算法基础;
-
-
-public class tmp_DFS搜索 {
-
-
+public class b搜索 {
 }

@@ -6,7 +6,7 @@
  *
  */
 
-package template.Java.a1算法基础.A8倍增;
+package template.Java.a算法基础.A8倍增;
 
 /**
  * 倍增法（英语：binary lifting），顾名思义就是翻倍。它能够使线性的处理转化为对数级的处理，大大地优化时间复杂度。

@@ -5,7 +5,7 @@
  *  @see {@link https://github.com/Kayleh/kuava}
  *
  */
-package template.Java.a1算法基础;
+package template.Java.a算法基础;
 
 import java.util.*;
 
@@ -27,8 +27,8 @@ public class tmp_BFS搜索 {
                 String s = deque.pollFirst();
                 char[] cs = s.toCharArray();
                 int step = map.get(s);
-                for (int i = 0; i < 8; i++) { //遍历每一位基因
-                    for (char c : items) {  //当前基因的可变枚举
+                for (int i = 0; i < 8; i++) { //遍历START的每一位
+                    for (char c : items) {  //当前位的可变枚举
                         if (cs[i] == c) continue;//跳过重复的枚举
                         char[] clone = cs.clone();
                         clone[i] = c;

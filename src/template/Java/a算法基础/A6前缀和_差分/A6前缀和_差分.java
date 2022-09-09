@@ -6,7 +6,7 @@
  *
  */
 
-package template.Java.a1算法基础.A6前缀和_差分;
+package template.Java.a算法基础.A6前缀和_差分;
 
 
 public class A6前缀和_差分 {

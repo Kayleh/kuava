@@ -6,7 +6,7 @@
  *
  */
 
-package template.Java.a1算法基础.A5排序算法;
+package template.Java.a算法基础.A5排序算法;
 
 import java.util.Arrays;
 

@@ -6,7 +6,7 @@
  *
  */
 
-package template.Java.a1算法基础.A1枚举;
+package template.Java.a算法基础.A1枚举;
 
 public class A1枚举 {
     /* code */

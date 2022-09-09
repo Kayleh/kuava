@@ -6,7 +6,7 @@
  *
  */
 
-package template.Java.a1算法基础.A7二分;
+package template.Java.a算法基础.A7二分;
 
 /**
  * 二分查找（英语：binary search），也称折半搜索（英语：half-interval search）、对数搜索（英语：logarithmic search），

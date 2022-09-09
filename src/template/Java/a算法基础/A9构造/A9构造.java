@@ -1,12 +1,12 @@
 /*
- *  $ codeforce  2022-08-31
+ *  $ codeforce  2022-09-05
  *
  *  Copyright 2022  Kayleh. All rights reserved.
  *  @see {@link https://github.com/Kayleh/kuava}
  *
  */
 
-package template.Java.a1算法基础;
+package template.Java.a算法基础.A9构造;
 
 /**
  * 构造题是比赛中常见的一类题型。
