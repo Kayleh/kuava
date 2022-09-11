@@ -6,7 +6,7 @@
  *
  */
 
-package template.cplusplus;
+package template.cpp;
 
 public class A2模拟 {
 

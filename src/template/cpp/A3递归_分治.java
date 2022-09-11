@@ -6,7 +6,7 @@
  *
  */
 
-package template.cplusplus;
+package template.cpp;
 
 /**
  * Recursion
