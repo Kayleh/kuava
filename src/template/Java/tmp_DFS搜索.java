@@ -6,7 +6,7 @@
  *
  */
 
-package template.Java.a算法基础;
+package template.Java;
 
 
 public class tmp_DFS搜索 {

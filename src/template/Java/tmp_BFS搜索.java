@@ -5,7 +5,7 @@
  *  @see {@link https://github.com/Kayleh/kuava}
  *
  */
-package template.Java.a算法基础;
+package template.Java;
 
 import java.util.*;
 
