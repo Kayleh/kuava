@@ -1,21 +1,25 @@
+import java.util.ArrayList;
+import java.util.List;
+
 class Solution {
-    public int maxDistToClosest(int[] seats) {
-        int maxLen = 0, curLen = 0;
-        int maxLeft = 0;
-        for (int i = 0; i < seats.length; i++) {
-            if (seats[i] == 1) {
-                maxLeft = i;
-                maxLen = Math.max(maxLen, curLen);
-                curLen = 0;
-                break;
-            } else {
-                curLen++;
-                maxLen = Math.max(maxLen, curLen);
+    public List<Long> maximumEvenSplit(long finalSum) {
+        List<Long> ans = new ArrayList<>();
+        if ((finalSum & 1) == 0) {
+            long k = 2;
+            while (true) {
+                if (finalSum == k) {
+                    ans.add(k);
+                    break;
+                } else if (finalSum < k) {
+                    ans.add(ans.remove(ans.size() - 1) + finalSum);
+                    break;
+                } else {
+                    ans.add(k);
+                    finalSum -= k;
+                    k += 2;
+                }
             }
         }
-
-        return maxLeft + maxLen / 2;
+        return ans;
     }
 }
-
-//[1,0,0,0,1,0,1]
