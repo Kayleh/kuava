@@ -9,7 +9,7 @@ public class 双向BFS {
 /**
  * 双向BFS
  */
-class 双向BFSSolution {
+class Solution {
     static char[] items = new char[]{'A', 'C', 'G', 'T'};
     Set<String> set = new HashSet<>();
 
