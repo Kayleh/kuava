@@ -1,86 +1,36 @@
 class Solution {
-    public int[] sumPrefixScores(String[] words) {
-        Trie trie = new Trie();
-        for (String word : words) {
-            trie.insert(word);
+    public int longestSubarray(int[] nums) {
+        //按位与（bitwise AND）运算得到的值 最大 的 非空 子数组。
+        //令 k 是 nums 任意 子数组执行按位与运算所能得到的最大值。那么，只需要考虑那些执行一次按位与运算后等于 k 的子数组。
+
+        // 1. 求出 nums 中的最大值 max
+        int max = 0;
+        for (int num : nums) {
+            max = Math.max(max, num);
         }
-        int[] ans = new int[words.length];
-        for (int i = 0; i < words.length; i++) {
-            ans[i] = trie.sumPrefixScore(words[i]);
+        // 2. 求出 max 的二进制表示中 1 的个数
+        int count = 0;
+        while (max > 0) {
+            max >>= 1;
+            count++;
+        }
+        // 3. 求出 2^count - 1
+        int k = (1 << count) - 1;
+        // 4. 求出 nums 中执行一次按位与运算后等于 k 的子数组的最大长度
+        int res = 0;
+        int left = 0, right = 0;
+        int sum = 0;
+        while (right < nums.length) {
+            sum += nums[right];
+            while (sum > k) {
+                sum -= nums[left];
+                left++;
+            }
+            res = Math.max(res, right - left + 1);
+            right++;
         }
 
-        return ans;
+
+        return res - 1;
     }
-}
-
-class Trie {
-
-
-    TrieNode root; // 根节点
-
-    /**
-     * Initialize your data structure here.
-     */
-    public Trie() {
-        root = new TrieNode();
-    }
-
-    /**
-     * Inserts a word into the trie.
-     */
-    public void insert(String s) {
-        TrieNode p = root; // 从根节点开始
-        for (int i = 0; i < s.length(); i++) {
-            int u = s.charAt(i) - 'a';
-            if (p.next[u] == null) p.next[u] = new TrieNode(); // 如果没有这个字符，就新建一个节点
-            p = p.next[u]; // 移动到下一个节点
-            p.num++;
-        }
-        p.end = true;
-    }
-
-    /**
-     * Returns if the word is in the trie.
-     */
-    public boolean search(String s) {
-        TrieNode p = root;
-        for (int i = 0; i < s.length(); i++) {
-            int u = s.charAt(i) - 'a';
-            if (p.next[u] == null) return false; // 如果没有这个字符，就返回 false
-            p = p.next[u]; // 移动到下一个节点
-        }
-        return p.end;
-    }
-
-    /**
-     * 返回是否存在某个字符串的前缀
-     * Returns if there is any word in the trie that starts with the given prefix.
-     */
-    public boolean startsWith(String s) {
-        TrieNode p = root;
-        for (int i = 0; i < s.length(); i++) {
-            int u = s.charAt(i) - 'a';
-            if (p.next[u] == null) return false;
-            p = p.next[u];
-        }
-        return true;
-    }
-
-    public int sumPrefixScore(String s) {
-        TrieNode p = root;
-        int ans = 0;
-        for (int i = 0; i < s.length(); i++) {
-            int u = s.charAt(i) - 'a';
-            if (p.next[u] == null) return 0;
-            p = p.next[u];
-            ans += p.num;
-        }
-        return ans;
-    }
-}
-
-class TrieNode {
-    boolean end; // 是否为单词结尾
-    TrieNode[] next = new TrieNode[26]; // 后续字符串的字符是什么
-    int num; // 以该节点为前缀的单词数量
 }

@@ -3,7 +3,7 @@ package template.Java;
 public class 并查集 {
 }
 
-class 并查集Solution {
+class UnionFind1 {
     /**
      * 如果我们有 k 对情侣形成了错误环，需要交换 k - 1 次才能让情侣牵手。
      * 问题转化成 n / 2 对情侣中，有多少个这样的环。
@@ -17,7 +17,7 @@ class 并查集Solution {
         int len = row.length;
         int cnt = len / 2; //情侣对数
         for (int i = 0; i < cnt; i++) {
-            p[i] = i;// 初始化，每个节点的父节点是自己
+            p[i] = i;// 初始化，每个节点的父节点是自己 （如果是图，初始化为n*m,某个节点为 p[getIdx(i, j)] = getIdx(i, j); ）
         }
         for (int i = 0; i < len; i += 2) {
             union(row[i] / 2, row[i + 1] / 2); // 将相邻的两个人所在的连通块合并
@@ -25,7 +25,7 @@ class 并查集Solution {
         int count = 0;
         for (int i = 0; i < cnt; i++) {
             if (find(i) == i) {
-                count++;
+                count++;// 统计环(连通块)的个数
             }
         }
         return cnt - count;
@@ -52,5 +52,16 @@ class 并查集Solution {
             p[i] = find(p[i]);
         }
         return p[i];
+    }
+
+    /**
+     * 获取图的某个位置的值
+     *
+     * @param x
+     * @param y
+     * @return
+     */
+    int getIdx(int x, int y) {
+        return x * p.length + y + 1;
     }
 }
