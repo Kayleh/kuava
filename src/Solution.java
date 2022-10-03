@@ -1,26 +1,19 @@
-import java.util.LinkedList;
-
 class Solution {
-    public int compress(char[] chars) {
-        LinkedList<Character> res = new LinkedList<>();
-        int cnt = 1;
-        char prev = chars[0];
+    public boolean searchMatrix(int[][] matrix, int target) {
+        int m = matrix.length;
+        int n = matrix[0].length;
 
-        for (int i = 0; i < chars.length; i++) {
-            if (chars[i] == prev) {
-                cnt++;
+        //从右上角开始搜索
+        int i = 0, j = n - 1;
+        while (i < m && j >= 0) {
+            if (matrix[i][j] == target) {
+                return true;
+            } else if (matrix[i][j] > target) {
+                j--; // 往左走
             } else {
-                res.add(prev);
-                if (cnt > 1) {
-                    for (char c : String.valueOf(cnt).toCharArray()) {
-                        res.add(c);
-                    }
-                }
-                cnt = 1;
-                prev = chars[i];
+                i++; // 往下走
             }
         }
-
-        return res.size();
+        return false;
     }
 }
