@@ -1,25 +1,13 @@
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Arrays;
 
 class Solution {
-    public int minIncrementForUnique(int[] nums) {
-        Map<Integer, Integer> map = new HashMap<>();
-
-        for (int num : nums) {
-            map.put(num, map.getOrDefault(num, 0) + 1);
+    public int minMovesToSeat(int[] seats, int[] students) {
+        Arrays.sort(seats);
+        Arrays.sort(students);
+        int ans = 0;
+        for (int i = 0; i < seats.length; i++) {
+            ans += Math.abs(seats[i] - students[i]);
         }
-
-        int count = 0;
-        for (int num : nums) {
-            while (map.get(num) > 1) {
-                int next = num + 1;
-                map.put(num, map.get(num) - 1);
-                map.put(next, map.getOrDefault(next, 0) + 1);
-                num = next;
-                count++;
-            }
-        }
-
-        return count;
+        return ans;
     }
 }
