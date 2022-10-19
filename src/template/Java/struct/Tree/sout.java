@@ -1,3 +1,5 @@
+package template.Java.struct.Tree;
+
 import java.io.*;
 import java.util.StringTokenizer;
 
