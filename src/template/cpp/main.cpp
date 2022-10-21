@@ -5,10 +5,12 @@
 #include <iostream>
 
 using namespace std;
-#include "src/Solution.h"
+
+#include "Solution.cpp"
+
 int main() {
     Solution solution;
-    vector<string> words = {"hello", "leetcode"};
-    cout << solution.Leetcode(words) << endl;
+    vector<int> startTime = vector<int>();
+    solution.jobScheduling(startTime, startTime, startTime);
     return 0;
 }
