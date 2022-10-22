@@ -1,6 +1,23 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <numeric>
+#include <cmath>
+#include <queue>
+#include <stack>
+
+#define gcd(a, b) __gcd(a, b) // 最大公约数
+#define bitcount(a) __builtin_popcount(a) // 二进制中1的个数
+#define lcm(a, b) (a * b / gcd(a, b)) // 最小公倍数
+#define max(a, b) (a > b ? a : b) // 最大值
+#define min(a, b) (a < b ? a : b) // 最小值
+#define abs(a) (a > 0 ? a : -a) // 绝对值
+#define swap(a, b) {int t = a; a = b; b = t;} // 交换
+#define rep(i, a, b) for (int i = a; i <= b; i++) // 递增
+#define per(i, a, b) for (int i = a; i >= b; i--) // 递减
+#define forin(i, a) for (auto i : a) // 遍历
+#define ll long long
+#define ull unsigned long long
 
 struct ListNode {
     int val;
@@ -15,50 +32,40 @@ struct ListNode {
 
 using namespace std;
 
+
+// ———————————————— Solution ————————————————
+
 class Solution {
 public:
-    ListNode *reverseKGroup(ListNode *head, int k) {
-        ListNode *dummy = new ListNode(0);
-        dummy->next = head;  // 这里是为了方便处理，dummy->next = head，这样就不用考虑头结点的问题了
-        ListNode *pre = dummy; // pre指向每一组的前一个节点
-        ListNode *end = dummy; // end指向每一组的最后一个节点
-        while (end->next != nullptr) {
-            for (int i = 0; i < k && end != nullptr; i++) end = end->next; // 找到第k个节点，end指向第k个节点
-            if (end == nullptr) break; // 如果end为空，说明剩余节点不足k个，不需要反转，直接退出
-            ListNode *start = pre->next; // start指向每一组的第一个节点
-            ListNode *next = end->next; // next指向下一组的第一个节点
-            end->next = nullptr; // 断开链表
-            pre->next = reverse(start); // 反转链表
-            start->next = next; // 将反转后的链表和下一组的链表连接起来
-            pre = start;    // pre指向下一组的前一个节点
-            end = pre;      // end指向下一组的最后一个节点
+    vector<vector<int>> kClosest(vector<vector<int>> &points, int k) {
+        vector<vector<int>> ans;
+        priority_queue<pair<int, int>> q;
+        for (int i = 0; i < points.size(); i++) {
+            int dis = points[i][0] * points[i][0] + points[i][1] * points[i][1];
+            q.push({dis, i});
+            if (q.size() > k) {
+                q.pop();
+            }
         }
-        return dummy->next;
-    }
-
-    /**
-     * @brief 反转链表
-     * @param head  链表头节点
-     * @return
-     */
-    ListNode *reverse(ListNode *head) {
-        ListNode *pre = nullptr;
-        ListNode *cur = head;
-        while (cur != nullptr) {
-            ListNode *next = cur->next;
-            cur->next = pre;
-            pre = cur;
-            cur = next;
+        while (!q.empty()) {
+            ans.push_back(points[q.top().second]);
+            q.pop();
         }
-        return pre;
+        return ans;
     }
 };
 
+// ———————————————— Main ————————————————
+
 int main() {
     Solution solution;
-    vector<int> nums = vector<int>();
-    int res = solution.isValid(nums);
-    cout << res << endl;
+    vector<string> nums = vector<string>();
+    nums.push_back("01");
+    nums.push_back("10");
+    string basicString = solution.findDifferentBinaryString(nums);
+    cout << basicString << endl;
     return 0;
 }
+
+
 
