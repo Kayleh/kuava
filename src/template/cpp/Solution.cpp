@@ -5,6 +5,7 @@
 #include <cmath>
 #include <queue>
 #include <stack>
+#include <unordered_map>
 
 #define gcd(a, b) __gcd(a, b) // 最大公约数
 #define bitcount(a) __builtin_popcount(a) // 二进制中1的个数
@@ -19,7 +20,7 @@
 #define ll long long
 #define ull unsigned long long
 
-struct ListNode {
+/*struct ListNode {
     int val;
     ListNode *next;
 
@@ -28,7 +29,7 @@ struct ListNode {
     ListNode(int x) : val(x), next(nullptr) {}
 
     ListNode(int x, ListNode *next) : val(x), next(next) {}
-};
+};*/
 
 using namespace std;
 
@@ -37,19 +38,22 @@ using namespace std;
 
 class Solution {
 public:
-    vector<vector<int>> kClosest(vector<vector<int>> &points, int k) {
-        vector<vector<int>> ans;
-        priority_queue<pair<int, int>> q;
-        for (int i = 0; i < points.size(); i++) {
-            int dis = points[i][0] * points[i][0] + points[i][1] * points[i][1];
-            q.push({dis, i});
-            if (q.size() > k) {
-                q.pop();
+    int balancedStringSplit(string s) {
+        stack<char> st;
+        int ans = 0;
+        for (const auto &item: s) {
+            if (st.empty()) {
+                st.push(item);
+            } else {
+                if (st.top() == item) { // 相同则入栈
+                    st.push(item);
+                } else {
+                    st.pop(); // 不同则出栈
+                    if (st.empty()) { // 如果栈空了，说明已经平衡了
+                        ans++; // 答案加一
+                    }
+                }
             }
-        }
-        while (!q.empty()) {
-            ans.push_back(points[q.top().second]);
-            q.pop();
         }
         return ans;
     }
@@ -59,11 +63,10 @@ public:
 
 int main() {
     Solution solution;
-    vector<string> nums = vector<string>();
-    nums.push_back("01");
-    nums.push_back("10");
-    string basicString = solution.findDifferentBinaryString(nums);
-    cout << basicString << endl;
+    int numa, numb;
+    cin >> numa >> numb;
+    solution.solution(numa, numb);
+    cout << solution.solution(numa, numb) << endl;
     return 0;
 }
 
