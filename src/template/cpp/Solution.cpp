@@ -34,30 +34,42 @@
 using namespace std;
 
 
+
+
+
+
+
+
+
+
+
 // ———————————————— Solution ————————————————
 
 class Solution {
 public:
-    int balancedStringSplit(string s) {
-        stack<char> st;
-        int ans = 0;
-        for (const auto &item: s) {
-            if (st.empty()) {
-                st.push(item);
-            } else {
-                if (st.top() == item) { // 相同则入栈
-                    st.push(item);
+    int maxUncrossedLines(vector<int> &nums1, vector<int> &nums2) {
+        int m = nums1.size(), n = nums2.size();
+        vector<vector<int>> dp(m + 1, vector<int>(n + 1)); // dp[i][j] 表示 nums1[0..i-1] 和 nums2[0..j-1] 的最长公共子序列
+        for (int i = 1; i <= m; i++) {
+            int num1 = nums1[i - 1];
+            for (int j = 1; j <= n; j++) {
+                int num2 = nums2[j - 1];
+                if (num1 == num2) {
+                    dp[i][j] = dp[i - 1][j - 1] + 1; // 如果两个数相等，那么最长公共子序列就是两个数之前的最长公共子序列加1
                 } else {
-                    st.pop(); // 不同则出栈
-                    if (st.empty()) { // 如果栈空了，说明已经平衡了
-                        ans++; // 答案加一
-                    }
+                    dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]); // 两个序列都不包含 nums1[i-1] 和 nums2[j-1]
                 }
             }
         }
-        return ans;
+        return dp[m][n];
     }
 };
+
+
+
+
+
+
 
 // ———————————————— Main ————————————————
 
