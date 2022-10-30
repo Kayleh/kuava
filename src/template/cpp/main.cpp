@@ -2,19 +2,33 @@
 // Created by w1z4Rd on 2022/10/27.
 //
 
-// #include "Solution.h"
-#include<bits/stdc++.h>
-
+//#include "Solution.h"
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cstring>
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <numeric>
+#include <cmath>
+#include <queue>
+#include <stack>
+#include <unordered_map>
+#include <climits>
+//#include <cassert>
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cstring>
 using namespace std;
-int m,t,s;// 苹果数量，吃一个苹果的时间，过去的时间
 
-int main(){
-    cin>>m>>t>>s;
-    if(t==0){
-        cout<<0<<endl;
-        return 0;
-    }
-    int ans = s/t;
-    if(ans>=m) { cout << 0 << endl;return 0;}
-    else cout<<m-ans<<endl;
-};
+int a[3];
+int main()
+{
+    cin >> a[0] >> a[1] >> a[2];
+
+    sort(a, a + 3);
+
+    cout << a[0] << " " << a[1] << " " << a[2];
+}
