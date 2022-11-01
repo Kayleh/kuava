@@ -8,3 +8,5 @@ add_library(${PROJECT_NAME} STATIC
 set(CMAKE_CXX_STANDARD 14)
 
 #add_executable(kuava main.cpp)
+
+message(STATUS "SRC_DIR_LIST = ${kuava}")			#打印kuava中列表信息
