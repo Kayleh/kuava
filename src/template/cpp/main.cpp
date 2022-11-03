@@ -4,10 +4,6 @@
 
 //#include "Solution.h"
 #include <iostream>
-#include <cstdio>
-#include <algorithm>
-#include <cstring>
-#include <iostream>
 #include <vector>
 #include <algorithm>
 #include <numeric>
@@ -22,32 +18,48 @@
 #include <algorithm>
 #include <cstring>
 
+#define PI 3.14159265358979323846
+#define gcd(a, b) __gcd(a, b)                             // 最大公约数
+#define bitcount(a) __builtin_popcount(a)                 // 二进制中1的个数
+#define lcm(a, b) (a * b / gcd(a, b))                     // 最小公倍数
+#define max(a, b) (a > b ? a : b)                         // 最大值
+#define min(a, b) (a < b ? a : b)                         // 最小值
+#define abs(a) (a > 0 ? a : -a)                           // 绝对值
+#define swap(a, b) (a ^= b; b ^= a; a ^= b)               // 交换
+#define forin(item, arr) for (auto item : arr)            // 遍历
+#define rep(i, from, to) for (int i = from; i <= to; i++) // 递增
+#define per(i, from, to) for (int i = from; i >= to; i--) // 递减
+#define ll long long
+#define ull unsigned long long
+#define changeCase(c) (c ^ (1 << 5)) // 大小写互换
+#define isLetter(c) (isalpha(c))     // 判断是否为字母
+#define INF 0x3f3f3f3f               // 无穷大
+#define NINF 0xc0c0c0c0              // 无穷小
+/*struct ListNode {
+    int val;
+    ListNode *next;
+
+    ListNode() : val(0), next(nullptr) {}
+
+    ListNode(int x) : val(x), next(nullptr) {}
+
+    ListNode(int x, ListNode *next) : val(x), next(next) {}
+};*/
+
 using namespace std;
 
-int y, m;
-
-class Solution {
-public:
-    bool arrayStringsAreEqual(vector<string> &word1, vector<string> &word2) {
-        string s1, s2;
-        for (const auto &item: word1) {
-            s1 += item;
-        }
-        for (const auto &item: word2) {
-            s2 += item;
-        }
-        return s1 == s2;
+ll gao(ll a)
+{
+    if (a == 1)
+    {
+        return 1;
     }
-};
-
-int main() {
-    int day[] = {31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-    cin >> y >> m;
-    bool is = run(y);
-    if (m == 2 && !is) {
-        cout << 28 << endl;
-    } else {
-        cout << day[m - 1] << endl;
-    }
+    return a * gao(a - 1); 
+}
+int n;
+int main(int argc, char const *argv[])
+{
+    cin >> n;
+    cout << gao(n);
     return 0;
 }

@@ -6,29 +6,32 @@ using namespace std;
 
 class Solution {
 public:
-    vector <vector<int>> subsetsWithDup(vector<int> &nums) {
-        vector <vector<int>> res;
-        vector<int> path;
-        sort(nums.begin(), nums.end());
-        dfs(nums, 0, path, res);
-        return res;
+    vector<int> t; // 用于保存当前的路径
+    vector <vector<int>> ans; // 用于保存所有的路径
+
+    /**
+     * 查询所有nums的子集(不重复)
+     * @param nums
+     * @return
+     */
+    vector <vector<int>> subsets(vector<int> &nums) {
+        dfs(0, nums);
+        return ans;
     }
 
     /**
-     *  递归函数
-     *
+     * 查询以 cur 为起点的所有子集
+     * @param cur
      * @param nums
-     * @param index
-     * @param path
-     * @param res
      */
-    void dfs(vector<int> &nums, int index, vector<int> &path, vector <vector<int>> &res) {
-        res.push_back(path);
-        for (int i = index; i < nums.size(); i++) {
-            if (i > index && nums[i] == nums[i - 1]) continue; // 去重
-            path.push_back(nums[i]); // 选择
-            dfs(nums, i + 1, path, res);
-            path.pop_back(); // 回溯
+    void dfs(int cur, vector<int> &nums) {
+        if (cur == nums.size()) {
+            ans.push_back(t);
+            return;
         }
+        t.push_back(nums[cur]); // 考虑选择当前位置
+        dfs(cur + 1, nums);
+        t.pop_back();           // 考虑不选择当前位置
+        dfs(cur + 1, nums);
     }
 };
