@@ -67,26 +67,79 @@ using namespace std;
 
 //@start——————————————————————————————————————————————————————————————————————
 
+/**
+ * 给你整数 zero ，one ，low 和 high ，我们从空字符串开始构造一个字符串，每一步执行下面操作中的一种：
+
+将 '0' 在字符串末尾添加 zero  次。
+将 '1' 在字符串末尾添加 one 次。
+以上操作可以执行任意次。
+
+如果通过以上过程得到一个 长度 在 low 和 high 之间（包含上下边界）的字符串，那么这个字符串我们称为 好 字符串。
+请你返回满足以上要求的 不同 好字符串数目。由于答案可能很大，请将结果对 109 + 7 取余 后返回。
+*/
 class Solution
 {
 public:
-    int stoneGameVII(vector<int> &stones)
+    int countGoodStrings(int low, int high, int zero, int one)
     {
-        int n = stones.size();
-        vector<int> preSum(n + 1);
-        for (int i = 1; i <= n; i++)
-        {
-            preSum[i] = preSum[i - 1] + stones[i - 1]; // 前缀和
-        }
+        int mod = 1e9 + 7;
+        // dp[i][j][k] 表示长度为i，0的个数为j，1的个数为k的字符串的个数
+        vector<vector<vector<int>>> dp(high + 1, vector<vector<int>>(zero + 1, vector<int>(one + 1, 0)));
+        dp[0][0][0] = 0; // 空字符串
 
-        vector<vector<int>> dp(n, vector<int>(n)); // dp[i][j] 表示当剩下的石子堆为下标 i 到下标 j 时，当前玩家与另一个玩家的石子数量之差的最大值，注意当前玩家不一定是先手。
-        for (int i = n - 2; i >= 0; i--)
+        for (int i = 1; i <= high; i++) // 长度
         {
-            for (int j = i + 1; j < n; j++)
+            for (int j = zero; j >= 0; j--) // 0的个数
             {
-                dp[i][j] = max(preSum[j + 1] - preSum[i + 1] - dp[i + 1][j], preSum[j] - preSum[i] - dp[i][j - 1]); // 当前玩家选择最左边的石子堆或最右边的石子堆。
+                for (int k = one; k >= 0; k--) // 1的个数
+                {
+                    if (j == 0 && k == 0) // 0和1都没有 无法构造
+                        continue;
+                    if (j == 0)
+                    {
+                        // 只能构造1 , 1的个数减1, 长度加1
+                        dp[i][j][k] = dp[i + 1][j][k - 1];
+                    }
+                    else if (k == 0)
+                    {
+                        // 只能构造0 , 0的个数减1, 长度加1
+                        dp[i][j][k] = dp[i + 1][j - 1][k];
+                    }
+                    else
+                    {
+                        // 0和1都可以构造, 0的个数减1, 长度加1 和 1的个数减1, 长度加1
+                        dp[i][j][k]  = (dp[i + 1][j - 1][k] + dp[i + 1][j][k - 1]) % mod;
+                    }
+                }
             }
         }
-        return dp[0][n - 1];
+
+       /*  for (int i = 0; i < dp.size(); i++)
+        {
+            for (int j = 0; j < dp[i].size(); j++)
+            {
+                for (int k = 0; k < dp[i][j].size(); k++)
+                {
+                    cout << dp[i][j][k] << " ";
+                }
+                cout << endl;
+            }
+            cout << endl;
+        } */
+
+    // 计算low到high的字符串个数
+        int ans = 0;
+        for (int i = low; i <= high; i++)
+        {
+            for (int j = 0; j <= zero; j++)
+            {
+                for (int k = 0; k <= one; k++)
+                {
+                    ans += dp[i][j][k];
+                    ans %= mod;
+                }
+            }
+        } 
+        return ans;
     }
 };
