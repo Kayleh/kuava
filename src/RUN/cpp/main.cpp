@@ -63,57 +63,35 @@
 
 using namespace std;
 
-// 是否为质数
-bool isPrime(ll target)
-{
-    int i = 0;
-    if (target <= 1)
-    {
-        printf("illegal input!\n"); //素数定义
-        return false;
-    }
-    for (i = 2; i <= target / 2; i++)
-    {
-        if (target % i == 0)
-            return false; //不是素数直接返回0
-    }
-    return true; //是素数返回1
-}
+int n;
 int main()
 {
-    ll a, b;
-    cin >> a >> b;
-
-    // 将a和b的所有回文数放入nums中
-    for (ll i = a; i <= b; i++)
+    cin >> n;
+    vector<int> a(n);      // 多项式
+    vector<int> ans(n, 0); // 结果
+    int cur = 0;           // 当前位置
+    stack<int> stack;      // 栈内元素为未找到右边界位置的下标
+    for (int i = 0; i < n; i++)
     {
-        string s = to_string(i);
-        string t = s;
-        reverse(t.begin(), t.end());
-        if (s == t)
+        cin >> a[i];
+        while (!stack.empty())
         {
-            //如果是质数 则放入nums中
-            if (isPrime(i))
+            int top = stack.top();
+            if (a[top] < a[i])
             {
-                cout << i << endl;
+                ans[top] = i + 1; // 找到右边界
+                stack.pop();
+            }
+            else
+            {
+                break;
             }
         }
+        stack.push(i);
     }
-    cout << "" << endl;
-    cout << "" << endl;
-    cout << "" << endl;
-    cout << "" << endl;
-    cout << "" << endl;
 
-    cout << "" << endl;
-    cout << "当前窗口句柄：10093026,焦点名：OI Wiki" << endl;
-    cout << "当前窗口句柄：5837734,焦点名：TscShellContainerClass" << endl;
-    cout << "" << endl;
-    cout << "" << endl;
-    cout << "" << endl;
-    cout << "" << endl;
-    cout << "" << endl;
-    cout << "" << endl;
-
-    return 0;
+    for (int i = 0; i < n; i++)
+    {
+        cout << ans[i] << " ";
+    }
 }

@@ -67,79 +67,43 @@ using namespace std;
 
 //@start——————————————————————————————————————————————————————————————————————
 
-/**
- * 给你整数 zero ，one ，low 和 high ，我们从空字符串开始构造一个字符串，每一步执行下面操作中的一种：
-
-将 '0' 在字符串末尾添加 zero  次。
-将 '1' 在字符串末尾添加 one 次。
-以上操作可以执行任意次。
-
-如果通过以上过程得到一个 长度 在 low 和 high 之间（包含上下边界）的字符串，那么这个字符串我们称为 好 字符串。
-请你返回满足以上要求的 不同 好字符串数目。由于答案可能很大，请将结果对 109 + 7 取余 后返回。
-*/
 class Solution
 {
 public:
-    int countGoodStrings(int low, int high, int zero, int one)
+    int maxPalindromes(string s, int k)
     {
-        int mod = 1e9 + 7;
-        // dp[i][j][k] 表示长度为i，0的个数为j，1的个数为k的字符串的个数
-        vector<vector<vector<int>>> dp(high + 1, vector<vector<int>>(zero + 1, vector<int>(one + 1, 0)));
-        dp[0][0][0] = 0; // 空字符串
+        //求从s选择出的最大的回文子串数量（不重叠），每个子串长度至少为k
 
-        for (int i = 1; i <= high; i++) // 长度
+        //字符串哈希
+        unordered_map<char, int> hash; // 记录每个字符出现的次数
+
+        for (auto c : s)
         {
-            for (int j = zero; j >= 0; j--) // 0的个数
-            {
-                for (int k = one; k >= 0; k--) // 1的个数
-                {
-                    if (j == 0 && k == 0) // 0和1都没有 无法构造
-                        continue;
-                    if (j == 0)
-                    {
-                        // 只能构造1 , 1的个数减1, 长度加1
-                        dp[i][j][k] = dp[i + 1][j][k - 1];
-                    }
-                    else if (k == 0)
-                    {
-                        // 只能构造0 , 0的个数减1, 长度加1
-                        dp[i][j][k] = dp[i + 1][j - 1][k];
-                    }
-                    else
-                    {
-                        // 0和1都可以构造, 0的个数减1, 长度加1 和 1的个数减1, 长度加1
-                        dp[i][j][k]  = (dp[i + 1][j - 1][k] + dp[i + 1][j][k - 1]) % mod;
-                    }
-                }
-            }
+            hash[c]++;
         }
 
-       /*  for (int i = 0; i < dp.size(); i++)
+        int res = 0;
+        for (auto it : hash)
         {
-            for (int j = 0; j < dp[i].size(); j++)
-            {
-                for (int k = 0; k < dp[i][j].size(); k++)
-                {
-                    cout << dp[i][j][k] << " ";
-                }
-                cout << endl;
-            }
-            cout << endl;
-        } */
+            res += it.second / k;
+        }
 
-    // 计算low到high的字符串个数
-        int ans = 0;
-        for (int i = low; i <= high; i++)
+        return res;
+    }
+
+    bool isPalindrome(string s)
+    {
+        int i = 0;
+        int j = s.size() - 1;
+        while (i < j)
         {
-            for (int j = 0; j <= zero; j++)
+            if (s[i] != s[j])
             {
-                for (int k = 0; k <= one; k++)
-                {
-                    ans += dp[i][j][k];
-                    ans %= mod;
-                }
+                return false;
             }
-        } 
-        return ans;
+            i++;
+            j--;
+        }
+        return true;
     }
 };
