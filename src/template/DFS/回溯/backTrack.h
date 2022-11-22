@@ -2,6 +2,7 @@
 // Created by w1z4Rd on 2022/11/1.
 //
 
+#include <bits/stdc++.h>
 using namespace std;
 
 class Solution {

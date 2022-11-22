@@ -23,22 +23,13 @@
 
 //#include "Solution.h"
 #include <bits/stdc++.h>
-#include <iostream>
-#include <vector>
 #include <algorithm>
 #include <numeric>
-#include <cmath>
 #include <queue>
 #include <stack>
 #include <unordered_map>
 #include <climits>
 //#include <cassert>
-#include <iostream>
-#include <cstdio>
-#include <algorithm>
-#include <cstring>
-#include <string.h>
-
 #include <unordered_set>
 #define PI 3.14159265358979323846
 #define gcd(a, b) __gcd(a, b)                             // 最大公约数
@@ -57,9 +48,10 @@
 #define isLetter(c) (isalpha(c))     // 判断是否为字母
 #define INF 0x3f3f3f3f               // 无穷大
 #define NINF 0xc0c0c0c0              // 无穷小
-//#define isPrime(n) (n == 2 || (n > 2 && (n & 1) && !isComposite(n))) // 判断是否为素数（质数）
-//#define isComposite(n) (n > 2 && (n & 1) && !isPrime(n))            // 判断是否为合数(非质数)
-
+template <typename T>
+bool chkMax(T &x, T y) { return (y > x) ? x = y, 1 : 0; }
+template <typename T>
+bool chkMin(T &x, T y) { return (y < x) ? x = y, 1 : 0; }
 /*struct ListNode { int val; ListNode *next; ListNode() : val(0), next(nullptr) {}ListNode(int x) : val(x), next(nullptr) {}ListNode(int x, ListNode *next) : val(x), (next) {}};*/
 /* struct TreeNode{int val;TreeNode *left;  TreeNode *right;    TreeNode() : val(0), left(nullptr), right(nullptr) {}    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}}; */
 
@@ -70,40 +62,27 @@ using namespace std;
 class Solution
 {
 public:
-    int maxPalindromes(string s, int k)
+    string reverseParentheses(string s)
     {
-        //求从s选择出的最大的回文子串数量（不重叠），每个子串长度至少为k
+        stack<int> stack;
+        string res;
 
-        //字符串哈希
-        unordered_map<char, int> hash; // 记录每个字符出现的次数
-
-        for (auto c : s)
+        for (int i = 0; i < s.size(); i++)
         {
-            hash[c]++;
-        }
-
-        int res = 0;
-        for (auto it : hash)
-        {
-            res += it.second / k;
-        }
-
-        return res;
-    }
-
-    bool isPalindrome(string s)
-    {
-        int i = 0;
-        int j = s.size() - 1;
-        while (i < j)
-        {
-            if (s[i] != s[j])
+            if (s[i] == '(')
+                stack.push(i);
+            else if (s[i] == ')')
             {
-                return false;
+                int j = stack.top();
+                stack.pop();
+                reverse(s.begin() + j + 1, s.begin() + i);
             }
-            i++;
-            j--;
         }
-        return true;
+        for (int i = 0; i < s.size(); i++)
+        {
+            if (s[i] != '(' && s[i] != ')')
+                res += s[i];
+        }
+        return res;
     }
 };
