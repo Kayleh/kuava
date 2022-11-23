@@ -48,6 +48,8 @@
 #define isLetter(c) (isalpha(c))     // 判断是否为字母
 #define INF 0x3f3f3f3f               // 无穷大
 #define NINF 0xc0c0c0c0              // 无穷小
+bool down(int a,int b){ return a>b; }                    // 降序
+bool up(int a,int b){ return a<b; }                     // 升序
 template <typename T>
 bool chkMax(T &x, T y) { return (y > x) ? x = y, 1 : 0; }
 template <typename T>
