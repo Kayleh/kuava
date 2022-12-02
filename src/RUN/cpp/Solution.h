@@ -59,30 +59,50 @@ using namespace std;
 
 //@start——————————————————————————————————————————————————————————————————————
 
+/*
+//给你一个长度为 n 的数组 nums ，该数组由从 1 到 n 的 不同 整数组成。另给你一个正整数 k 。
+//
+//统计并返回 num 中的 中位数 等于 k 的非空子数组的数目。
+//
+//注意：
+//
+//数组的中位数是按 递增 顺序排列后位于 中间 的那个元素，如果数组长度为偶数，则中位数是位于中间靠 左 的那个元素。
+//例如，[2,3,1,4] 的中位数是 2 ，[8,4,3,5,1] 的中位数是 4 。
+//子数组是数组中的一个连续部分。
+*/
 class Solution
 {
 public:
-    string reverseParentheses(string s)
+    int countSubarrays(vector<int> &nums, int k)
     {
-        stack<int> stack;
-        string res;
+        // 思路：滑动窗口 + 前缀和
 
-        for (int i = 0; i < s.size(); i++)
+        int n = nums.size();
+        vector<int> pre(n + 1, 0);
+        for (int i = 1; i <= n; i++)
         {
-            if (s[i] == '(')
-                stack.push(i);
-            else if (s[i] == ')')
+            pre[i] = pre[i - 1] + nums[i - 1];
+        }
+
+        int ans = 0;
+        int l = 0, r = 0; // 滑动窗口的左右边界
+        while (r < n)
+        {
+            if (pre[r + 1] - pre[l] == k / (r - l + 1))
             {
-                int j = stack.top();
-                stack.pop();
-                reverse(s.begin() + j + 1, s.begin() + i);
+                ans++;
+                r++;
+            }
+            else if (pre[r + 1] - pre[l] < k / (r - l + 1))
+            {
+                r++;
+            }
+            else
+            {
+                l++;
             }
         }
-        for (int i = 0; i < s.size(); i++)
-        {
-            if (s[i] != '(' && s[i] != ')')
-                res += s[i];
-        }
-        return res;
+
+        return ans;
     }
 };
