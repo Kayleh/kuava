@@ -31,6 +31,7 @@
 #include <climits>
 //#include <cassert>
 #include <unordered_set>
+
 #define PI 3.14159265358979323846
 #define gcd(a, b) __gcd(a, b)                             // 最大公约数
 #define bitcount(a) __builtin_popcount(a)                 // 二进制中1的个数
@@ -48,10 +49,12 @@
 #define isLetter(c) (isalpha(c))     // 判断是否为字母
 #define INF 0x3f3f3f3f               // 无穷大
 #define NINF 0xc0c0c0c0              // 无穷小
-bool down(int a,int b){ return a>b; }                    // 降序
-bool up(int a,int b){ return a<b; }                     // 升序
+
+bool down(int a, int b) { return a > b; } // 降序
+bool up(int a, int b) { return a < b; }   // 升序
 template <typename T>
 bool chkMax(T &x, T y) { return (y > x) ? x = y, 1 : 0; }
+
 template <typename T>
 bool chkMin(T &x, T y) { return (y < x) ? x = y, 1 : 0; }
 /*struct ListNode { int val; ListNode *next; ListNode() : val(0), next(nullptr) {}ListNode(int x) : val(x), next(nullptr) {}ListNode(int x, ListNode *next) : val(x), (next) {}};*/
@@ -59,18 +62,18 @@ bool chkMin(T &x, T y) { return (y < x) ? x = y, 1 : 0; }
 
 using namespace std;
 
-int s;
+//已知正整数 n 是两个不同的质数的乘积，试求出两者中较大的那个质数。
+int n;
 int main()
 {
-    cin >> s;
-    int ans = 0;
-    while (s != 0)
+    // 质数筛法
+    cin >> n;
+    for (int i = 2; i <= n; i++)
     {
-        int x = s % 10;
-        s /= 10;
-        ans *= 10;
-        ans += x;
+        if (n % i == 0)
+        {
+            cout << n / i << endl;
+            break;
+        }
     }
-    cout << ans << endl;
-    return 0;
 }

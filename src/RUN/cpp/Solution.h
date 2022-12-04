@@ -31,6 +31,7 @@
 #include <climits>
 //#include <cassert>
 #include <unordered_set>
+
 #define PI 3.14159265358979323846
 #define gcd(a, b) __gcd(a, b)                             // 最大公约数
 #define bitcount(a) __builtin_popcount(a)                 // 二进制中1的个数
@@ -48,8 +49,10 @@
 #define isLetter(c) (isalpha(c))     // 判断是否为字母
 #define INF 0x3f3f3f3f               // 无穷大
 #define NINF 0xc0c0c0c0              // 无穷小
+
 template <typename T>
 bool chkMax(T &x, T y) { return (y > x) ? x = y, 1 : 0; }
+
 template <typename T>
 bool chkMin(T &x, T y) { return (y < x) ? x = y, 1 : 0; }
 /*struct ListNode { int val; ListNode *next; ListNode() : val(0), next(nullptr) {}ListNode(int x) : val(x), next(nullptr) {}ListNode(int x, ListNode *next) : val(x), (next) {}};*/
@@ -59,50 +62,22 @@ using namespace std;
 
 //@start——————————————————————————————————————————————————————————————————————
 
-/*
-//给你一个长度为 n 的数组 nums ，该数组由从 1 到 n 的 不同 整数组成。另给你一个正整数 k 。
-//
-//统计并返回 num 中的 中位数 等于 k 的非空子数组的数目。
-//
-//注意：
-//
-//数组的中位数是按 递增 顺序排列后位于 中间 的那个元素，如果数组长度为偶数，则中位数是位于中间靠 左 的那个元素。
-//例如，[2,3,1,4] 的中位数是 2 ，[8,4,3,5,1] 的中位数是 4 。
-//子数组是数组中的一个连续部分。
+/**
+ * 给你一个正整数 n ，表示总共有 n 个城市，城市从 1 到 n 编号。给你一个二维数组 roads ，其中 roads[i] = [ai, bi, distancei] 表示城市 ai 和 bi 之间有一条 双向 道路，道路距离为 distancei 。城市构成的图不一定是连通的。
+
+两个城市之间一条路径的 分数 定义为这条路径中道路的 最小 距离。
+
+城市 1 和城市 n 之间的所有路径的 最小 分数。
 */
 class Solution
 {
 public:
-    int countSubarrays(vector<int> &nums, int k)
+    int minScore(int n, vector<vector<int>> &roads)
     {
-        // 思路：滑动窗口 + 前缀和
-
-        int n = nums.size();
-        vector<int> pre(n + 1, 0);
-        for (int i = 1; i <= n; i++)
-        {
-            pre[i] = pre[i - 1] + nums[i - 1];
-        }
-
-        int ans = 0;
-        int l = 0, r = 0; // 滑动窗口的左右边界
-        while (r < n)
-        {
-            if (pre[r + 1] - pre[l] == k / (r - l + 1))
-            {
-                ans++;
-                r++;
-            }
-            else if (pre[r + 1] - pre[l] < k / (r - l + 1))
-            {
-                r++;
-            }
-            else
-            {
-                l++;
-            }
-        }
-
-        return ans;
+        // 求1到n的路径，并且使得路径上的最小值最小
+        // 1. 用邻接矩阵存储图
+        // 2. 用floyd算法求出任意两点之间的最短路径
+        // 3. 用dp算法求出1到n的最短路径
+        
     }
 };
