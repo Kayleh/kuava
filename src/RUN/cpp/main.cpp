@@ -21,7 +21,7 @@
 @Date: 2020/6/14 19:34
 */
 
-//#include "Solution.h"
+// #include "Solution.h"
 #include <bits/stdc++.h>
 #include <algorithm>
 #include <numeric>
@@ -29,7 +29,7 @@
 #include <stack>
 #include <unordered_map>
 #include <climits>
-//#include <cassert>
+// #include <cassert>
 #include <unordered_set>
 
 #define PI 3.14159265358979323846
@@ -61,19 +61,26 @@ bool chkMin(T &x, T y) { return (y < x) ? x = y, 1 : 0; }
 /* struct TreeNode{int val;TreeNode *left;  TreeNode *right;    TreeNode() : val(0), left(nullptr), right(nullptr) {}    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}}; */
 
 using namespace std;
-
-//已知正整数 n 是两个不同的质数的乘积，试求出两者中较大的那个质数。
-int n;
 int main()
 {
-    // 质数筛法
-    cin >> n;
-    for (int i = 2; i <= n; i++)
+    int l, m; // l: length of the road, m: number of the segments
+    cin >> l >> m;
+    int arr[l + 1];
+    while (m-- > 0)
     {
-        if (n % i == 0)
+        int a, b; // a: left, b: right
+        cin >> a >> b;
+        for (int i = a; i < b; i++)
         {
-            cout << n / i << endl;
-            break;
+            arr[i] = 1;
         }
     }
+    int cnt = 0;
+    for (int i = 1; i <= l; i++)
+    {
+        if (arr[i] != 1)
+            cnt++;
+    }
+    cout << cnt << endl;
+    return 0;
 }
