@@ -45,17 +45,23 @@
 #define per(i, from, to) for (int i = from; i >= to; i--) // 递减
 #define ll long long
 #define ull unsigned long long
-#define changeCase(c) (c ^ (1 << 5)) // 大小写互换
-#define isLetter(c) (isalpha(c))     // 判断是否为字母
-#define INF 0x3f3f3f3f               // 无穷大
-#define NINF 0xc0c0c0c0              // 无穷小
-
+#define changeCase(c) (c ^ (1 << 5))           // 大小写互换
+#define isLetter(c) (isalpha(c))               // 判断是否为字母
+#define INF 0x3f3f3f3f                         // 无穷大
+#define NINF 0xc0c0c0c0                        // 无穷小
+#define randd(a, b) (rand() % (b - a + 1) + a) // [a, b]
 template <typename T>
 bool chkMax(T &x, T y) { return (y > x) ? x = y, 1 : 0; }
-
 template <typename T>
 bool chkMin(T &x, T y) { return (y < x) ? x = y, 1 : 0; }
-/*struct ListNode { int val; ListNode *next; ListNode() : val(0), next(nullptr) {}ListNode(int x) : val(x), next(nullptr) {}ListNode(int x, ListNode *next) : val(x), (next) {}};*/
+struct ListNode
+{
+    int val;
+    ListNode *next;
+    ListNode() : val(0), next(nullptr) {}
+    ListNode(int x) : val(x), next(nullptr) {}
+    ListNode(int x, ListNode *next) : val(x), next(next) {}
+};
 /* struct TreeNode{int val;TreeNode *left;  TreeNode *right;    TreeNode() : val(0), left(nullptr), right(nullptr) {}    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}}; */
 
 using namespace std;
@@ -65,30 +71,15 @@ using namespace std;
 class Solution
 {
 public:
-    int minimumSum(int num)
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB)
     {
-        // 将num拆分成数组
-        vector<int> nums;
-        while (num)
+        ListNode *p = headA, *q = headB; // 快慢指针，如果有交点，一定会相遇
+        while (p != q)
         {
-            nums.push_back(num % 10);
-            num /= 10;
+            // 如果p走到头了，就从q的头开始走，如果q走到头了，就从p的头开始走，这样就能保证走的长度一样
+            p = p == nullptr ? headB : p->next; 
+            q = q == nullptr ? headA : q->next;
         }
-        forin(item, nums)
-        {
-            cout << item << " ";
-        }
-        sort(nums.begin(), nums.end());
-        int a, b = 0;
-        for (int i = 0; i < nums.size(); i++)
-        {
-            if (nums[i] == 0)
-                continue;
-            if (i % 2 == 0)
-                a = a * 10 + nums[i];
-            else
-                b = b * 10 + nums[i];
-        }
-        return a + b;
+        return p;
     }
 };

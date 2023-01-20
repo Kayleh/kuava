@@ -2,7 +2,7 @@
 // Created by w1z4Rd on 2022/10/30.
 //
 
-#include <iostream>
+#include <bits/stdc++.h>
 
 using namespace std;
 
@@ -99,12 +99,12 @@ public:
     bool prime[100000];
     void ai()
     {
-        memset(prime, 1, sizeof(prime)); //埃筛一定要初始化数组值, 把每个数都设为合数
+        memset(prime, 1, sizeof(prime)); // 埃筛一定要初始化数组值, 把每个数都设为合数
         for (int i = 2; i <= 100000; ++i)
             prime[i] = 1;
         for (int i = 2; i <= 100000; ++i)
             if (prime[i])
-                for (int j = i * 2; j <= 100000; j += i) //从i*i开始筛，将i的倍数筛去
+                for (int j = i * 2; j <= 100000; j += i) // 从i*i开始筛，将i的倍数筛去
                     prime[j] = 0;
     }
 
@@ -114,14 +114,14 @@ public:
      * 但是这样会导致重复筛去，比如 2 和 3 都会筛去 6，因此我们需要记录每个数最小的质因子，从而避免重复筛去。
      * 例如，对于 6，我们知道它最小的质因子（质因子：能被质数整除的数）是 2，那么我们就可以从 2×6 开始筛去，而不是从 6 开始筛去。
      */
-    int prime[100000]; //存储所有素数
-    int cnt; //素数个数
-    bool st[100000]; //st[i] = true表示i是合数
+    int prime[100000]; // 存储所有素数
+    int cnt;           // 素数个数
+    bool st[100000];   // st[i] = true表示i是合数
     void linear()
     {
-        for (int i = 2; i <= 100000; ++i) //从2开始筛
+        for (int i = 2; i <= 100000; ++i) // 从2开始筛
         {
-            if (!st[i]) //如果i是质数
+            if (!st[i])                                  // 如果i是质数
                 prime[cnt++] = i;                        // i是质数
             for (int j = 0; prime[j] <= 100000 / i; ++j) // prime[j] <= i是为了防止重复筛去
             {
@@ -138,14 +138,37 @@ public:
         int i = 0;
         if (target <= 1)
         {
-            printf("illegal input!\n"); //素数定义
+            printf("illegal input!\n"); // 素数定义
             return false;
         }
         for (i = 2; i <= target / 2; i++)
         {
             if (target % i == 0)
-                return false; //不是素数直接返回0
+                return false;
         }
-        return true; //是素数返回1
+        return true;
+    }
+
+    /**
+     *  判断是否为质数, 判断依据：如果一个数不是质数，那么它一定可以分解成两个数的乘积，其中一个数一定小于等于它的平方根，另一个数一定大于等于它的平方根。
+     */
+    bool isPrime(int x)
+    {
+        if (x == 1)
+            return false;
+        for (int i = 2; i <= sqrt(x); i++)
+        {
+            if (x % i == 0)
+                return false;
+        }
+        return true;
+    }
+
+    // 阶乘
+    int f(int x)
+    {
+        if (x == 1)
+            return 1;
+        return x * f(x - 1);
     }
 };
