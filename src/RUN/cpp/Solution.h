@@ -54,13 +54,7 @@ template <typename T>
 bool chkMax(T &x, T y) { return (y > x) ? x = y, 1 : 0; }
 template <typename T>
 bool chkMin(T &x, T y) { return (y < x) ? x = y, 1 : 0; }
-struct ListNode
-{
-    int val;
-    ListNode *next;
-    ListNode() : val(0), next(nullptr) {}
-    ListNode(int x) : val(x), next(nullptr) {}
-    ListNode(int x, ListNode *next) : val(x), next(next) {}
+ struct ListNode{int val;ListNode *next;ListNode() : val(0), next(nullptr) {}ListNode(int x) : val(x), next(nullptr) {} ListNode(int x, ListNode *next) : val(x), next(next) {}
 };
 /* struct TreeNode{int val;TreeNode *left;  TreeNode *right;    TreeNode() : val(0), left(nullptr), right(nullptr) {}    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}}; */
 
@@ -68,16 +62,12 @@ using namespace std;
 
 //@start——————————————————————————————————————————————————————————————————————
 
-class Solution
-{
+class Solution {
 public:
-    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB)
-    {
-        ListNode *p = headA, *q = headB; // 快慢指针，如果有交点，一定会相遇
-        while (p != q)
-        {
-            // 如果p走到头了，就从q的头开始走，如果q走到头了，就从p的头开始走，这样就能保证走的长度一样
-            p = p == nullptr ? headB : p->next; 
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+        ListNode *p = headA, *q = headB;
+        while (p != q) {
+            p = p == nullptr ? headB : p->next;
             q = q == nullptr ? headA : q->next;
         }
         return p;
