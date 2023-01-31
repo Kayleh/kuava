@@ -54,7 +54,13 @@ template <typename T>
 bool chkMax(T &x, T y) { return (y > x) ? x = y, 1 : 0; }
 template <typename T>
 bool chkMin(T &x, T y) { return (y < x) ? x = y, 1 : 0; }
- struct ListNode{int val;ListNode *next;ListNode() : val(0), next(nullptr) {}ListNode(int x) : val(x), next(nullptr) {} ListNode(int x, ListNode *next) : val(x), next(next) {}
+struct ListNode
+{
+    int val;
+    ListNode *next;
+    ListNode() : val(0), next(nullptr) {}
+    ListNode(int x) : val(x), next(nullptr) {}
+    ListNode(int x, ListNode *next) : val(x), next(next) {}
 };
 /* struct TreeNode{int val;TreeNode *left;  TreeNode *right;    TreeNode() : val(0), left(nullptr), right(nullptr) {}    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}}; */
 
@@ -62,14 +68,25 @@ using namespace std;
 
 //@start——————————————————————————————————————————————————————————————————————
 
-class Solution {
+class Solution
+{
 public:
-    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
-        ListNode *p = headA, *q = headB;
-        while (p != q) {
-            p = p == nullptr ? headB : p->next;
-            q = q == nullptr ? headA : q->next;
+    ListNode *oddEvenList(ListNode *head)
+    {
+        if (!head || !head->next)
+            return head;
+        ListNode *odd = head, *even = head->next;
+        // 拆分成奇偶两个链表，然后合并
+        ListNode *evenHead = even; // 偶数链表的头节点
+        while (even && even->next)
+        {
+            odd->next = even->next; // 奇数链表的下一个节点
+            odd = odd->next;
+            even->next = odd->next;
+            even = even->next;
         }
-        return p;
+        // 遍历完后，奇数链表的最后一个节点指向偶数链表的头节点
+        odd->next = evenHead;
+        return head;
     }
 };
