@@ -62,31 +62,21 @@ bool chkMin(T &x, T y) { return (y < x) ? x = y, 1 : 0; }
 
 using namespace std;
 
-int main()
-{
-    int N;
-    cin >> N;
-    // 输入一个偶数 N，验证 4∼N 所有偶数是否符合哥德巴赫猜想：任一大于 2 的偶数都可写成两个质数之和。如果一个数不止一种分法，则输出第一个加数相比其他分法最小的方案。
-    for (int i = 4; i < N; i++)
-    {
-        if (i % 2 == 0) 
-        {
-            int a = i / 2; // 从中间开始
-            int b = i / 2; // 从中间开始
-            while (a > 1)
-            {
-                if (b % a == 0)
-                {
-                    a--;
-                    b++;
-                }
-                else
-                {
-                    cout << i << "=" << a << "+" << b << endl;
-                    break;
-                }
+int main() {
+    int arr[] = {6, 1, 5, 2, 4, 3};
+    int len = sizeof(arr) / sizeof(arr[0]);
+    for (int i = 0; i < len; ++i) {
+        for (int j = 0; j < len - i - 1; ++j) {
+            if (arr[j] > arr[j + 1]) {
+                int temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
             }
         }
+    }
+
+    for (int i = 0; i < len; ++i) {
+        cout << arr[i] << " ";
     }
     return 0;
 };

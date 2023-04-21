@@ -1,21 +1,79 @@
-//给你两个整数数组 nums1 和 nums2 ，两个数组长度都是 n ，再给你一个整数 k 。你可以对数组 nums1 进行以下操作：
-//
-//选择两个下标 i 和 j ，将 nums1[i] 增加 k ，将 nums1[j] 减少 k 。换言之，nums1[i] = nums1[i] + k 且 nums1[j] = nums1[j] - k 。
-//如果对于所有满足 0 <= i < n 都有 num1[i] == nums2[i] ，那么我们称 nums1 等于 nums2 。
-//
-//请你返回使 nums1 等于 nums2 的 最少 操作数。如果没办法让它们相等，请你返回 -1 。
+import java.util.HashMap;
+import java.util.Map;
+
+class TreeNode {
+    int val;
+    TreeNode left;
+    TreeNode right;
+
+    TreeNode(int val) {
+        this.val = val;
+    }
+}
 
 class Solution {
-    public long minOperations(int[] nums1, int[] nums2, int k) {
 
-        // 正负比
-        int n = nums1.length;
-        int m = nums2.length;
+    public TreeNode replaceValueInTree(TreeNode root) {
+        // bfs
+
+        if (root == null) {
+            return null;
+        }
 
 
-
-
+        
 
 
     }
+
+    // x 的信息
+    int x;
+    TreeNode xParent;
+    int xDepth;
+    boolean xFound = false;
+
+    // y 的信息
+    int y;
+    TreeNode yParent;
+    int yDepth;
+    boolean yFound = false;
+
+    public boolean isCousins(TreeNode root, int x, int y) {
+        this.x = x;
+        this.y = y;
+        dfs(root, 0, null);
+        return xDepth == yDepth && xParent != yParent;
+    }
+
+    public void dfs(TreeNode node, int depth, TreeNode parent) {
+        if (node == null) {
+            return;
+        }
+
+        if (node.val == x) {
+            xParent = parent;
+            xDepth = depth;
+            xFound = true;
+        } else if (node.val == y) {
+            yParent = parent;
+            yDepth = depth;
+            yFound = true;
+        }
+
+        // 如果两个节点都找到了，就可以提前退出遍历
+        // 即使不提前退出，对最坏情况下的时间复杂度也不会有影响
+        if (xFound && yFound) {
+            return;
+        }
+
+        dfs(node.left, depth + 1, node);
+
+        if (xFound && yFound) {
+            return;
+        }
+
+        dfs(node.right, depth + 1, node);
+    }
+
+
 }

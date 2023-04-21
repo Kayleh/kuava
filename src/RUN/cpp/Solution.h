@@ -32,6 +32,11 @@
 // #include <cassert>
 #include <unordered_set>
 
+#ifdef kOS
+#define INPUT_FILE "C:/input.txt"
+#define OUTPUT_FILE "C:/output.txt"
+#endif
+
 #define PI 3.14159265358979323846
 #define gcd(a, b) __gcd(a, b)                             // 最大公约数
 #define bitcount(a) __builtin_popcount(a)                 // 二进制中1的个数
@@ -54,6 +59,10 @@ template <typename T>
 bool chkMax(T &x, T y) { return (y > x) ? x = y, 1 : 0; }
 template <typename T>
 bool chkMin(T &x, T y) { return (y < x) ? x = y, 1 : 0; }
+auto cmp = [](const pair<int, int> &a, const pair<int, int> &b)
+{ return a.second < b.second; };
+
+#ifdef debug
 struct ListNode
 {
     int val;
@@ -62,31 +71,29 @@ struct ListNode
     ListNode(int x) : val(x), next(nullptr) {}
     ListNode(int x, ListNode *next) : val(x), next(next) {}
 };
-/* struct TreeNode{int val;TreeNode *left;  TreeNode *right;    TreeNode() : val(0), left(nullptr), right(nullptr) {}    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}}; */
+struct TreeNode
+{
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode() : val(0), left(nullptr), right(nullptr) {}
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+};
+#endif
 
 using namespace std;
+#define debug
 
 //@start——————————————————————————————————————————————————————————————————————
 
 class Solution
 {
 public:
-    ListNode *oddEvenList(ListNode *head)
+    vector<int> nextGreaterElement(vector<int> &nums1, vector<int> &nums2)
     {
-        if (!head || !head->next)
-            return head;
-        ListNode *odd = head, *even = head->next;
-        // 拆分成奇偶两个链表，然后合并
-        ListNode *evenHead = even; // 偶数链表的头节点
-        while (even && even->next)
-        {
-            odd->next = even->next; // 奇数链表的下一个节点
-            odd = odd->next;
-            even->next = odd->next;
-            even = even->next;
-        }
-        // 遍历完后，奇数链表的最后一个节点指向偶数链表的头节点
-        odd->next = evenHead;
-        return head;
+
+        Stack<int> stack;
+        unordered_map<int, int> map; 
     }
 };
