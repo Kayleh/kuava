@@ -14,6 +14,7 @@
  * 2. 连接两个节点
  * 3. 统计连通分量的个数
  */
+#include <bits/stdc++.h>
 class UnionFind {
 public:
     int find(int x) {

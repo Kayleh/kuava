@@ -15,6 +15,25 @@ public:
     ~MonotonousStack();
 
     /**
+     * 求解nums1中每个元素在num2的下一个更大元素
+     * @param nums1
+     * @param nums2
+     * @return
+     */
+    vector<int> nextGreaterElement(vector<int> &nums1, vector<int> &nums2) {
+        unordered_map<int, int> map; // key: num, value: num的下一个更大元素
+        for (int i = nums2.size() - 1; i >= 0; i--) {
+            while (!stack.empty() && ss.top() <= nums2[i])
+                stack.pop();
+            map[nums2[i]] = stack.empty() ? -1 : stack.top();
+            stack.push(nums2[i]);
+        }
+        for (int i = 0; i < nums1.size(); i++)
+            nums1[i] = map[nums1[i]];
+        return nums1;
+    }
+
+    /**
      * 返回 nums 中每个元素右边第一个比它大的元素
      * @description: 单调栈
      * @param {type}

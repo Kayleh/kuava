@@ -1,79 +1,15 @@
-import java.util.HashMap;
-import java.util.Map;
+//给你一个下标从 0 开始的整数数组 nums 和一个整数 k 。你需要执行以下操作 恰好 k 次，最大化你的得分：
+//
+//        从 nums 中选择一个元素 m 。
+//        将选中的元素 m 从数组中删除。
+//        将新元素 m + 1 添加到数组中。
+//        你的得分增加 m 。
+//        请你返回执行以上操作恰好 k 次后的最大得分。
 
-class TreeNode {
-    int val;
-    TreeNode left;
-    TreeNode right;
 
-    TreeNode(int val) {
-        this.val = val;
-    }
-}
+import java.util.Arrays;
 
 class Solution {
-
-    public TreeNode replaceValueInTree(TreeNode root) {
-        // bfs
-
-        if (root == null) {
-            return null;
-        }
-
-
-        
-
-
+    public int maximizeSum(int[] nums, int k) {
     }
-
-    // x 的信息
-    int x;
-    TreeNode xParent;
-    int xDepth;
-    boolean xFound = false;
-
-    // y 的信息
-    int y;
-    TreeNode yParent;
-    int yDepth;
-    boolean yFound = false;
-
-    public boolean isCousins(TreeNode root, int x, int y) {
-        this.x = x;
-        this.y = y;
-        dfs(root, 0, null);
-        return xDepth == yDepth && xParent != yParent;
-    }
-
-    public void dfs(TreeNode node, int depth, TreeNode parent) {
-        if (node == null) {
-            return;
-        }
-
-        if (node.val == x) {
-            xParent = parent;
-            xDepth = depth;
-            xFound = true;
-        } else if (node.val == y) {
-            yParent = parent;
-            yDepth = depth;
-            yFound = true;
-        }
-
-        // 如果两个节点都找到了，就可以提前退出遍历
-        // 即使不提前退出，对最坏情况下的时间复杂度也不会有影响
-        if (xFound && yFound) {
-            return;
-        }
-
-        dfs(node.left, depth + 1, node);
-
-        if (xFound && yFound) {
-            return;
-        }
-
-        dfs(node.right, depth + 1, node);
-    }
-
-
 }

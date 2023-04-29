@@ -55,10 +55,13 @@
 #define INF 0x3f3f3f3f                         // 无穷大
 #define NINF 0xc0c0c0c0                        // 无穷小
 #define randd(a, b) (rand() % (b - a + 1) + a) // [a, b]
+
 template <typename T>
 bool chkMax(T &x, T y) { return (y > x) ? x = y, 1 : 0; }
+
 template <typename T>
 bool chkMin(T &x, T y) { return (y < x) ? x = y, 1 : 0; }
+
 auto cmp = [](const pair<int, int> &a, const pair<int, int> &b)
 { return a.second < b.second; };
 
@@ -83,17 +86,38 @@ struct TreeNode
 #endif
 
 using namespace std;
-#define debug
+// #define debug
 
 //@start——————————————————————————————————————————————————————————————————————
 
 class Solution
 {
 public:
-    vector<int> nextGreaterElement(vector<int> &nums1, vector<int> &nums2)
+    bool possibleBipartition(int n, vector<vector<int>> &dislikes)
     {
+        // 并查集
+        vector<int> parent(n + 1);
+        for (int i = 1; i <= n; i++)
+            parent[i] = i; // 初始化
+        for (auto dislike : dislikes)
+        {
+            int x = dislike[0], y = dislike[1];
+            if (find(parent, x) == find(parent, y)) 
+                return false;
+            unionSet(parent, x, y); 
+        }
+        return true;
+    }
 
-        Stack<int> stack;
-        unordered_map<int, int> map; 
+    int find(vector<int> &parent, int index)
+    {
+        if (parent[index] != index)
+            parent[index] = find(parent, parent[index]);
+        return parent[index];
+    }
+
+    void unionSet(vector<int> &parent, int index1, int index2)
+    {
+        parent[find(parent, index1)] = find(parent, index2);
     }
 };
