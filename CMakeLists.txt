@@ -1,12 +1,21 @@
-cmake_minimum_required(VERSION 3.0)
-project(kuava)
-file(GLOB_RECURSE kuava "src/*.cpp" "src/*.h")
+cmake_minimum_required(VERSION 3.19)
 
-add_library(${PROJECT_NAME} STATIC
-        ${kuava} "../codeforce/leetcode/Java/src/temp/leetcode/editor/cn/[1590]使数组和能被 P 整除.cpp")
+# 拿到当前文件所在目录的名字
+get_filename_component(ProjectID ${CMAKE_CURRENT_SOURCE_DIR} NAME)
 
-set(CMAKE_CXX_STANDARD 14)
+# 如果目录中包含空格替换成"_"
+string(REPLACE " " "_" ProjectID ${ProjectID})
 
-#add_executable(kuava main.cpp)
+project(${ProjectID} C)
 
-message(STATUS "SRC_DIR_LIST = ${kuava}")			#打印kuava中列表信息
+set(CMAKE_C_STANDARD 11)
+
+# 获取目录下所有的.C,.h文件存入files里
+file(GLOB files "${CMAKE_CURRENT_SOURCE_DIR}/*.c ${CMAKE_CURRENT_SOURCE_DIR}/*.h ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
+
+# 遍历files把它们添加成可执行程序
+foreach (file ${files})
+    get_filename_component(name ${file} NAME)
+    add_executable(${name} ${file})
+endforeach ()
+

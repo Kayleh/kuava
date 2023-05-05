@@ -42,8 +42,6 @@
 #define bitcount(a) __builtin_popcount(a)                 // 二进制中1的个数
 #define lcm(a, b) (a * b / gcd(a, b))                     // 最小公倍数
 #define max(a, b) (a > b ? a : b)                         // 最大值
-#define min(a, b) (a < b ? a : b)                         // 最小值
-#define abs(a) (a > 0 ? a : -a)                           // 绝对值
 #define swapp(a, b) (a ^= b; b ^= a; a ^= b)              // 交换
 #define forin(item, arr) for (auto item : arr)            // 遍历
 #define rep(i, from, to) for (int i = from; i <= to; i++) // 递增
@@ -56,13 +54,14 @@
 #define NINF 0xc0c0c0c0                        // 无穷小
 #define randd(a, b) (rand() % (b - a + 1) + a) // [a, b]
 
-template<typename T>
+template <typename T>
 bool chkMax(T &x, T y) { return (y > x) ? x = y, 1 : 0; }
 
-template<typename T>
+template <typename T>
 bool chkMin(T &x, T y) { return (y < x) ? x = y, 1 : 0; }
 
-auto cmp = [](const pair<int, int> &a, const pair<int, int> &b) { return a.second < b.second; };
+auto cmp = [](const pair<int, int> &a, const pair<int, int> &b)
+{ return a.second < b.second; };
 
 #ifdef debug
 struct ListNode
@@ -89,11 +88,10 @@ using namespace std;
 
 //@start——————————————————————————————————————————————————————————————————————
 
-const int N = 2010; // 最大点数
-
-class Solution {
+class Solution
+{
 public:
-    int findCheapestPrice(int n, vector <vector<int>> &flights, int src, int dst, int k) {
-
+    TreeNode *constructFromPrePost(vector<int> &preorder, vector<int> &postorder)
+    {
     }
 };
