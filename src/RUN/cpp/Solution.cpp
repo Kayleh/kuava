@@ -63,6 +63,8 @@ bool chkMin(T &x, T y) { return (y < x) ? x = y, 1 : 0; }
 auto cmp = [](const pair<int, int> &a, const pair<int, int> &b)
 { return a.second < b.second; };
 
+#define debug
+
 #ifdef debug
 struct ListNode
 {
@@ -84,14 +86,40 @@ struct TreeNode
 #endif
 
 using namespace std;
-// #define debug
 
 //@start——————————————————————————————————————————————————————————————————————
 
 class Solution
 {
 public:
-    TreeNode *constructFromPrePost(vector<int> &preorder, vector<int> &postorder)
+    int maxSubarraySumCircular(vector<int> &nums)
     {
+        int left = 0, right = 0;
+        int slow = 0, fast = 1;
+        int maxSum = INT_MIN, curSum = 0;
+
+        while (slow < nums.size())
+        {
+            curSum += nums[fast];
+            chkMax(maxSum, curSum);
+            if (curSum < 0)
+            {
+                curSum = 0;
+                slow = fast;
+                fast = slow + 1;
+            }
+            else
+            {
+                fast++;
+            }
+            if (fast == nums.size())
+            {
+                fast = 0;
+            }
+            if (fast == slow)
+            {
+                break;
+            }
+        }
     }
 };
