@@ -38,10 +38,10 @@
 #endif
 
 #define PI 3.14159265358979323846
-#define gcd(a, b) __gcd(a, b)                             // 最大公约数
-#define bitcount(a) __builtin_popcount(a)                 // 二进制中1的个数
-#define lcm(a, b) (a * b / gcd(a, b))                     // 最小公倍数
-#define max(a, b) (a > b ? a : b)                         // 最大值
+#define gcd(a, b) __gcd(a, b)             // 最大公约数
+#define bitcount(a) __builtin_popcount(a) // 二进制中1的个数
+#define lcm(a, b) (a * b / gcd(a, b))     // 最小公倍数
+// #define max(a, b) (a > b ? a : b)                         // 最大值
 #define swapp(a, b) (a ^= b; b ^= a; a ^= b)              // 交换
 #define forin(item, arr) for (auto item : arr)            // 遍历
 #define rep(i, from, to) for (int i = from; i <= to; i++) // 递增
@@ -63,7 +63,7 @@ bool chkMin(T &x, T y) { return (y < x) ? x = y, 1 : 0; }
 auto cmp = [](const pair<int, int> &a, const pair<int, int> &b)
 { return a.second < b.second; };
 
-#define debug
+// #define debug
 
 #ifdef debug
 struct ListNode
@@ -94,32 +94,26 @@ class Solution
 public:
     int maxSubarraySumCircular(vector<int> &nums)
     {
-        int left = 0, right = 0;
-        int slow = 0, fast = 1;
-        int maxSum = INT_MIN, curSum = 0;
+        // 有两种情况
+        // 1. 最大子数组和不跨越数组首尾，那么就是普通的动态规划求最大子数组和
+        // 2. 最大子数组和跨越数组首尾，一部分在数组首，一部分在数组尾。 由于在不同的位置，所以求最大子数组和不方便，但是可以求最小子数组和
+        // 此时，最小子数组和一定在中间，所以最大子数组和 = 总和 - 最小子数组和
 
-        while (slow < nums.size())
+        // 环形数组的最大子数组和 = max(总和 - 最小子数组和, 最大子数组和)
+        int n = nums.size();
+        int maxSum = nums[0], minSum = nums[0]; // 最大值和最小值
+        int curMax = 0, curMin = 0;             // 当前最大值和最小值
+        int total = 0;                          // 总和
+        for (int i = 0; i < n; i++)
         {
-            curSum += nums[fast];
-            chkMax(maxSum, curSum);
-            if (curSum < 0)
-            {
-                curSum = 0;
-                slow = fast;
-                fast = slow + 1;
-            }
-            else
-            {
-                fast++;
-            }
-            if (fast == nums.size())
-            {
-                fast = 0;
-            }
-            if (fast == slow)
-            {
-                break;
-            }
+            curMax = max(curMax + nums[i], nums[i]); // 当前最大值
+            maxSum = max(maxSum, curMax);            // 最大值
+            curMin = min(curMin + nums[i], nums[i]); // 当前最小值
+            minSum = min(minSum, curMin);            // 最小值
+            total += nums[i];                        // 总和
         }
+
+        // 如果最大的子数组和小于0，说明数组中的元素都是负数，那么最大子数组和就是最大的元素
+        return maxSum > 0 ? max(maxSum, total - minSum) : maxSum;
     }
 };
