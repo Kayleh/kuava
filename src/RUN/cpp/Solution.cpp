@@ -54,14 +54,37 @@
 #define NINF 0xc0c0c0c0                        // 无穷小
 #define randd(a, b) (rand() % (b - a + 1) + a) // [a, b]
 
-template <typename T>
-bool chkMax(T &x, T y) { return (y > x) ? x = y, 1 : 0; }
+template <class T>
+inline void ckmin(T &a, T b) { a = min(a, b); }
+template <class T>
+inline void ckmax(T &a, T b) { a = max(a, b); }
+template <class T>
+void COPY(T a[], const T b[], int n) { memcpy(a, b, n * sizeof(T)); }
 
-template <typename T>
-bool chkMin(T &x, T y) { return (y < x) ? x = y, 1 : 0; }
+/* template <class T>
+inline void MEMSET(T a, int b) { memset(a, b, sizeof(a)); } */
 
-auto cmp = [](const pair<int, int> &a, const pair<int, int> &b)
-{ return a.second < b.second; };
+// auto cmpp = [](const pair<int, int> &a, const pair<int, int> &b)
+//{ return a.second < b.second; };
+
+using namespace std;
+
+// #define debug
+
+//@start——————————————————————————————————————————————————————————————————————
+
+
+class Solution {
+public:
+    vector<int> gardenNoAdj(int n, vector<vector<int>>& paths) {
+
+    }
+};
+
+
+
+
+//@end——————————————————————————————————————————————————————————————————————
 
 #ifdef debug
 struct ListNode
@@ -82,16 +105,3 @@ struct TreeNode
     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
 };
 #endif
-
-using namespace std;
-// #define debug
-
-//@start——————————————————————————————————————————————————————————————————————
-
-class Solution
-{
-public:
-    TreeNode *constructFromPrePost(vector<int> &preorder, vector<int> &postorder)
-    {
-    }
-};

@@ -1,0 +1,2 @@
+/mnt/d/project/kayleh/kuava/cmake-build-debug/CMakeFiles/edit_cache.dir
+/mnt/d/project/kayleh/kuava/cmake-build-debug/CMakeFiles/rebuild_cache.dir
