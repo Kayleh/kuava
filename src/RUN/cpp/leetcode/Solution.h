@@ -54,6 +54,9 @@ inline void ckmax(T &a, T b) { a = max(a, b); }
 template <class T>
 void COPY(T a[], const T b[], int n) { memcpy(a, b, n * sizeof(T)); }
 
+// 转二进制字符串
+template  <class T> string toBinary(T x){}
+
 /* template <class T>
 inline void MEMSET(T a, int b) { memset(a, b, sizeof(a)); } */
 
@@ -62,17 +65,22 @@ inline void MEMSET(T a, int b) { memset(a, b, sizeof(a)); } */
 
 using namespace std;
 
-// #define debug
-
 //@start——————————————————————————————————————————————————————————————————————
 
 class Solution
 {
 public:
-    bool doesValidArrayExist(vector<int> &derived)
+    vector<int> circularPermutation(int n, int start)
     {
-        return true;
+        vector<int> res;
+        for (int i = 0; i < (1 << n); i++)
+        {
+            int j = start ^ (i ^ (i >> 1));
+            res.push_back(j);
+            string s = toBinary(j);
+            cout << s << endl;
+        }
+        return res;
     }
 };
-
 //@end——————————————————————————————————————————————————————————————————————
