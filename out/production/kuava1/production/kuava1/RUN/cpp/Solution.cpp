@@ -42,8 +42,6 @@
 #define bitcount(a) __builtin_popcount(a)                 // 二进制中1的个数
 #define lcm(a, b) (a * b / gcd(a, b))                     // 最小公倍数
 #define max(a, b) (a > b ? a : b)                         // 最大值
-#define min(a, b) (a < b ? a : b)                         // 最小值
-#define abs(a) (a > 0 ? a : -a)                           // 绝对值
 #define swapp(a, b) (a ^= b; b ^= a; a ^= b)              // 交换
 #define forin(item, arr) for (auto item : arr)            // 遍历
 #define rep(i, from, to) for (int i = from; i <= to; i++) // 递增
@@ -90,51 +88,10 @@ using namespace std;
 
 //@start——————————————————————————————————————————————————————————————————————
 
-const int N = 2010; // 最大点数
-
 class Solution
 {
 public:
-    struct Edge
+    TreeNode *constructFromPrePost(vector<int> &preorder, vector<int> &postorder)
     {
-        int to, next;
-    } edge[N * N];
-    int head[N], color[N];
-    int cnt = 0;
-    void add(int u, int v)
-    {
-        edge[cnt].to = v;
-        edge[cnt].next = head[u];
-        head[u] = cnt++;
-    }
-    bool dfs(int u, int c)
-    {
-        color[u] = c;
-        for (int i = head[u]; i != -1; i = edge[i].next)
-        {
-            int v = edge[i].to;
-            if (color[v] == c) // 如果相邻的两个点颜色相同，说明不是二分图
-                return false;
-            if (color[v] == 0 && !dfs(v, -c)) // 如果相邻的两个点颜色不同，继续dfs ,如果dfs返回false，说明不是二分图
-                return false;
-        }
-        return true;
-    }
-    bool possibleBipartition(int n, vector<vector<int>> &dislikes)
-    {
-
-        for (int i = 0; i < n; i++)
-            head[i] = -1; // 初始化邻接表
-        for (auto dislike : dislikes)
-        {
-            int u = dislike[0] - 1, v = dislike[1] - 1;
-            add(u, v);
-            add(v, u);
-        }
-
-        for (int i = 0; i < n; i++)
-            if (color[i] == 0 && !dfs(i, 1)) // 如果当前点没有被染色，就从当前点开始dfs
-                return false;
-        return true;
     }
 };
