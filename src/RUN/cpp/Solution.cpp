@@ -92,28 +92,15 @@ using namespace std;
 class Solution
 {
 public:
-    int maxSubarraySumCircular(vector<int> &nums)
+    int numTilePossibilities(string tiles)
     {
-        // 有两种情况
-        // 1. 最大子数组和不跨越数组首尾，那么就是普通的动态规划求最大子数组和
-        // 2. 最大子数组和跨越数组首尾，一部分在数组首，一部分在数组尾。 由于在不同的位置，所以求最大子数组和不方便，但是可以求最小子数组和
-        // 此时，最小子数组和一定在中间，所以最大子数组和 = 总和 - 最小子数组和
 
-        // 环形数组的最大子数组和 = max(总和 - 最小子数组和, 最大子数组和)
-        int n = nums.size();
-        int maxSum = nums[0], minSum = nums[0]; // 最大值和最小值
-        int curMax = 0, curMin = 0;             // 当前最大值和最小值
-        int total = 0;                          // 总和
-        for (int i = 0; i < n; i++)
-        {
-            curMax = max(curMax + nums[i], nums[i]); // 当前最大值
-            maxSum = max(maxSum, curMax);            // 最大值
-            curMin = min(curMin + nums[i], nums[i]); // 当前最小值
-            minSum = min(minSum, curMin);            // 最小值
-            total += nums[i];                        // 总和
-        }
+        // 回溯
+        int ans = 0;
+        vector<int> vis(tiles.size(), 0);
+        sort(tiles.begin(), tiles.end());
 
-        // 如果最大的子数组和小于0，说明数组中的元素都是负数，那么最大子数组和就是最大的元素
-        return maxSum > 0 ? max(maxSum, total - minSum) : maxSum;
+        dfs(tiles, vis, ans, "");
+        return ans;
     }
 };
