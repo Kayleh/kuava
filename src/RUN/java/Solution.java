@@ -1,34 +1,27 @@
-import java.util.Arrays;
-
 /**
- * 远征队在出发前需要携带一些「符文」，作为后续的冒险储备。runes[i] 表示第 i 枚符文的魔力值。
+ * 给你一个下标从 0 开始长度为 n 的整数数组 nums 和一个整数 k 。每一次操作中，你可以选择一个数并将它乘 2 。
  * <p>
- * 他们将从中选取若干符文进行携带，并对这些符文进行重新排列，以确保任意相邻的两块符文之间的魔力值相差不超过 1。
+ * 你最多可以进行 k 次操作，请你返回 nums[0] | nums[1] | ... | nums[n - 1] 的最大值。
  * <p>
- * 请返回他们能够携带的符文 最大数量。
+ * a | b 表示两个整数 a 和 b 的 按位或 运算。
  */
 class Solution {
-    public int runeReserve(int[] runes) {
-        Arrays.sort(runes);
-        int max = 0;    // 最大符文数量
-        int cur = 0; // 当前符文数量
-        int l = 0, r = 0;
-        // 滑动窗口
-        while (r < runes.length) {
-            if (runes[r] - runes[l] <= 1) {
-                cur++;
-                max = Math.max(max, cur);
-                r++;
-            } else {
-                cur--;
-                l++;
-                if (cur < 0) {
-                    cur = 0;
-                    l = r; // 重置窗口
-                }
-
-            }
+    public long maximumOr(int[] nums, int k) {
+        int m = nums.length;
+        long yes = (long) (Math.pow(2, k) * nums[0]), no = nums[0];
+        for (int i = 1; i < m; i++) {
+            // 1. yes | nums[i] 已经包含了 nums[i] 乘 2 的情况下
+            // 2. no | (long) (Math.pow(2, k) * nums[i]) 包含了 nums[i] 乘 2 的情况下
+            yes = Math.max(yes | nums[i], no | (long) (Math.pow(2, k) * nums[i]));
+             no |= nums[i];
         }
-        return max;
+        return yes;
+    }
+
+    public static void main(String[] args) {
+        int[] nums = {12, 9};
+        int k = 1;
+        Solution solution = new Solution();
+        System.out.println(solution.maximumOr(nums, k));
     }
 }
