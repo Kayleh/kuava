@@ -55,7 +55,7 @@ template <class T>
 void COPY(T a[], const T b[], int n) { memcpy(a, b, n * sizeof(T)); }
 
 // 转二进制字符串
-template  <class T> string toBinary(T x){}
+#define toBinary(x) bitset<8 * sizeof(x)>((x)).to_string()
 
 /* template <class T>
 inline void MEMSET(T a, int b) { memset(a, b, sizeof(a)); } */
