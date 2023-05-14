@@ -21,7 +21,6 @@
 @Date: 2020/6/14 19:34
 */
 
-// #include "Solution.h"
 #include <bits/stdc++.h>
 #include <algorithm>
 #include <numeric>
@@ -29,13 +28,7 @@
 #include <stack>
 #include <unordered_map>
 #include <climits>
-// #include <cassert>
 #include <unordered_set>
-
-#ifdef kOS
-#define INPUT_FILE "C:/input.txt"
-#define OUTPUT_FILE "C:/output.txt"
-#endif
 
 #define PI 3.14159265358979323846
 #define gcd(a, b) __gcd(a, b)             // 最大公约数
@@ -53,37 +46,22 @@
 #define INF 0x3f3f3f3f                         // 无穷大
 #define NINF 0xc0c0c0c0                        // 无穷小
 #define randd(a, b) (rand() % (b - a + 1) + a) // [a, b]
+#define POW(a, b) (int)pow(a, b)
+template <class T>
+inline void ckmin(T &a, T b) { a = min(a, b); }
+template <class T>
+inline void ckmax(T &a, T b) { a = max(a, b); }
+template <class T>
+void COPY(T a[], const T b[], int n) { memcpy(a, b, n * sizeof(T)); }
 
-template <typename T>
-bool chkMax(T &x, T y) { return (y > x) ? x = y, 1 : 0; }
+// 转二进制字符串
+template  <class T> string toBinary(T x){}
 
-template <typename T>
-bool chkMin(T &x, T y) { return (y < x) ? x = y, 1 : 0; }
+/* template <class T>
+inline void MEMSET(T a, int b) { memset(a, b, sizeof(a)); } */
 
-auto cmp = [](const pair<int, int> &a, const pair<int, int> &b)
-{ return a.second < b.second; };
-
-// #define debug
-
-#ifdef debug
-struct ListNode
-{
-    int val;
-    ListNode *next;
-    ListNode() : val(0), next(nullptr) {}
-    ListNode(int x) : val(x), next(nullptr) {}
-    ListNode(int x, ListNode *next) : val(x), next(next) {}
-};
-struct TreeNode
-{
-    int val;
-    TreeNode *left;
-    TreeNode *right;
-    TreeNode() : val(0), left(nullptr), right(nullptr) {}
-    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
-    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
-};
-#endif
+// auto cmpp = [](const pair<int, int> &a, const pair<int, int> &b)
+//{ return a.second < b.second; };
 
 using namespace std;
 
@@ -92,15 +70,17 @@ using namespace std;
 class Solution
 {
 public:
-    int numTilePossibilities(string tiles)
+    vector<int> circularPermutation(int n, int start)
     {
-
-        // 回溯
-        int ans = 0;
-        vector<int> vis(tiles.size(), 0);
-        sort(tiles.begin(), tiles.end());
-
-        dfs(tiles, vis, ans, "");
-        return ans;
+        vector<int> res;
+        for (int i = 0; i < (1 << n); i++)
+        {
+            int j = start ^ (i ^ (i >> 1));
+            res.push_back(j);
+            string s = toBinary(j);
+            cout << s << endl;
+        }
+        return res;
     }
 };
+//@end——————————————————————————————————————————————————————————————————————
