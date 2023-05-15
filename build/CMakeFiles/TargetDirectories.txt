@@ -1,2 +1,0 @@
-/mnt/d/project/kayleh/kuava/build/CMakeFiles/edit_cache.dir
-/mnt/d/project/kayleh/kuava/build/CMakeFiles/rebuild_cache.dir
