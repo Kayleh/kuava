@@ -1,7 +1,0 @@
-[
-{
-  "directory": "/mnt/d/project/kayleh/kuava/build",
-  "command": "/usr/bin/g++   -g -o CMakeFiles/kuava.dir/src/RUN/cpp/main.cpp.o -c /mnt/d/project/kayleh/kuava/src/RUN/cpp/main.cpp",
-  "file": "/mnt/d/project/kayleh/kuava/src/RUN/cpp/main.cpp"
-}
-]
