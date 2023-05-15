@@ -66,21 +66,12 @@ inline void MEMSET(T a, int b) { memset(a, b, sizeof(a)); } */
 using namespace std;
 
 //@start——————————————————————————————————————————————————————————————————————
-
 class Solution
 {
 public:
-    vector<int> circularPermutation(int n, int start)
+    ListNode *removeZeroSumSublists(ListNode *head)
     {
-        vector<int> res;
-        for (int i = 0; i < (1 << n); i++)
-        {
-            int j = start ^ (i ^ (i >> 1));
-            res.push_back(j);
-            string s = toBinary(j);
-            cout << s << endl;
         }
-        return res;
-    }
 };
+
 //@end——————————————————————————————————————————————————————————————————————

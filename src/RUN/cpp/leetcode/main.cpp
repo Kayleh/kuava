@@ -7,7 +7,7 @@ using namespace std;
 int main()
 {
     REGISTER_CONSTRUCTOR_SOLUTION;
-    REGISTER_MEMBERFUNCTION_SOLUTION(circularPermutation);
+    REGISTER_MEMBERFUNCTION_SOLUTION(maxEqualRowsAfterFlips);
     while (true)
     {
         executor.constructSolution();
