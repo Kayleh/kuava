@@ -1,1 +1,0 @@
-/usr/bin/c++ -g -rdynamic CMakeFiles/kuava.dir/src/RUN/cpp/main.cpp.o -o kuava 
