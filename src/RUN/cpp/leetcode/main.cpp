@@ -8,6 +8,7 @@ using namespace std;
 int main()
 {
     REGISTER_CONSTRUCTOR_SOLUTION;
+    REGISTER_MEMBERFUNCTION_SOLUTION(maxEqualRowsAfterFlips);
     REGISTER_MEMBERFUNCTION_SOLUTION(nextGreaterElements);
     while (true)
     {
