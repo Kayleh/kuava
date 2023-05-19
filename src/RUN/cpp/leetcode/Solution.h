@@ -21,7 +21,6 @@
 @Date: 2020/6/14 19:34
 */
 
-#include <bits/stdc++.h>
 #include <algorithm>
 #include <numeric>
 #include <queue>
@@ -62,25 +61,33 @@ inline void MEMSET(T a, int b) { memset(a, b, sizeof(a)); } */
 
 // auto cmpp = [](const pair<int, int> &a, const pair<int, int> &b)
 //{ return a.second < b.second; };
-
 using namespace std;
+#include <bits/stdc++.h>
 
 //@start——————————————————————————————————————————————————————————————————————
+#include "lib/testIO.h"
 
 class Solution
 {
 public:
-    vector<int> circularPermutation(int n, int start)
+    // 下一个更大元素 的下标，循环数组
+    vector<int> nextGreaterElements(vector<int> &nums)
     {
-        vector<int> res;
-        for (int i = 0; i < (1 << n); i++)
+        int n = nums.size();
+        vector<int> ans(nums);
+        stack<int> st;
+        for (int i = 0; i < n; i++)
         {
-            int j = start ^ (i ^ (i >> 1));
-            res.push_back(j);
-            string s = toBinary(j);
-            cout << s << endl;
+            int num = nums[i];
+            while (!st.empty() && num > nums[st.top()])
+            {
+                int index = st.top();
+                ans[index] = i;
+                st.pop();
+            }
+            st.push(i);
         }
-        return res;
+        return ans;
     }
 };
 //@end——————————————————————————————————————————————————————————————————————
