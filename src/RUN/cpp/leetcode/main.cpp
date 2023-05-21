@@ -8,7 +8,7 @@ using namespace std;
 int main()
 {
     REGISTER_CONSTRUCTOR_SOLUTION;
-    REGISTER_MEMBERFUNCTION_SOLUTION(maxSumDivThree);
+    REGISTER_MEMBERFUNCTION_SOLUTION(accountsMerge);
     while (true)
     {
         executor.constructSolution();

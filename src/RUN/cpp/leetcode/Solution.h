@@ -66,47 +66,92 @@ using namespace std;
 
 //@start——————————————————————————————————————————————————————————————————————
 
+class UnionFind
+{
+public:
+  vector<int> parent;
+
+  UnionFind(int n)
+  {
+    parent.resize(n);
+    for (int i = 0; i < n; i++)
+    {
+      parent[i] = i;
+    }
+  }
+
+  void unionSet(int index1, int index2)
+  {
+    parent[find(index2)] = find(index1);
+  }
+
+  int find(int index)
+  {
+    if (parent[index] != index)
+    {
+      parent[index] = find(parent[index]);
+    }
+    return parent[index];
+  }
+};
+
 class Solution
 {
 public:
-  /**
-   * 如果字符串中的所有字符都相同，那么这个字符串是单字符重复的字符串。
-   * 给你一个字符串 text，你只能交换其中两个字符一次或者什么都不做，然后得到一些单字符重复的子串。返回其中最长的子串的长度。
-   */
-  int maxRepOpt1(string text)
+  vector<vector<string>> accountsMerge(vector<vector<string>> &accounts)
   {
-    int n = text.size();
-    int l = 0, r = 0;
-    int ans = 0;    // 最大长度
-    int cnt = 0;    // 当前长度
-    int pre = 0;    // 上一个字符
-    int preCnt = 0; // 上一个字符的个数
-    int curCnt = 0; // 当前字符的个数
-    while (r < n)
+    map<string, int> emailToIndex;
+    map<string, string> emailToName;
+    int emailsCount = 0;
+    for (auto &account : accounts)
     {
-      if (text[r] == text[l])
+      string &name = account[0];
+      int size = account.size();
+      for (int i = 1; i < size; i++)
       {
-        curCnt++;
-        r++;
-      }
-      else
-      {
-        if (pre == text[l])
+        string &email = account[i];
+        if (!emailToIndex.count(email))
         {
-          preCnt = curCnt;
+          emailToIndex[email] = emailsCount++;
+          emailToName[email] = name;
         }
-        else
-        {
-          preCnt = 0;
-        }
-        pre = text[l];
-        curCnt = 0;
-        l = r;
       }
-      cnt = preCnt + curCnt;
-      ans = max(ans, cnt);
     }
-    return ans;
+    UnionFind uf(emailsCount);
+    for (auto &account : accounts)
+    {
+      string &firstEmail = account[1];
+      int firstIndex = emailToIndex[firstEmail];
+      int size = account.size();
+      for (int i = 2; i < size; i++)
+      {
+        string &nextEmail = account[i];
+        int nextIndex = emailToIndex[nextEmail];
+        uf.unionSet(firstIndex, nextIndex);
+      }
+    }
+    map<int, vector<string>> indexToEmails;
+    for (auto &[email, _] : emailToIndex)
+    {
+      int index = uf.find(emailToIndex[email]);
+      vector<string> &account = indexToEmails[index];
+      account.emplace_back(email);
+      indexToEmails[index] = account;
+    }
+    vector<vector<string>> merged;
+    for (auto &[_, emails] : indexToEmails)
+    {
+      sort(emails.begin(), emails.end());
+      string &name = emailToName[emails[0]];
+      vector<string> account;
+      account.emplace_back(name);
+      for (auto &email : emails)
+      {
+        account.emplace_back(email);
+      }
+      merged.emplace_back(account);
+    }
+    return merged;
   }
 };
 
