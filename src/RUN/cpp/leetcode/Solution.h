@@ -66,12 +66,49 @@ inline void MEMSET(T a, int b) { memset(a, b, sizeof(a)); } */
 using namespace std;
 
 //@start——————————————————————————————————————————————————————————————————————
+
 class Solution
 {
 public:
-    ListNode *removeZeroSumSublists(ListNode *head)
+  /**
+   * 如果字符串中的所有字符都相同，那么这个字符串是单字符重复的字符串。
+   * 给你一个字符串 text，你只能交换其中两个字符一次或者什么都不做，然后得到一些单字符重复的子串。返回其中最长的子串的长度。
+   */
+  int maxRepOpt1(string text)
+  {
+    int n = text.size();
+    int l = 0, r = 0;
+    int ans = 0;    // 最大长度
+    int cnt = 0;    // 当前长度
+    int pre = 0;    // 上一个字符
+    int preCnt = 0; // 上一个字符的个数
+    int curCnt = 0; // 当前字符的个数
+    while (r < n)
     {
+      if (text[r] == text[l])
+      {
+        curCnt++;
+        r++;
+      }
+      else
+      {
+        if (pre == text[l])
+        {
+          preCnt = curCnt;
         }
+        else
+        {
+          preCnt = 0;
+        }
+        pre = text[l];
+        curCnt = 0;
+        l = r;
+      }
+      cnt = preCnt + curCnt;
+      ans = max(ans, cnt);
+    }
+    return ans;
+  }
 };
 
 //@end——————————————————————————————————————————————————————————————————————

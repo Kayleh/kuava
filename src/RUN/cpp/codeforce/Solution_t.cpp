@@ -63,6 +63,25 @@ void COPY(T a[], const T b[], int n) { memcpy(a, b, n * sizeof(T)); }
 void SET(int a[], int val, int n) { memset(a, val, n * sizeof(int)); }
 
 using namespace std;
+#ifdef debug
+struct ListNode
+{
+	int val;
+	ListNode *next;
+	ListNode() : val(0), next(nullptr) {}
+	ListNode(int x) : val(x), next(nullptr) {}
+	ListNode(int x, ListNode *next) : val(x), next(next) {}
+};
+struct TreeNode
+{
+	int val;
+	TreeNode *left;
+	TreeNode *right;
+	TreeNode() : val(0), left(nullptr), right(nullptr) {}
+	TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+	TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+};
+#endif
 
 //@start——————————————————————————————————————————————————————————————————————
 // #define debug
@@ -71,7 +90,7 @@ bool ok(int n, int m)
 {
 	if (n == m)
 	{
-		return true; 
+		return true;
 	}
 	else if (n % 3 != 0)
 	{
@@ -100,23 +119,3 @@ int main()
 		Solution();
 	}
 }
-
-#ifdef debug
-struct ListNode
-{
-	int val;
-	ListNode *next;
-	ListNode() : val(0), next(nullptr) {}
-	ListNode(int x) : val(x), next(nullptr) {}
-	ListNode(int x, ListNode *next) : val(x), next(next) {}
-};
-struct TreeNode
-{
-	int val;
-	TreeNode *left;
-	TreeNode *right;
-	TreeNode() : val(0), left(nullptr), right(nullptr) {}
-	TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
-	TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
-};
-#endif

@@ -19,3 +19,7 @@ foreach (file ${files})
     add_executable(${name} ${file})
 endforeach ()
 
+# 设置输出目录
+
+
+ 
