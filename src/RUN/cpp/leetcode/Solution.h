@@ -21,7 +21,6 @@
 @Date: 2020/6/14 19:34
 */
 
-#include <bits/stdc++.h>
 #include <algorithm>
 #include <numeric>
 #include <queue>
@@ -62,8 +61,8 @@ inline void MEMSET(T a, int b) { memset(a, b, sizeof(a)); } */
 
 // auto cmpp = [](const pair<int, int> &a, const pair<int, int> &b)
 //{ return a.second < b.second; };
-
 using namespace std;
+#include <bits/stdc++.h>
 
 //@start——————————————————————————————————————————————————————————————————————
 

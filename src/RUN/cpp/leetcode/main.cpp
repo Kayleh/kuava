@@ -1,6 +1,7 @@
+// #define debug
+
 #include "Solution.h"
 #include "lib/testIO.h"
-#define debug
 
 using namespace std;
 
