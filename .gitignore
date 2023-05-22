@@ -9,3 +9,8 @@
 /mybin/
 /.cph/
 /.cph/
+.gitignore
+src/RUN/cpp/leetcode/main
+src/template/单调栈/.cph/.singleStack.cpp_b2a7644dd17c126c807b53ca991bc851.prob
+src/RUN/cpp/leetcode/myBin/Solution
+src/RUN/cpp/leetcode/myBin/main
