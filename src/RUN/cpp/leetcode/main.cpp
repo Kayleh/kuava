@@ -8,7 +8,7 @@ using namespace std;
 int main()
 {
     REGISTER_CONSTRUCTOR_SOLUTION;
-    REGISTER_MEMBERFUNCTION_SOLUTION(nextGreaterElements);
+    REGISTER_MEMBERFUNCTION_SOLUTION(longestConsecutive);
     while (true)
     {
         executor.constructSolution();

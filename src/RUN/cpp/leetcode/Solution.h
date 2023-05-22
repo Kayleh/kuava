@@ -21,13 +21,7 @@
 @Date: 2020/6/14 19:34
 */
 
-#include <algorithm>
-#include <numeric>
-#include <queue>
-#include <stack>
-#include <unordered_map>
-#include <climits>
-#include <unordered_set>
+#include <bits/stdc++.h>
 
 #define PI 3.14159265358979323846
 #define gcd(a, b) __gcd(a, b)             // 最大公约数
@@ -67,114 +61,46 @@ using namespace std;
 
 //@start——————————————————————————————————————————————————————————————————————
 
-class UnionFind
+unordered_map<int, int> mp; // 并查集， 初始连通分量为元素本身
+int find(int num)
 {
-public:
-  vector<int> parent;
+  return mp[num] == num ? num : mp[num] = find(mp[num]);
+}
 
-  UnionFind(int n)
-  {
-    parent.resize(n);
-    for (int i = 0; i < n; i++)
-    {
-      parent[i] = i;
-    }
-  }
+void connect(int a, int b)
+{
+  if (mp.count(a) == 0 || mp.count(b) == 0)
+    return;
+  int fa = find(a), fb = find(b);
+  if (fa != fb)
+    mp[fa] = fb;
+}
 
-  void unionSet(int index1, int index2)
-  {
-    parent[find(index2)] = find(index1);
-  }
-
-  int find(int index)
-  {
-    if (parent[index] != index)
-    {
-      parent[index] = find(parent[index]);
-    }
-    return parent[index];
-  }
-};
-
-//@start——————————————————————————————————————————————————————————————————————
-
-/**
-给你一个正整数 n ，请你返回 n 的 惩罚数 。
-n 的 惩罚数 定义为所有满足以下条件 i 的数的平方和：
-
-    1 <= i <= n
-    i * i 的十进制表示的字符串可以分割成若干连续子字符串，且这些子字符串对应的整数值之和等于 i 。
-*/
 class Solution
 {
 public:
-    int punishmentNumber(int n)
-    {
-        
-  vector<vector<string>> accountsMerge(vector<vector<string>> &accounts)
+  int longestConsecutive(vector<int> &nums)
   {
-    map<string, int> emailToIndex;
-    map<string, string> emailToName;
-    int emailsCount = 0;
-    for (auto &account : accounts)
+    mp = unordered_map<int, int>();
+    int n = nums.size();
+    for (int i = 0; i < n; i++)
     {
-      string &name = account[0];
-      int size = account.size();
-      for (int i = 1; i < size; i++)
-      {
-        string &email = account[i];
-        if (!emailToIndex.count(email))
-        {
-          emailToIndex[email] = emailsCount++;
-          emailToName[email] = name;
-        }
-      }
+      mp[nums[i]] = nums[i];
     }
-    UnionFind uf(emailsCount);
-    for (auto &account : accounts)
+
+    for (auto &i : nums)
     {
-      string &firstEmail = account[1];
-      int firstIndex = emailToIndex[firstEmail];
-      int size = account.size();
-      for (int i = 2; i < size; i++)
-      {
-        string &nextEmail = account[i];
-        int nextIndex = emailToIndex[nextEmail];
-        uf.unionSet(firstIndex, nextIndex);
-      }
+      connect(i, i + 1);
     }
-    map<int, vector<string>> indexToEmails;
-    for (auto &[email, _] : emailToIndex)
+
+    // 找出最长的连通分量
+    int ans = 0;
+    for (int num : nums)
     {
-      int index = uf.find(emailToIndex[email]);
-      vector<string> &account = indexToEmails[index];
-      account.emplace_back(email);
-      indexToEmails[index] = account;
+      ans = max(ans, find(num) - num + 1); // find(num) - num + 1 为连通分量的长度
     }
-    vector<vector<string>> merged;
-    for (auto &[_, emails] : indexToEmails)
-    {
-      sort(emails.begin(), emails.end());
-      string &name = emailToName[emails[0]];
-      vector<string> account;
-      account.emplace_back(name);
-      for (auto &email : emails)
-      {
-        account.emplace_back(email);
-      }
-      merged.emplace_back(account);
-    }
-    return merged;
+    return ans;
   }
-        
-    }
 };
 
-
-
-
-
-
-
-//@end——————————————————————————————————————————————————————————————————————
 //@end——————————————————————————————————————————————————————————————————————

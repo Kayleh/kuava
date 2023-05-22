@@ -83,3 +83,20 @@ int main()
     }
     return 0;
 }
+
+
+// -----------------------------------------------------------------使用map实现------------------------------------------------------
+unordered_map<int, int> mp; // 并查集， 初始连通分量为元素本身
+int find(int num)
+{
+    return mp[num] == num ? num : mp[num] = find(mp[num]);
+}
+
+void connect(int a, int b)
+{
+    if (mp.count(a) == 0 || mp.count(b) == 0) 
+        return;
+    int fa = find(a), fb = find(b);
+    if (fa != fb)
+        mp[fa] = fb;
+}
