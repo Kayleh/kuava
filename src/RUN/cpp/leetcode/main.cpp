@@ -1,4 +1,4 @@
-//#define debug
+// #define debug
 
 #include "Solution.h"
 #include "lib/testIO.h"

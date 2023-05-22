@@ -24,7 +24,6 @@ void floyd()
         cin >> u >> v >> w;
         g[u][v] = w;
     }
-    // floyd
     for (int k = 0; k < n; k++)                            // 枚举中转点（表示从i经过k到j）
         for (int i = 0; i < n; i++)                        // 枚举起点
             for (int j = 0; j < n; j++)                    // 枚举终点

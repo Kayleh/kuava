@@ -77,6 +77,7 @@ bool ok(int n, int m)
 	if (n == m)
 	{
 		return true;
+		return true;
 	}
 	else if (n % 3 != 0)
 	{
