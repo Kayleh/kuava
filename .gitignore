@@ -6,3 +6,6 @@
 /build/
 /.vscode/
 /.cph/
+*.cph
+/myBin/
+/mybin/

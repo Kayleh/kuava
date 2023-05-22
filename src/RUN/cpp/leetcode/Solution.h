@@ -63,32 +63,27 @@ inline void MEMSET(T a, int b) { memset(a, b, sizeof(a)); } */
 //{ return a.second < b.second; };
 using namespace std;
 #include <bits/stdc++.h>
-
-//@start——————————————————————————————————————————————————————————————————————
 #include "lib/testIO.h"
 
+//@start——————————————————————————————————————————————————————————————————————
+
+/**
+给你一个正整数 n ，请你返回 n 的 惩罚数 。
+n 的 惩罚数 定义为所有满足以下条件 i 的数的平方和：
+
+    1 <= i <= n
+    i * i 的十进制表示的字符串可以分割成若干连续子字符串，且这些子字符串对应的整数值之和等于 i 。
+*/
 class Solution
 {
 public:
-    // 下一个更大元素 的下标，循环数组
-    vector<int> nextGreaterElements(vector<int> &nums)
+    int punishmentNumber(int n)
     {
-        int n = nums.size();
-        vector<int> ans(nums);
-        stack<int> st;
-        for (int i = 0; i < n; i++)
-        {
-            int num = nums[i];
-            while (!st.empty() && num > nums[st.top()])
-            {
-                int index = st.top();
-                ans[index] = i;
-                st.pop();
-            }
-            st.push(i);
-        }
-        return ans;
+        
     }
 };
+
+
+
 
 //@end——————————————————————————————————————————————————————————————————————
