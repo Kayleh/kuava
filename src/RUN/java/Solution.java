@@ -1,27 +1,30 @@
 /**
- * 给你一个下标从 0 开始长度为 n 的整数数组 nums 和一个整数 k 。每一次操作中，你可以选择一个数并将它乘 2 。
- * <p>
- * 你最多可以进行 k 次操作，请你返回 nums[0] | nums[1] | ... | nums[n - 1] 的最大值。
- * <p>
- * a | b 表示两个整数 a 和 b 的 按位或 运算。
+ 给你一个正整数 n ，请你返回 n 的 惩罚数 。
+
+ n 的 惩罚数 定义为所有满足以下条件 i 的数的平方和：
+
+ 1 <= i <= n
+ i * i 的十进制表示的字符串可以分割成若干连续子字符串，且这些子字符串对应的整数值之和等于 i 。
  */
 class Solution {
-    public long maximumOr(int[] nums, int k) {
-        int m = nums.length;
-        long yes = (long) (Math.pow(2, k) * nums[0]), no = nums[0];
-        for (int i = 1; i < m; i++) {
-            // 1. yes | nums[i] 已经包含了 nums[i] 乘 2 的情况下
-            // 2. no | (long) (Math.pow(2, k) * nums[i]) 包含了 nums[i] 乘 2 的情况下
-            yes = Math.max(yes | nums[i], no | (long) (Math.pow(2, k) * nums[i]));
-             no |= nums[i];
-        }
-        return yes;
-    }
+    public int punishmentNumber(int n) {
+        // 思路：dp[i] 表示 i 是否是惩罚数
 
-    public static void main(String[] args) {
-        int[] nums = {12, 9};
-        int k = 1;
-        Solution solution = new Solution();
-        System.out.println(solution.maximumOr(nums, k));
+        int[] dp = new int[n + 1];
+        dp[0] = 1;
+        int[] sum = new int[n + 1];
+        for (int i = 1; i <= n; i++) {
+            sum[i] = sum[i - 1] + i * i;
+            for (int j = 1; j <= i; j++) {
+                if (sum[i] - sum[j - 1] > i) {
+                    break;
+                }
+                if (dp[j - 1] == 1 && sum[i] - sum[j - 1] == i) {
+                    dp[i] = 1;
+                    break;
+                }
+            }
+        }
+        return dp[n];
     }
 }

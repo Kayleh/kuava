@@ -1,103 +1,86 @@
-/*
-    $ codeforce
-
-    Copyright 2022  Kayleh. All rights reserved.
-    @see {@link https://github.com/Kayleh/kuava}
-
-           ,-.                              ,--,                 ,---,
-       ,--/ /|                            ,--.'|               ,--.' |
-     ,--. :/ |                            |  | :               |  |  :
-     :  : ' /                             :  : '               :  :  :
-     |  '  /       ,--.--.          .--,  |  ' |       ,---.   :  |  |,--.
-     '  |  :      /       \       /_ ./|  '  | |      /     \  |  :  '   |
-     |  |   \    .--.  .-. |   , ' , ' :  |  | :     /    /  | |  |   /' :
-     '  : |. \    \__\/: . .  /___/ \: |  '  : |__  .    ' / | '  :  | | |
-     |  | ' \ \   ," .--.; |   .  \  ' |  |  | '.'| '   ;   /| |  |  ' | :
-     '  : |--'   /  /  ,.  |    \  ;   :  ;  :    ; '   |  / | |  :  :_:,'
-     ;  |,'     ;  :   .'   \    \  \  ;  |  ,   /  |   :    | |  | ,'
-     '--'       |  ,     .-./     :  \  \  ---`-'    \   \  /  `--''
-                 `--`---'          \  ' ;             `----'
-                                    `--`
-@Date: 2020/6/14 19:34
-*/
-
-// #include "Solution.h"
-#include <algorithm>
-#include <numeric>
-#include <queue>
-#include <stack>
-#include <unordered_map>
-#include <climits>
-// #include <cassert>
-#include <unordered_set>
-
-#ifdef kOS
-#define INPUT_FILE "C:/input.txt"
-#define OUTPUT_FILE "C:/output.txt"
-#endif
-
-#define PI 3.14159265358979323846
-#define gcd(a, b) __gcd(a, b)             // 最大公约数
-#define bitcount(a) __builtin_popcount(a) // 二进制中1的个数
-#define lcm(a, b) (a * b / gcd(a, b))     // 最小公倍数
-// #define max(a, b) (a > b ? a : b)                         // 最大值
-#define swapp(a, b) (a ^= b; b ^= a; a ^= b)              // 交换
-#define forin(item, arr) for (auto item : arr)            // 遍历
-#define rep(i, from, to) for (int i = from; i <= to; i++) // 递增
-#define per(i, from, to) for (int i = from; i >= to; i--) // 递减
-#define ll long long
-#define ull unsigned long long
-#define changeCase(c) (c ^ (1 << 5))           // 大小写互换
-#define isLetter(c) (isalpha(c))               // 判断是否为字母
-#define INF 0x3f3f3f3f                         // 无穷大
-#define NINF 0xc0c0c0c0                        // 无穷小
-#define randd(a, b) (rand() % (b - a + 1) + a) // [a, b]
-
-template <typename T>
-bool chkMax(T &x, T y) { return (y > x) ? x = y, 1 : 0; }
-
-template <typename T>
-bool chkMin(T &x, T y) { return (y < x) ? x = y, 1 : 0; }
-
-/*auto cmp = [](const pair<int, int> &a, const pair<int, int> &b)
-{ return a.second < b.second; };*/
-
-// #define debug
-
-#ifdef debug
-struct ListNode
-{
-    int val;
-    ListNode *next;
-    ListNode() : val(0), next(nullptr) {}
-    ListNode(int x) : val(x), next(nullptr) {}
-    ListNode(int x, ListNode *next) : val(x), next(next) {}
-};
-struct TreeNode
-{
-    int val;
-    TreeNode *left;
-    TreeNode *right;
-    TreeNode() : val(0), left(nullptr), right(nullptr) {}
-    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
-    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
-};
-#endif
-
-using namespace std;
 #include <bits/stdc++.h>
 
-//@start——————————————————————————————————————————————————————————————————————
+#define all(x) (x).begin(), (x).end()
+#define ll long long
+using namespace std;
 
-int main()
+class Solution
 {
-    int a, b, c;
-    cin >> a;
+public:
+    int divide(int a, int b)
+    {
 
-    cin >> b >> c;
-    int ans = a + b + c;
-    string s;
-    cin >> s;
-    cout << ans << " " << s << endl;
-    return 0;
-}
+        // 不使用乘法、除法和 mod 运算符
+
+        // 1. 除数为 0
+        if (b == 0)
+            return INT_MAX;
+
+        // 2. 被除数为 0
+        if (a == 0)
+            return 0;
+
+        // 3. 被除数为 INT_MIN
+        if (a == INT_MIN)
+        {
+            if (b == 1)
+                return INT_MIN;
+            if (b == -1)
+                return INT_MAX;
+        }
+
+        // 4. 除数为 INT_MIN
+        if (b == INT_MIN)
+        {
+            if (a == INT_MIN)
+                return 1;
+            else
+                return 0;
+        }
+
+        // 5. 被除数为负数
+        bool isNeg = false;
+        if (a < 0)
+        {
+            isNeg = !isNeg;
+            a = -a;
+        }
+
+        // 6. 除数为负数
+        if (b < 0)
+        {
+            isNeg = !isNeg;
+            b = -b;
+        }
+
+        // 7. 被除数小于除数
+        if (a < b)
+            return 0;
+
+        // 8. 被除数等于除数
+        if (a == b)
+            return isNeg ? -1 : 1;
+
+        // 9. 被除数大于除数
+        // Q:下面这个循环是什么意思？
+        // A:被除数减去除数，直到被除数小于除数，这个过程中，被除数减去的次数就是商
+        // 其中c，d有什么用？
+        // c是除数的倍数，d是倍数的个数
+        // 为什么c和d要左移？
+        
+        int ans = 0; 
+        while (a >= b) 
+        {
+            int c = b; 
+            int d = 1;
+            while (a >= c)
+            {
+                a -= c;
+                ans += d;  
+                c <<= 1;  
+                d <<= 1;
+            }
+        }
+        return isNeg ? -ans : ans;
+    }
+};
