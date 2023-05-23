@@ -55,52 +55,61 @@ inline void MEMSET(T a, int b) { memset(a, b, sizeof(a)); } */
 
 // auto cmpp = [](const pair<int, int> &a, const pair<int, int> &b)
 //{ return a.second < b.second; };
+
 using namespace std;
 #include <bits/stdc++.h>
 #include "lib/testIO.h"
 
 //@start——————————————————————————————————————————————————————————————————————
 
-unordered_map<int, int> mp; // 并查集， 初始连通分量为元素本身
-int find(int num)
-{
-  return mp[num] == num ? num : mp[num] = find(mp[num]);
-}
-
-void connect(int a, int b)
-{
-  if (mp.count(a) == 0 || mp.count(b) == 0)
-    return;
-  int fa = find(a), fb = find(b);
-  if (fa != fb)
-    mp[fa] = fb;
-}
-
 class Solution
 {
 public:
-  int longestConsecutive(vector<int> &nums)
+  bool isBipartite(vector<vector<int>> &graph)
   {
-    mp = unordered_map<int, int>();
-    int n = nums.size();
-    for (int i = 0; i < n; i++)
-    {
-      mp[nums[i]] = nums[i];
-    }
 
-    for (auto &i : nums)
-    {
-      connect(i, i + 1);
-    }
+    int N = graph.size();     // 顶点数
+    vector<int> colors(N, 0); // 未染色为0，染色为1，染色为2
 
-    // 找出最长的连通分量
-    int ans = 0;
-    for (int num : nums)
+    /**
+     * @brief 深度优先搜索，将当前顶点染成color，将与当前顶点相邻的顶点染成-color。这样就可以保证相邻的顶点颜色不同。如果相邻的顶点都不同，说明是二分图。
+     * @param cur 当前顶点
+     * @param color 当前顶点需要染的颜色
+     */
+    function<bool(int, int)> dfs = [&](int cur, int color) -> bool
     {
-      ans = max(ans, find(num) - num + 1); // find(num) - num + 1 为连通分量的长度
+      if (colors[cur] != 0)
+        return colors[cur] == color; // 已经染色，判断是否为color
+      colors[cur] = color;           // 染色
+
+      vector<int> edges = graph[cur];
+      for (int i = 0; i < edges.size(); i++)
+      {
+        if (!dfs(edges[i], -color))
+          return false;
+      }
+      return true;
+    };
+
+    // 因为可能存在多个连通分量，所以需要遍历每个顶点，从每个顶点开始染色
+    for (int i = 0; i < N; i++)
+    {
+      if (colors[i] == 0 && !dfs(i, 1))
+        return false;
     }
-    return ans;
+    return true;
   }
 };
 
 //@end——————————————————————————————————————————————————————————————————————
+
+int main()
+{
+  REGISTER_CONSTRUCTOR_SOLUTION;
+  REGISTER_MEMBERFUNCTION_SOLUTION(isBipartite);
+  while (true)
+  {
+    executor.constructSolution();
+    executor.executeSolution();
+  }
+}
