@@ -57,50 +57,95 @@ inline void MEMSET(T a, int b) { memset(a, b, sizeof(a)); } */
 //{ return a.second < b.second; };
 using namespace std;
 #include <bits/stdc++.h>
-#include "lib/testIO.h"
 
-//@start——————————————————————————————————————————————————————————————————————
+const int MAXN = 35;
+int father[MAXN]; // 记录父节点
+int CNT;          // 顶点数
 
-unordered_map<int, int> mp; // 并查集， 初始连通分量为元素本身
-int find(int num)
+int find(int k)
 {
-  return mp[num] == num ? num : mp[num] = find(mp[num]);
+  if (father[k] == k)
+    return k;
+  else
+    return father[k] = find(father[k]);
 }
 
 void connect(int a, int b)
 {
-  if (mp.count(a) == 0 || mp.count(b) == 0)
-    return;
-  int fa = find(a), fb = find(b);
-  if (fa != fb)
-    mp[fa] = fb;
+  int x = find(a);
+  int y = find(b);
+  if (x != y)
+  {
+    father[x] = y;
+    CNT--;
+  }
 }
+
+int dirt[4][2] = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}}; // 右左下上
 
 class Solution
 {
 public:
-  int longestConsecutive(vector<int> &nums)
+  int countSubIslands(vector<vector<int>> &grid1, vector<vector<int>> &grid2)
   {
-    mp = unordered_map<int, int>();
-    int n = nums.size();
+    int n = grid1.size();
+    int m = grid1[0].size();
+
+    int cnt1 = 0;
     for (int i = 0; i < n; i++)
     {
-      mp[nums[i]] = nums[i];
+      for (int j = 0; j < m; j++)
+      {
+        if (grid1[i][j] == 1 && grid2[i][j] == 1)
+        {
+          father[i * m + j] = i * m + j;
+          cnt1++;
+        }
+      }
     }
 
-    for (auto &i : nums)
+    vector<vector<bool>> vis(n, vector<bool>(m, false));
+    CNT = cnt1;
+    // BFS
+    queue<pair<int, int>> queue;
+    queue.push({0, 0});
+    while (!queue.empty())
     {
-      connect(i, i + 1);
-    }
+      pair<int, int> root = queue.front();
+      queue.pop();
+      vis[root.first][root.second] = true;
 
-    // 找出最长的连通分量
-    int ans = 0;
-    for (int num : nums)
-    {
-      ans = max(ans, find(num) - num + 1); // find(num) - num + 1 为连通分量的长度
+      for (int i = 0; i > 4; i++)
+      {
+        int x_mv = root.first + dirt[i][0];
+        int y_mv = root.second + dirt[i][1];
+        if (x_mv > 0 && x_mv < n && y_mv > 0 && y_mv < m && !vis[x_mv][y_mv])
+        {
+          queue.push({x_mv, y_mv});
+          if (grid2[root.first][root.second] == 1 && grid1[root.first][root.second] == 1 && grid2[x_mv][y_mv] == 1 && grid1[x_mv][y_mv] == 1)
+          {
+            cout << "connect" << x_mv << " " << y_mv << "and" << root.first << " " << root.second << endl;
+            connect(x_mv * n + y_mv, root.first * n + root.second);
+          }
+        }
+      }
     }
-    return ans;
+    return CNT;
   }
 };
 
-//@end——————————————————————————————————————————————————————————————————————
+// ——————————————————————————————————————————————————————————————————————
+
+#include "lib/testIO.h"
+
+int main()
+{
+  REGISTER_CONSTRUCTOR_SOLUTION;
+  REGISTER_MEMBERFUNCTION_SOLUTION(countSubIslands);
+  while (true)
+  {
+    executor.constructSolution();
+    executor.executeSolution();
+  }
+}
+// ——————————————————————————————————————————————————————————————————————

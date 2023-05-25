@@ -87,7 +87,7 @@ void print()
     for (int i = 1; i <= n; i++)
     {
         cout << i << ": ";
-        for (int j = head[i]; ~j; j = edge[j].next)
+        for (int j = head[i]; ~j; j = edge[j].next) // ~j表示j!=-1
         {
             cout << "[" << edge[j].to << ", " << edge[j].w << "] ";
         }
