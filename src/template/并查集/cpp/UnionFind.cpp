@@ -20,7 +20,7 @@
 #define ll long long
 using namespace std;
 
-const int MAXN = 10010; // 顶点数
+const int MAXN = 1e5+5; // 顶点数
 
 // 记录父节点
 int father[MAXN];
