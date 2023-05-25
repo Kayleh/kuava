@@ -40,15 +40,14 @@
 #define NINF 0xc0c0c0c0                        // 无穷小
 #define randd(a, b) (rand() % (b - a + 1) + a) // [a, b]
 #define POW(a, b) (int)pow(a, b)
+#define toBinary(x) bitset<8 * sizeof(x)>((x)).to_string()
+
 template <class T>
 inline void ckmin(T &a, T b) { a = min(a, b); }
 template <class T>
 inline void ckmax(T &a, T b) { a = max(a, b); }
 template <class T>
 void COPY(T a[], const T b[], int n) { memcpy(a, b, n * sizeof(T)); }
-
-// 转二进制字符串
-#define toBinary(x) bitset<8 * sizeof(x)>((x)).to_string()
 
 /* template <class T>
 inline void MEMSET(T a, int b) { memset(a, b, sizeof(a)); } */
@@ -58,55 +57,75 @@ inline void MEMSET(T a, int b) { memset(a, b, sizeof(a)); } */
 
 using namespace std;
 #include <bits/stdc++.h>
-#include "lib/testIO.h"
 
 //@start——————————————————————————————————————————————————————————————————————
+
+const int N = 500 + 5;
+int head[N];
+int cnt; // 连通分量
+int find(int x)
+{
+  if (x == head[x])
+    return x;
+  return find(head[x]);
+}
+void connect(int a, int b)
+{
+  int fa = find(a);
+  int fb = find(b);
+  if (fa == fb)
+    return;
+  head[fa] = fb;
+  cnt--;
+}
+void init(int n)
+{
+  for (int i = 0; i < n; i++)
+    head[i] = i;
+}
 
 class Solution
 {
 public:
-  bool isBipartite(vector<vector<int>> &graph)
+  bool equationsPossible(vector<string> &eq)
   {
 
-    int N = graph.size();     // 顶点数
-    vector<int> colors(N, 0); // 未染色为0，染色为1，染色为2
+    init(26);
 
-    /**
-     * @brief 深度优先搜索，将当前顶点染成color，将与当前顶点相邻的顶点染成-color。这样就可以保证相邻的顶点颜色不同。如果相邻的顶点都不同，说明是二分图。
-     * @param cur 当前顶点
-     * @param color 当前顶点需要染的颜色
-     */
-    function<bool(int, int)> dfs = [&](int cur, int color) -> bool
+    vector<pair<int,int>> neq = {};
+
+    rep(i, 0, eq.size() - 1)
     {
-      if (colors[cur] != 0)
-        return colors[cur] == color; // 已经染色，判断是否为color
-      colors[cur] = color;           // 染色
 
-      vector<int> edges = graph[cur];
-      for (int i = 0; i < edges.size(); i++)
-      {
-        if (!dfs(edges[i], -color))
-          return false;
+      int a = eq[i][0] - 'a';
+      int b = eq[i][3] - 'a';
+      string op = eq[i].substr(1, 2);
+      if (op == "=="){
+        connect(a, b);
+      }else if (op == "!="){
+        neq.push_back({a,b});
       }
-      return true;
-    };
+    }
 
-    // 因为可能存在多个连通分量，所以需要遍历每个顶点，从每个顶点开始染色
-    for (int i = 0; i < N; i++)
-    {
-      if (colors[i] == 0 && !dfs(i, 1))
+    for(auto p:neq){
+      int a = p.first;
+      int b = p.second;
+      if (find(a) == find(b))
         return false;
     }
+
     return true;
   }
-};
+}
+;
 
 //@end——————————————————————————————————————————————————————————————————————
 
+#include "lib/testIO.h"
 int main()
 {
   REGISTER_CONSTRUCTOR_SOLUTION;
-  REGISTER_MEMBERFUNCTION_SOLUTION(isBipartite);
+  REGISTER_MEMBERFUNCTION_SOLUTION(equationsPossible);
   while (true)
   {
     executor.constructSolution();
