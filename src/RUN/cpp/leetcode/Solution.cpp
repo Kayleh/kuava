@@ -40,6 +40,8 @@
 #define NINF 0xc0c0c0c0                        // 无穷小
 #define randd(a, b) (rand() % (b - a + 1) + a) // [a, b]
 #define POW(a, b) (int)pow(a, b)
+#define toBinary(x) bitset<8 * sizeof(x)>((x)).to_string()
+
 template <class T>
 inline void ckmin(T &a, T b) { a = min(a, b); }
 template <class T>
@@ -47,14 +49,12 @@ inline void ckmax(T &a, T b) { a = max(a, b); }
 template <class T>
 void COPY(T a[], const T b[], int n) { memcpy(a, b, n * sizeof(T)); }
 
-// 转二进制字符串
-#define toBinary(x) bitset<8 * sizeof(x)>((x)).to_string()
-
 /* template <class T>
 inline void MEMSET(T a, int b) { memset(a, b, sizeof(a)); } */
 
 // auto cmpp = [](const pair<int, int> &a, const pair<int, int> &b)
 //{ return a.second < b.second; };
+
 using namespace std;
 #include <bits/stdc++.h>
 
@@ -62,23 +62,28 @@ const int MAXN = 35;
 int father[MAXN]; // 记录父节点
 int CNT;          // 顶点数
 
-int find(int k)
+const int N = 500 + 5;
+int head[N];
+int cnt; // 连通分量
+int find(int x)
 {
-  if (father[k] == k)
-    return k;
-  else
-    return father[k] = find(father[k]);
+  if (x == head[x])
+    return x;
+  return find(head[x]);
 }
-
 void connect(int a, int b)
 {
-  int x = find(a);
-  int y = find(b);
-  if (x != y)
-  {
-    father[x] = y;
-    CNT--;
-  }
+  int fa = find(a);
+  int fb = find(b);
+  if (fa == fb)
+    return;
+  head[fa] = fb;
+  cnt--;
+}
+void init(int n)
+{
+  for (int i = 0; i < n; i++)
+    head[i] = i;
 }
 
 int dirt[4][2] = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}}; // 右左下上
@@ -86,51 +91,38 @@ int dirt[4][2] = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}}; // 右左下上
 class Solution
 {
 public:
-  int countSubIslands(vector<vector<int>> &grid1, vector<vector<int>> &grid2)
+  bool equationsPossible(vector<string> &eq)
   {
-    int n = grid1.size();
-    int m = grid1[0].size();
 
-    int cnt1 = 0;
-    for (int i = 0; i < n; i++)
+    init(26);
+
+    vector<pair<int, int>> neq = {};
+
+    rep(i, 0, eq.size() - 1)
     {
-      for (int j = 0; j < m; j++)
+
+      int a = eq[i][0] - 'a';
+      int b = eq[i][3] - 'a';
+      string op = eq[i].substr(1, 2);
+      if (op == "==")
       {
-        if (grid1[i][j] == 1 && grid2[i][j] == 1)
-        {
-          father[i * m + j] = i * m + j;
-          cnt1++;
-        }
+        connect(a, b);
+      }
+      else if (op == "!=")
+      {
+        neq.push_back({a, b});
       }
     }
 
-    vector<vector<bool>> vis(n, vector<bool>(m, false));
-    CNT = cnt1;
-    // BFS
-    queue<pair<int, int>> queue;
-    queue.push({0, 0});
-    while (!queue.empty())
+    for (auto p : neq)
     {
-      pair<int, int> root = queue.front();
-      queue.pop();
-      vis[root.first][root.second] = true;
-
-      for (int i = 0; i > 4; i++)
-      {
-        int x_mv = root.first + dirt[i][0];
-        int y_mv = root.second + dirt[i][1];
-        if (x_mv > 0 && x_mv < n && y_mv > 0 && y_mv < m && !vis[x_mv][y_mv])
-        {
-          queue.push({x_mv, y_mv});
-          if (grid2[root.first][root.second] == 1 && grid1[root.first][root.second] == 1 && grid2[x_mv][y_mv] == 1 && grid1[x_mv][y_mv] == 1)
-          {
-            cout << "connect" << x_mv << " " << y_mv << "and" << root.first << " " << root.second << endl;
-            connect(x_mv * n + y_mv, root.first * n + root.second);
-          }
-        }
-      }
+      int a = p.first;
+      int b = p.second;
+      if (find(a) == find(b))
+        return false;
     }
-    return CNT;
+
+    return true;
   }
 };
 
@@ -138,14 +130,14 @@ public:
 
 #include "lib/testIO.h"
 
+#include "lib/testIO.h"
 int main()
 {
   REGISTER_CONSTRUCTOR_SOLUTION;
-  REGISTER_MEMBERFUNCTION_SOLUTION(countSubIslands);
+  REGISTER_MEMBERFUNCTION_SOLUTION(equationsPossible);
   while (true)
   {
     executor.constructSolution();
     executor.executeSolution();
   }
 }
-// ——————————————————————————————————————————————————————————————————————
