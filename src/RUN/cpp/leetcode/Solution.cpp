@@ -58,11 +58,80 @@ inline void MEMSET(T a, int b) { memset(a, b, sizeof(a)); } */
 using namespace std;
 #include <bits/stdc++.h>
 
+class DsuFind
+{
+private:
+  vector<int> father;
+  vector<int> rank;
+  int cnt = 0;
+
+public:
+  DsuFind(int n)
+  {
+    father.resize(n);
+    rank.resize(n);
+    cnt = n;
+    for (int i = 0; i < n; i++)
+    {
+      father[i] = i;
+      rank[i] = 1;
+    }
+  }
+
+  int find(int a)
+  {
+    while (father[a] != a)
+    {
+        father[a] = father[father[a]];
+        a = father[a];
+    }
+    return a;
+  }
+
+  int getCnt(){
+    return cnt;
+  }
+
+  void conntect(int a, int b)
+  {
+    int ra = find(a);
+    int rb = find(b);
+    if (ra == rb)
+      return;
+    int rka = rank[a];
+    int rkb = rank[b];
+    if (rka > rkb)
+    {
+      father[rb] = ra;
+      rank[ra] += rank[rb];
+    }
+    else
+    {
+      father[ra] = rb;
+      rank[rb] += rank[ra];
+    }
+    cnt--;
+  }
+};
+
 class Solution
 {
 public:
-  void solve(vector<vector<char>> &board)
+  int removeStones(vector<vector<int>> &stones)
   {
+    int n = stones.size();
+    DsuFind uf(n);
+    for (int i = 0; i < n; i++)
+    {
+      for (int j = i + 1; j < n; j++)
+      {
+        if (stones[i][0] == stones[j][0] || stones[i][1] == stones[j][1])
+        {
+          uf.conntect(i, j);
+        }
+      }
+    }
+    return n - uf.getCnt();
   }
 };
 
