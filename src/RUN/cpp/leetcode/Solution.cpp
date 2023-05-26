@@ -58,74 +58,21 @@ inline void MEMSET(T a, int b) { memset(a, b, sizeof(a)); } */
 using namespace std;
 #include <bits/stdc++.h>
 
-//@start——————————————————————————————————————————————————————————————————————
-
-const int N = 500 + 5;
-int head[N];
-int cnt; // 连通分量
-int find(int x)
-{
-  if (x == head[x])
-    return x;
-  return find(head[x]);
-}
-void connect(int a, int b)
-{
-  int fa = find(a);
-  int fb = find(b);
-  if (fa == fb)
-    return;
-  head[fa] = fb;
-  cnt--;
-}
-void init(int n)
-{
-  for (int i = 0; i < n; i++)
-    head[i] = i;
-}
-
 class Solution
 {
 public:
-  bool equationsPossible(vector<string> &eq)
+  void solve(vector<vector<char>> &board)
   {
-
-    init(26);
-
-    vector<pair<int,int>> neq = {};
-
-    rep(i, 0, eq.size() - 1)
-    {
-
-      int a = eq[i][0] - 'a';
-      int b = eq[i][3] - 'a';
-      string op = eq[i].substr(1, 2);
-      if (op == "=="){
-        connect(a, b);
-      }else if (op == "!="){
-        neq.push_back({a,b});
-      }
-    }
-
-    for(auto p:neq){
-      int a = p.first;
-      int b = p.second;
-      if (find(a) == find(b))
-        return false;
-    }
-
-    return true;
   }
-}
-;
+};
 
-//@end——————————————————————————————————————————————————————————————————————
-
+// ——————————————————————————————————————————————————————————————————————
 #include "lib/testIO.h"
+
 int main()
 {
   REGISTER_CONSTRUCTOR_SOLUTION;
-  REGISTER_MEMBERFUNCTION_SOLUTION(equationsPossible);
+  REGISTER_MEMBERFUNCTION_SOLUTION(solve);
   while (true)
   {
     executor.constructSolution();
