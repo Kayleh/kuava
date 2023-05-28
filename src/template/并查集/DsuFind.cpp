@@ -46,12 +46,13 @@ public:
     {
         count = n;
         parent.resize(n);
-        rank.resize(n);
-        for (int i = 0; i < n; i++)
+        rank.resize(n, 1);
+        iota(parent.begin(), parent.end(), 0);
+        /* for (int i = 0; i < n; i++)
         {
             parent[i] = i;
             rank[i] = 1;
-        }
+        } */
     }
 
     int find(int p)

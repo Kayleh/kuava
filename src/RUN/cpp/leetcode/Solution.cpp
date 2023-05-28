@@ -58,80 +58,72 @@ inline void MEMSET(T a, int b) { memset(a, b, sizeof(a)); } */
 using namespace std;
 #include <bits/stdc++.h>
 
-class DsuFind
+/**
+给你一个下标从 0 开始的整数数组 nums ，
+你可以在一些下标之间遍历。对于两个下标 i 和 j（i != j），当且仅当 gcd(nums[i], nums[j]) > 1 时，我们可以在两个下标之间通行，其中 gcd 是两个数的 最大公约数 。
+
+你需要判断 nums 数组中 任意 两个满足 i < j 的下标 i 和 j ，是否存在若干次通行可以从 i 遍历到 j 。
+
+如果任意满足条件的下标对都可以遍历，那么返回 true ，否则返回 false 。
+*/
+
+int fa[100005];
+int ranks[100005];
+int find(int x)
 {
-private:
-  vector<int> father;
-  vector<int> rank;
-  int cnt = 0;
-
-public:
-  DsuFind(int n)
+  return fa[x] == x ? x : fa[x] = find(fa[x]);
+}
+void merge(int x, int y)
+{
+  int fx = find(x), fy = find(y);
+  if (fx == fy)
+    return;
+  if (ranks[fx] < ranks[fy])
   {
-    father.resize(n);
-    rank.resize(n);
-    cnt = n;
-    for (int i = 0; i < n; i++)
-    {
-      father[i] = i;
-      rank[i] = 1;
-    }
+    swap(fx, fy);
   }
-
-  int find(int a)
-  {
-    while (father[a] != a)
-    {
-        father[a] = father[father[a]];
-        a = father[a];
-    }
-    return a;
-  }
-
-  int getCnt(){
-    return cnt;
-  }
-
-  void conntect(int a, int b)
-  {
-    int ra = find(a);
-    int rb = find(b);
-    if (ra == rb)
-      return;
-    int rka = rank[a];
-    int rkb = rank[b];
-    if (rka > rkb)
-    {
-      father[rb] = ra;
-      rank[ra] += rank[rb];
-    }
-    else
-    {
-      father[ra] = rb;
-      rank[rb] += rank[ra];
-    }
-    cnt--;
-  }
-};
-
+  fa[fy] = fx;
+  ranks[fx] += ranks[fy];
+}
 class Solution
 {
 public:
-  int removeStones(vector<vector<int>> &stones)
+  bool canTraverseAllPairs(vector<int> &nums)
   {
-    int n = stones.size();
-    DsuFind uf(n);
+    // 并查集
+    int n = nums.size();
+    iota(fa, fa + n, 0);
+    fill(ranks, ranks + n, 1);
+
+    vector<int> tmp;
     for (int i = 0; i < n; i++)
     {
-      for (int j = i + 1; j < n; j++)
+      // 把每个数和它的因子合并（因子是指能整除它的数）
+      for (int j = 2; j * j <= nums[i]; j++)
       {
-        if (stones[i][0] == stones[j][0] || stones[i][1] == stones[j][1])
+        if (nums[i] % j == 0)
         {
-          uf.conntect(i, j);
+          tmp.push_back(j);
+          tmp.push_back(nums[i] / j);
         }
       }
     }
-    return n - uf.getCnt();
+
+    // 把因子也加入并查集
+    for (int i = 0; i < tmp.size(); i++)
+    {
+      merge(tmp[i], tmp[0]);
+    }
+    
+
+    for (int i = 0; i < n; i++)
+    {
+      // 如果有两个数不在同一个集合，说明不能遍历
+      if (find(i) != find(0))
+        return false;
+    }
+
+    return true;
   }
 };
 
@@ -141,7 +133,7 @@ public:
 int main()
 {
   REGISTER_CONSTRUCTOR_SOLUTION;
-  REGISTER_MEMBERFUNCTION_SOLUTION(solve);
+  REGISTER_MEMBERFUNCTION_SOLUTION(canTraverseAllPairs);
   while (true)
   {
     executor.constructSolution();
