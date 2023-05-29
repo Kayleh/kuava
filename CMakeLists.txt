@@ -19,7 +19,7 @@ foreach (file ${files})
     add_executable(${name} ${file})
 endforeach ()
 
-# 设置输出目录
-
+# 设置输出目录为/mnt/d/project/kayleh/kuava/out/mybin
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "/mnt/d/project/kayleh/kuava/out/mybi")
 
  

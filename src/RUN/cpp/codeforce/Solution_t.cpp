@@ -31,12 +31,14 @@
 #define dep(i, from, to) for (int i = from; i >= to; i--)
 #define ll long long
 #define ull unsigned long long
+#define ld long double
 #define changeCase(c) (c ^ (1 << 5))		   // 大小写互换
 #define isLetter(c) (isalpha(c))			   // 判断是否为字母
 #define INF 0x3f3f3f3f						   // 无穷大
 #define NINF 0xc0c0c0c0						   // 无穷小
 #define randd(a, b) (rand() % (b - a + 1) + a) // [a, b]
 #define all(x) (x).begin(), (x).end()
+//__builtin_popcountll 用于计算一个数的二进制中1的个数
 #ifdef debug
 struct ListNode
 {

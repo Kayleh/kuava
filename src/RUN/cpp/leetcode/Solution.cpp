@@ -22,7 +22,6 @@
 */
 
 #include <bits/stdc++.h>
-
 #define PI 3.14159265358979323846
 #define gcd(a, b) __gcd(a, b)             // 最大公约数
 #define bitcount(a) __builtin_popcount(a) // 二进制中1的个数
@@ -58,82 +57,88 @@ inline void MEMSET(T a, int b) { memset(a, b, sizeof(a)); } */
 using namespace std;
 #include <bits/stdc++.h>
 
-/**
-给你一个下标从 0 开始的整数数组 nums ，
-你可以在一些下标之间遍历。对于两个下标 i 和 j（i != j），当且仅当 gcd(nums[i], nums[j]) > 1 时，我们可以在两个下标之间通行，其中 gcd 是两个数的 最大公约数 。
-
-你需要判断 nums 数组中 任意 两个满足 i < j 的下标 i 和 j ，是否存在若干次通行可以从 i 遍历到 j 。
-
-如果任意满足条件的下标对都可以遍历，那么返回 true ，否则返回 false 。
-*/
-
-int fa[100005];
-int ranks[100005];
-int find(int x)
-{
-  return fa[x] == x ? x : fa[x] = find(fa[x]);
-}
-void merge(int x, int y)
-{
-  int fx = find(x), fy = find(y);
-  if (fx == fy)
-    return;
-  if (ranks[fx] < ranks[fy])
-  {
-    swap(fx, fy);
-  }
-  fa[fy] = fx;
-  ranks[fx] += ranks[fy];
-}
 class Solution
 {
 public:
-  bool canTraverseAllPairs(vector<int> &nums)
+  int minimumCost(string s)
   {
-    // 并查集
-    int n = nums.size();
-    iota(fa, fa + n, 0);
-    fill(ranks, ranks + n, 1);
-
-    vector<int> tmp;
+    int n = s.size();
+    int ans = 0;
+    int cnt = 0;
     for (int i = 0; i < n; i++)
     {
-      // 把每个数和它的因子合并（因子是指能整除它的数）
-      for (int j = 2; j * j <= nums[i]; j++)
+      if (s[i] == '?')
+        cnt++;
+      else
       {
-        if (nums[i] % j == 0)
+        if (i > 0 && s[i - 1] == '?')
         {
-          tmp.push_back(j);
-          tmp.push_back(nums[i] / j);
+          if (s[i] == s[i - 1])
+            ans += 2;
+          else
+            ans += 1;
         }
       }
     }
-
-    // 把因子也加入并查集
-    for (int i = 0; i < tmp.size(); i++)
-    {
-      merge(tmp[i], tmp[0]);
-    }
-    
-
+    if (cnt == 0)
+      return ans;
+    if (cnt % 2 == 1)
+      return -1;
+    int l = 0, r = 0;
     for (int i = 0; i < n; i++)
     {
-      // 如果有两个数不在同一个集合，说明不能遍历
-      if (find(i) != find(0))
-        return false;
+      if (s[i] == '?')
+      {
+        if (i > 0 && s[i - 1] == '?')
+        {
+          if (l < r)
+          {
+            s[i] = ')';
+            r++;
+          }
+          else
+          {
+            s[i] = '(';
+            l++;
+          }
+        }
+        else
+        {
+          if (l < r)
+          {
+            s[i] = '(';
+            l++;
+          }
+          else
+          {
+            s[i] = ')';
+            r++;
+          }
+        }
+      }
     }
-
-    return true;
+    int cnt1 = 0;
+    for (int i = 0; i < n; i++)
+    {
+      if (s[i] == '(')
+        cnt1++;
+      else
+        cnt1--;
+      if (cnt1 < 0)
+        return -1;
+    }
+    return ans + cnt / 2 * 2;
   }
 };
 
 // ——————————————————————————————————————————————————————————————————————
+
 #include "lib/testIO.h"
 
 int main()
 {
   REGISTER_CONSTRUCTOR_SOLUTION;
-  REGISTER_MEMBERFUNCTION_SOLUTION(canTraverseAllPairs);
+  REGISTER_MEMBERFUNCTION_SOLUTION(minimumCost);
   while (true)
   {
     executor.constructSolution();
