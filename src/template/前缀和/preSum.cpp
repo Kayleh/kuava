@@ -3,40 +3,44 @@ using i64 = long long;
 
 /**
  * 一维前缀和
-*/
-void preSum1(std::vector<int> &nums)
+ */
+std::vector<int> preSum1d(std::vector<int> &nums)
 {
     int n = nums.size();
-    std::vector<int> sum(n, 0);
+    std::vector<int> sum(n + 1, 0);
     for (int i = 0; i < n; i++)
     {
-        if (i == 0)
-            sum[i] = nums[i];
-        else
-            sum[i] = nums[i] + sum[i - 1];
+        sum[i + 1] = sum[i] + nums[i];
     }
+    return sum;
 }
 
 /**
  * 二维前缀和
-*/
-void preSum2(std::vector<std::vector<int>> &nums)
+ */
+std::vector<std::vector<int>> preSum2d(std::vector<std::vector<int>> &nums)
 {
     int n = nums.size();
     int m = nums[0].size();
-    std::vector<std::vector<int>> sum(n, std::vector<int>(m, 0));
+    std::vector<std::vector<int>> sum(n + 1, std::vector<int>(m + 1, 0));
     for (int i = 0; i < n; i++)
     {
-        for (int j = 0; j < m; i++)
+        for (int j = 0; j < m; j++)
         {
-            if (i == 0 && j == 0)
-                sum[i][j] = nums[i][j];
-            else if (i == 0)
-                sum[i][j] = nums[i][j] + sum[i][j - 1];
-            else if (j == 0)
-                sum[i][j] = nums[i][j] + sum[i - 1][j];
-            else
-                sum[i][j] = nums[i][j] + sum[i - 1][j] + sum[i][j - 1] - sum[i - 1][j - 1];
+            sum[i + 1][j + 1] = sum[i + 1][j] + sum[i][j + 1] - sum[i][j] + nums[i][j];
         }
     }
+    return sum;
+}
+
+int get1dSum(std::vector<int> nums, int l, int r)
+{
+    std::vector<int> sum = preSum1d(nums); // 第
+    return sum[r + 1] - sum[l];
+}
+
+int get2dSum(std::vector<std::vector<int>> nums, int x1, int y1, int x2, int y2)
+{
+    std::vector<std::vector<int>> sum = preSum2d(nums);
+    return sum[x2 + 1][y2 + 1] - sum[x1][y2 + 1] - sum[x2 + 1][y1] + sum[x1][y1];
 }

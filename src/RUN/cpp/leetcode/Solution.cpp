@@ -40,7 +40,7 @@
 #define randd(a, b) (rand() % (b - a + 1) + a) // [a, b]
 #define POW(a, b) (int)pow(a, b)
 #define toBinary(x) bitset<8 * sizeof(x)>((x)).to_string()
-
+#define fio ios::base::sync_with_stdio(false);cin.tie(NULL);
 template <class T>
 inline void ckmin(T &a, T b) { a = min(a, b); }
 template <class T>
@@ -57,33 +57,33 @@ inline void MEMSET(T a, int b) { memset(a, b, sizeof(a)); } */
 using namespace std;
 #include <bits/stdc++.h>
 
-class NumMatrix
+class Solution
 {
-
-private:
-  vector<vector<int>> preSum; // 二维前缀和
-  int n, m;
-
 public:
-  NumMatrix(vector<vector<int>> &matrix)
+  vector<vector<int>> matrixBlockSum(vector<vector<int>> &mat, int k)
   {
-    preSum.resize(matrix.size() + 1, vector<int>(matrix[0].size() + 1, 0));
-    n = matrix.size();
-    m = matrix[0].size();
-    for (int i = 1; i <= n; i++)
+    int n = mat.size(), m = mat[0].size();
+    vector<vector<int>> preSum(n + 1, vector<int>(m + 1, 0));
+    for (int i = 0; i < n; i++)
     {
-      for (int j = 1; j <= m; j++)
+      for (int j = 0; j < m; j++)
       {
-        // 二维前缀和 = 上方 + 左方  + 当前 - 左上方（因为左上方被加了两次）
-        preSum[i][j] = preSum[i - 1][j] + preSum[i][j - 1] - preSum[i - 1][j - 1] + matrix[i - 1][j - 1];
+        preSum[i + 1][j + 1] = preSum[i + 1][j] + preSum[i][j + 1] - preSum[i][j] + mat[i][j];
       }
     }
-  }
 
-  int sumRegion(int row1, int col1, int row2, int col2)
-  {
-    // 求和 = 右下方 - 上方 - 左方 + 左上方 
-    return preSum[row2 + 1][col2 + 1] - preSum[row1][col2 + 1] - preSum[row2 + 1][col1] + preSum[row1][col1]; 
+    vector<vector<int>> ans(n, vector<int>(m, 0));
+    for (int r = 0; r < n; r++)
+    {
+      for (int c = 0; c < m; c++)
+      {
+        int r1 = max(0, r - k), c1 = max(0, c - k);
+        int r2 = min(n - 1, r + k), c2 = min(m - 1, c + k);
+        ans[r][c] = preSum[r2 + 1][c2 + 1] - preSum[r1][c2+1] - preSum[r2+1][c1] + preSum[r1][c1];
+      }
+    }
+
+    return ans;
   }
 };
 
@@ -94,7 +94,7 @@ public:
 int main()
 {
   REGISTER_CONSTRUCTOR_SOLUTION;
-  REGISTER_MEMBERFUNCTION_SOLUTION(minimumCost);
+  REGISTER_MEMBERFUNCTION_SOLUTION(matrixBlockSum);
   while (true)
   {
     executor.constructSolution();
