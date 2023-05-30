@@ -57,77 +57,33 @@ inline void MEMSET(T a, int b) { memset(a, b, sizeof(a)); } */
 using namespace std;
 #include <bits/stdc++.h>
 
-class Solution
+class NumMatrix
 {
+
+private:
+  vector<vector<int>> preSum; // 二维前缀和
+  int n, m;
+
 public:
-  int minimumCost(string s)
+  NumMatrix(vector<vector<int>> &matrix)
   {
-    int n = s.size();
-    int ans = 0;
-    int cnt = 0;
-    for (int i = 0; i < n; i++)
+    preSum.resize(matrix.size() + 1, vector<int>(matrix[0].size() + 1, 0));
+    n = matrix.size();
+    m = matrix[0].size();
+    for (int i = 1; i <= n; i++)
     {
-      if (s[i] == '?')
-        cnt++;
-      else
+      for (int j = 1; j <= m; j++)
       {
-        if (i > 0 && s[i - 1] == '?')
-        {
-          if (s[i] == s[i - 1])
-            ans += 2;
-          else
-            ans += 1;
-        }
+        // 二维前缀和 = 上方 + 左方  + 当前 - 左上方（因为左上方被加了两次）
+        preSum[i][j] = preSum[i - 1][j] + preSum[i][j - 1] - preSum[i - 1][j - 1] + matrix[i - 1][j - 1];
       }
     }
-    if (cnt == 0)
-      return ans;
-    if (cnt % 2 == 1)
-      return -1;
-    int l = 0, r = 0;
-    for (int i = 0; i < n; i++)
-    {
-      if (s[i] == '?')
-      {
-        if (i > 0 && s[i - 1] == '?')
-        {
-          if (l < r)
-          {
-            s[i] = ')';
-            r++;
-          }
-          else
-          {
-            s[i] = '(';
-            l++;
-          }
-        }
-        else
-        {
-          if (l < r)
-          {
-            s[i] = '(';
-            l++;
-          }
-          else
-          {
-            s[i] = ')';
-            r++;
-          }
-        }
-      }
-    }
-    int cnt1 = 0;
-    for (int i = 0; i < n; i++)
-    {
-      if (s[i] == '(')
-        cnt1++;
-      else
-        cnt1--;
-      if (cnt1 < 0)
-        return -1;
-    }
-    return ans + cnt / 2 * 2;
+  }
+
+  int sumRegion(int row1, int col1, int row2, int col2)
+  {
+    // 求和 = 右下方 - 上方 - 左方 + 左上方 
+    return preSum[row2 + 1][col2 + 1] - preSum[row1][col2 + 1] - preSum[row2 + 1][col1] + preSum[row1][col1]; 
   }
 };
 
