@@ -1,76 +1,97 @@
 using namespace std;
 #include <bits/stdc++.h>
-#define ull long long
+#define ll long long
+#define fio                      \
+    ios::sync_with_stdio(false); \
+    cin.tie(0);
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+struct Strawberry
+{
+    int x, y;
+};
+
+bool sortByX(const Strawberry &s1, const Strawberry &s2)
+{
+    if (s1.x == s2.x)
+        return s1.y < s2.y;
+    return s1.x < s2.x;
+}
 
 int main()
 {
-    // 给你一个正整数N,判断是否有一个小于或等于N的正整数,使得X 的二进制表示中的 1 的个数为 3，并找出满足条件的最大 X,如果不存在这样的 X,则输出 -1
+    int W, H, N;
+    cin >> W >> H >> N;
 
-    int T;
-    cin >> T;
-    for (int i = 0; i < T; ++i)
+    vector<Strawberry> strawberries(N);
+    for (int i = 0; i < N; i++)
+        cin >> strawberries[i].x >> strawberries[i].y;
+
+    sort(strawberries.begin(), strawberries.end(), sortByX);
+
+    int min_strawberries = N;
+    int max_strawberries = 0;
+
+    // Lines parallel to y-axis (x = a)
+    for (int a = 1; a < W; a++)
     {
-        ull s;
-        ull ans = 0;
-        cin >> s;
-        string N = bitset<64>(s).to_string();
-        int l = -1; // l为最高的1的位置
-        ull cutCnt = 0;
+        int left_count = 0;
+        int right_count = 0;
 
-        for (int j = 0; j < 65; ++j)
+        for (int i = 0; i < N; i++)
         {
-            if (N[j] == '1')
-            {
-                if (l == -1)
-                    l = j;
-                cutCnt++;
-            }
-        }
-        if (cutCnt == 3)
-        {
-            cout << s << endl;
-            continue;
-        }
-        if (l < 3)
-        {
-            cout << -1 << endl;
-            continue;
+            if (strawberries[i].x < a)
+                left_count++;
+            else
+                right_count++;
         }
 
-        N[l] = '0';
-        int cnt = 3;
-        for (ull j = l + 1; j < 65; ++j)
-        {
+        int curr_min_strawberries = left_count * (N - right_count);
+        min_strawberries = min(min_strawberries, curr_min_strawberries);
 
-            if (N[j] == '1' && cnt > 0)
-                continue;
-            if (N[j] == '0' && cnt > 0)
-            {
-                N[j] = '1';
-                cnt--;
-            }
-            else if (cnt == 0)
-            {
-                N[j] = '0';
-            }
-        }
+        int max_interval = 0;
 
-        if (cnt)
-        {
-            cout << -1 << endl;
-            continue;
-        }
-        ans = 0;
-        for (int j = 0; j < 65; ++j)
-        {
-            if (N[j] == '1')
-                ans += pow(2, 64 - j - 1); // 64 - j - 1 为当前位的权重
-        }
-        if (cnt)
-            cout << -1 << endl;
-        else
-            cout << ans << endl;
+        if (left_count > 0)
+            max_interval = max(max_interval, strawberries[left_count - 1].y - 1);
+        if (right_count > 0)
+            max_interval = max(max_interval, H - strawberries[left_count].y);
+
+        max_strawberries = max(max_strawberries, max(max_interval, left_count + right_count));
     }
+
+    // Lines parallel to x-axis (y = b)
+    for (int b = 1; b < H; b++)
+    {
+        int above_count = 0;
+        int below_count = 0;
+
+        for (int i = 0; i < N; i++)
+        {
+            if (strawberries[i].y < b)
+                above_count++;
+            else
+                below_count++;
+        }
+
+        int curr_min_strawberries = above_count * (N - below_count);
+        min_strawberries = min(min_strawberries, curr_min_strawberries);
+
+        int max_interval = 0;
+
+        if (above_count > 0)
+            max_interval = max(max_interval, strawberries[above_count - 1].x - 1);
+        if (below_count > 0)
+            max_interval = max(max_interval, W - strawberries[above_count].x);
+
+        max_strawberries = max(max_strawberries, max(max_interval, above_count + below_count));
+    }
+
+    cout << min_strawberries << " " << max_strawberries << endl;
 
     return 0;
 }
