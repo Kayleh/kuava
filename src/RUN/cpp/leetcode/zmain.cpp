@@ -4,7 +4,7 @@
 int main()
 {
     REGISTER_CONSTRUCTOR_SOLUTION;
-    REGISTER_MEMBERFUNCTION_SOLUTION(matrixBlockSum);
+    REGISTER_MEMBERFUNCTION_SOLUTION(countCompleteComponents);
     while (true)
     {
         executor.constructSolution();

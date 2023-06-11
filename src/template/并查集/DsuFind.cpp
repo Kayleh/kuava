@@ -17,7 +17,7 @@
  *
  * 并查集的思路是将一组独立的元素集合合并成一个集合，同时记录每个集合的根节点。在并查集中，每个节点都有一个唯一的标识符，可以用来表示该节点所在的集合。当需要查询两个元素是否在同一个集合中时，可以通过并查集的查询操
  * 作来实现。
- * 
+ *
  * 路径压缩：
  * 路径压缩的思路是在查询过程中，将路径上的每个节点都指向根节点，从而缩短查询路径。具体来说，当一个节点被查询时，它的父节点会被更新为根节点。这样，当再次查询该节点时，可以直接从根节点开始查询，避免了在查找过程中
  * 出现的节点的多层嵌套问题，从而优化查询性能。
@@ -25,6 +25,10 @@
  *
  * 按秩合并：
  * 按秩合并的思路是在合并两个集合时，将高度小的树合并到高度大的树上。这样可以避免出现树的高度过大的情况（树的左右子树高度差过大），从而优化查询性能。
+ *
+ *
+ * 完全连通分量：
+ * 如果连通分量中每对节点之间都存在一条边，则称其为 完全连通分量 。也就是说，如果一个连通分量中的节点数为 n ，那么这个连通分量中的边数应该为 n*(n-1)/2 。
  */
 #include <bits/stdc++.h>
 
@@ -40,7 +44,8 @@ private:
     vector<int> parent; // 记录父节点 parent[i] = j 表示 i 的父节点是 j
     vector<int> rank;   // 记录树的高度 rank[i] 表示以 i 为根的集合所表示的树的层数
     int count;          // 连通分量的个数
-
+    // vector<int> nodes;  // 记录每个连通分量的节点数
+    // vector<int> edges;  // 记录每个连通分量的边数
 public:
     DsuFind(int n)
     {
@@ -48,6 +53,8 @@ public:
         parent.resize(n);
         rank.resize(n, 1);
         iota(parent.begin(), parent.end(), 0);
+        // nodes.resize(n, 1);
+        // edges.resize(n, 0);
         /* for (int i = 0; i < n; i++)
         {
             parent[i] = i;
@@ -57,39 +64,44 @@ public:
 
     int find(int p)
     {
-        while (p != parent[p])
-        {
-            parent[p] = parent[parent[p]]; // 路径压缩：将当前节点的父节点指向父节点的父节点
-            p = parent[p];
-        }
-        return p;
-    }
-
-    // 不使用路径压缩
-    int find2(int p)
-    {
         if (p != parent[p])
-            p = find(parent[p]);
-        return p;
+            parent[p] = find(parent[p]); // 路径压缩: 将路径上的每个节点都指向根节点, 从而缩短查询路径, 优化查询性能
+        return parent[p];
     }
 
     void connect(int p, int q)
     {
         int rootP = find(p);
         int rootQ = find(q);
+
         if (rootP == rootQ)
+        {
+            // edges[rootP]++;
             return;
-        if (rank[rootP] > rank[rootQ]) // 按秩合并：将高度小的树合并到高度大的树上
+        }
+
+        // 按秩合并：将高度小的树合并到高度大的树上, 可以避免出现树的高度过大的情况（树的左右子树高度差过大），从而优化查询性能
+        if (rank[rootP] > rank[rootQ])
         {
             parent[rootQ] = rootP;
-            rank[rootP] += rank[rootQ];
+            // nodes[rootP] += nodes[rootQ];
+            // edges[rootP] += edges[rootQ] + 1;
+        }
+        else if (rank[rootP] < rank[rootQ])
+        {
+            parent[rootP] = rootQ;
+            // nodes[rootQ] += nodes[rootP];
+            // edges[rootQ] += edges[rootP] + 1;
         }
         else
         {
-            parent[rootP] = rootQ;
-            rank[rootQ] += rank[rootP];
+            parent[rootQ] = rootP;
+            // nodes[rootP] += nodes[rootQ];
+            // edges[rootP] += edges[rootQ] + 1;
+            rank[rootP]++;
         }
-        count--;
+
+        count--; // 每次 union 操作后, 连通分量的个数减一
     }
 
     bool isConnected(int p, int q)

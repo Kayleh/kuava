@@ -73,19 +73,79 @@ using namespace std;
 
 class Solution
 {
-public:
-  int sumNumbers(TreeNode *root)
+private:
+  vector<int> parent;
+  vector<int> rank;
+  int cnt;
+  vector<int> nodes; // 记录每个连通分量的节点数
+  vector<int> edges; // 记录每个连通分量的边数
+
+  void init(int n)
   {
-    int sum = 0;
-    function<int(TreeNode *, int)> dfs = [&](TreeNode *root, int sum)
+    cnt = n;
+    parent.resize(n);
+    for (int i = 0; i < n; i++)
+      parent[i] = i;
+    rank.resize(n, 1);
+    nodes.resize(n, 1);
+    edges.resize(n, 0);
+  }
+
+  void connt(int a, int b)
+  {
+    int fa = find(a);
+    int fb = find(b);
+    if (fa != fb)
     {
-      if (!root)
-        return 0;
-      sum = sum * 10 + root->val;
-      if (!root->left && !root->right)
-        return sum;
-      return dfs(root->left, sum) + dfs(root->right, sum);
-    };
-    return dfs(root, sum);
+      if (rank[fa] < rank[fb])
+      {
+        parent[fa] = fb;
+        nodes[fb] += nodes[fa];
+        edges[fb] += edges[fa] + 1;
+      }
+      else
+      {
+        parent[fb] = fa;
+        nodes[fa] += nodes[fb];
+        edges[fa] += edges[fb] + 1;
+        if (rank[fa] == rank[fb])
+          rank[fa]++;
+      }
+      cnt--;
+    }
+    else
+    {
+      edges[fa]++; // 如果是同一个连通分量，那么边数+1
+    }
+  }
+
+  int find(int x)
+  {
+    if (parent[x] != x)
+      parent[x] = find(parent[x]);
+    return parent[x];
+  }
+
+public:
+  int countCompleteComponents(int n, vector<vector<int>> &edgess)
+  {
+
+    init(n);
+    for (auto &e : edgess)
+    {
+      connt(e[0], e[1]);
+    }
+
+    int ans = 0;
+    for (int i = 0; i < n; i++)
+    {
+      if (find(i) == i) // 根节点
+      {
+        // 如果是完全图，那么边数为节点数*(节点数-1)/2
+        if (edges[i] == nodes[i] * (nodes[i] - 1) / 2)
+          ans++;
+      }
+    }
+    return ans;
   }
 };
