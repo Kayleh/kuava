@@ -62,7 +62,7 @@ struct node
     int to, next, w; // to表示指向的点，next表示下一个边，w表示边权
 } edge[maxn * maxn]; // 边集数组，edges[i]表示编号为i的边
 
-int head[maxn]; //  head[i]表示以i为起点的第一条边的下标（在edges数组中的下标）
+int head[maxn]; //  head[i]表示以i为起点的第一条边的下标（在edges数组中的下标）,-1表示没有边
 int cnt, n, m;  // cnt表示边的数量，n表示点的数量，m表示边的数量
 
 void init()

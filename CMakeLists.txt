@@ -19,7 +19,9 @@ foreach (file ${files})
     add_executable(${name} ${file})
 endforeach ()
 
-# 设置输出目录
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON) # 生成compile_commands.json文件
+
+
 
 
  
