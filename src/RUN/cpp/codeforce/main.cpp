@@ -44,16 +44,15 @@
     cin.tie(0);
 //__builtin_popcountll 用于计算一个数的二进制中1的个数
 
-template <class T>
-inline void ckmin(T &a, T b)
-{
+template<class T>
+inline void ckmin(T &a, T b) {
     a = min(a, b);
 }
 
-template <class T>
+template<class T>
 inline void ckmax(T &a, T b) { a = max(a, b); }
 
-template <class T>
+template<class T>
 void COPY(T a[], const T b[], int n) { memcpy(a, b, n * sizeof(T)); }
 
 void SET(int a[], int val, int n) { memset(a, val, n * sizeof(int)); }
@@ -62,20 +61,12 @@ using namespace std;
 
 //@start——————————————————————————————————————————————————————————————————————
 
-int main()
-{
+int main() {
     fio;
     int n;
     cin >> n;
-
-    int t;
-    cin >> t;
-
-    string q;
-    cin >> q;
-
-    for (int i = 0; i < n; i++)
-    {
+    for (int i = 0; i < n; i++) {
+        cout << i << endl;
     }
     return 0;
 }
