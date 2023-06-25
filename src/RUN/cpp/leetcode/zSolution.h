@@ -46,13 +46,13 @@
     ios::base::sync_with_stdio(false); \
     cin.tie(NULL);
 
-template<class T>
+template <class T>
 inline void ckmin(T &a, T b) { a = min(a, b); }
 
-template<class T>
+template <class T>
 inline void ckmax(T &a, T b) { a = max(a, b); }
 
-template<class T>
+template <class T>
 void COPY(T a[], const T b[], int n) { memcpy(a, b, n * sizeof(T)); }
 
 /* template <class T>
@@ -77,27 +77,32 @@ using namespace std;
 
 #include <bits/stdc++.h>
 
-struct Node {
+struct Node
+{
     int to, next;
 } edge[1000000];
 int cnt;
 int head[1000000];
 
-void add(int from, int to) {
+void add(int from, int to)
+{
     edge[cnt].to = to;
     edge[cnt].next = head[from];
     head[from] = cnt++;
 }
 
-class Solution {
+class Solution
+{
 public:
-    long long minimumFuelCost(vector<vector<int>> &roads, int seats) {
+    long long minimumFuelCost(vector<vector<int>> &roads, int seats)
+    {
         int n = roads.size() + 1;
 
         // 初始化
         cnt = 0;
         memset(head, -1, sizeof(head));
-        for (int i = 0; i < n - 1; i++) {
+        for (int i = 0; i < n - 1; i++)
+        {
             add(roads[i][0], roads[i][1]);
             add(roads[i][1], roads[i][0]);
         }
@@ -106,12 +111,15 @@ public:
         bool vis[n];
         memset(vis, false, sizeof(vis));
         // DFS 统计子树大小，同时统计答案
-        function<int(int)> dfs = [&](int root) {
+        function<int(int)> dfs = [&](int root)
+        {
             int sum = 1; // 子树大小
             vis[root] = true;
-            for (int i = head[root]; i != -1; i = edge[i].next) {
+            for (int i = head[root]; i != -1; i = edge[i].next)
+            {
                 int fn = edge[i].to;
-                if (vis[fn]) continue;
+                if (vis[fn])
+                    continue;
                 int tSum = dfs(fn);
                 ans += (tSum + seats - 1) / seats; // 向上取整,保证每个人都能上车
                 sum += tSum;
