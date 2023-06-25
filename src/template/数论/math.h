@@ -171,4 +171,29 @@ public:
             return 1;
         return x * f(x - 1);
     }
+
+    /**
+     * 分解质因数，输出x的所有质因子
+     * 6: 2、3
+     * 10: 2、5
+     */
+    void get_factors(int x)
+    {
+        for (int i = 2; i <= x / i; i++)
+        {
+            if (x % i == 0)
+            {
+                int s = 0;
+                while (x % i == 0)
+                {
+                    x /= i;
+                    s++;
+                }
+                printf("%d %d\n", i, s);
+            }
+        }
+        if (x > 1)
+            printf("%d %d\n", x, 1);
+        puts("");
+    }
 };

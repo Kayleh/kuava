@@ -2,24 +2,24 @@
 
 using namespace std;
 
+const int INF = 0x3f3f3f3f;
+
+
 // Q:图的最短路算法中，结果的最大值表示什么意思？
 // A:表示从起点到终点的最短距离，如果最大值为INF，则表示起点到终点不可达
 
 // 最短路SPA
 /**
- * 1. floyd 临接矩阵
+ * 1. floyd 临接矩阵 [多源多汇最短路径]
  *
- * 从任意起点出发，到达任意起点的最短距离
- *
+ * 求任意两个结点之间的最短路的
  */
-void floyd()
-{
+void floyd() {
     int n, m; // n表示点数，m表示边数
     cin >> n >> m;
     int g[n][n];                // g[i][j]表示i到j的边的权值
-    memset(g, 0x3f, sizeof(g)); // 默认为无穷大
-    for (int i = 0; i < m; i++)
-    {
+    memset(g, INF, sizeof(g)); // 默认为无穷大
+    for (int i = 0; i < m; i++) {
         int u, v, w; // u,v,w分别表示边的起点，终点，权值
         cin >> u >> v >> w;
         g[u][v] = w;
@@ -35,58 +35,48 @@ void floyd()
 }
 
 /**
- * 2.朴素 Dijkstra 邻接矩阵
- * ⌈非负权图 上单源最短路径⌉
+ * 2.朴素 Dijkstra 邻接矩阵 [非负权图单源最短路径]
  *
- * 从单个起点出发，到达任意起点的最短距离
+ * 从单个起点出发，到达任意点的最短距离
  */
-void dijkstra()
-{
+void dijkstra() {
     int n, m; // n表示点数，m表示边数
     cin >> n >> m;
     int g[n][n]; // g[i][j]表示i到j的边的权值
     int dist[n]; // dist[i]表示从起点到i的最短距离为dist[i]
     bool vis[n]; // vis[i]表示i是否已经访问过
-    int INF = 0x3f3f3f3f;
 
-    for (int i = 0; i < n; i++)
-    {
-        for (int j = 0; j < n; j++)
-        {
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
             g[i][j] = i == j ? 0 : INF;
         }
     }
 
-    for (int i = 0; i < m; i++)
-    {
+    for (int i = 0; i < m; i++) {
         int u, v, w; // u,v,w分别表示边的起点，终点，权值
         cin >> u >> v >> w;
         g[u][v] = w;
     }
 
     // dijkstra
-    memset(dist, 0x3f, sizeof(dist)); // 初始化dist数组为无穷大
+    memset(dist, INF, sizeof(dist)); // 初始化dist数组为无穷大
     memset(vis, false, sizeof(vis));  // 初始化vis数组为false
 
-    for (int i = 0; i < n; i++)
-    {
+    for (int i = 0; i < n; i++) {
         // 迭代n次，每次找到「最短距离最小」且「未被更新」的点 t
         int t = -1;
-        for (int j = 0; j < n; j++)
-        {
+        for (int j = 0; j < n; j++) {
             if (!vis[j] && (t == -1 || dist[j] < dist[t])) // 如果j未被更新且j的最短距离小于t的最短距离
                 t = j;
         }
         vis[t] = true; // 标记t已经被更新
-        for (int j = 0; j < n; j++)
-        {
+        for (int j = 0; j < n; j++) {
             dist[j] = min(dist[j], dist[t] + g[t][j]); // 松弛操作（取最小值）比较j的最短距离和t的最短距离加上t到j的距离哪个更近
         }
     }
 
     // 输出
-    for (int i = 0; i < n; i++)
-    {
+    for (int i = 0; i < n; i++) {
         cout << "从" << 0 << "到" << i << "的最短距离为：" << dist[i] << endl;
     }
 }
@@ -94,43 +84,43 @@ void dijkstra()
 /**
  * 3.堆优化 Dijkstra 邻接表
  */
-void dijkstra_heap()
-{
+void dijkstra_heap() {
     int n, m; // n表示点数，m表示边数
     cin >> n >> m;
     vector<pair<int, int>> g[n]; // g[i][j]表示i到j的边的权值
     int dist[n];                 // dist[i]表示从起点到i的最短距离为dist[i]
     bool vis[n];                 // vis[i]表示i是否已经访问过
-    int INF = 0x3f3f3f3f;
 
-    for (int i = 0; i < m; i++)
-    {
+    for (int i = 0; i < m; i++) {
         int u, v, w; // u,v,w分别表示边的起点，终点，权值
         cin >> u >> v >> w;
         g[u].push_back({v, w});
     }
 
     // dijkstra
-    memset(dist, 0x3f, sizeof(dist)); // 初始化dist数组为无穷大
+    memset(dist, INF, sizeof(dist)); // 初始化dist数组为无穷大
     memset(vis, false, sizeof(vis));  // 初始化vis数组为false
 
-    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> heap; // 小根堆： 第一个参数表示距离，第二个参数表示点
-    heap.push({0, 0});                                                                    // 起点为0，距离为0
-    dist[0] = 0;                                                                          // 起点到起点的距离为0
+    // 优先队列，把距离最小的点放在队首
+    // 第一个参数pair<int, int>表示点的编号和距离
+    // 第二个参数vector<pair<int, int>>表示比较方式，距离小的优先级高
+    // 第三个参数greater<pair<int, int>>表示使用greater作为比较方式，优先级高的在队首
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> heap;
+    // 起点为0，距离为0
+    heap.push({0, 0});
+    // 起点到起点的距离为0
+    dist[0] = 0;
 
-    while (!heap.empty())
-    {
+    while (!heap.empty()) {
         auto t = heap.top();
         heap.pop();
         int ver = t.second, distance = t.first;
         if (vis[ver])
             continue;
         vis[ver] = true;
-        for (auto &e : g[ver])
-        {
+        for (auto &e: g[ver]) {
             int next = e.first, d = e.second;
-            if (dist[next] > dist[ver] + d)
-            {
+            if (dist[next] > dist[ver] + d) {
                 dist[next] = dist[ver] + d;
                 heap.push({dist[next], next});
             }
@@ -138,8 +128,41 @@ void dijkstra_heap()
     }
 
     // 输出
-    for (int i = 0; i < n; i++)
-    {
+    for (int i = 0; i < n; i++) {
         cout << "从" << 0 << "到" << i << "的最短距离为：" << dist[i] << endl;
     }
+}
+
+/**
+ * Bellman-Ford
+ * 不断尝试对图上每一条边进行松弛。我们每进行一轮循环，就对图上所有的边都尝试进行一次松弛操作，当一次循环中没有成功的松弛操作时，算法停止
+ * @return
+ */
+bool bellmanFord() {
+    int n, m; // n表示点数，m表示边数
+    cin >> n >> m;
+    int dist[n]; // dist[i]表示从起点到i的最短距离为dist[i]
+    memset(dist, INF, sizeof(dist)); // 初始化dist数组为无穷大
+    dist[0] = 0; // 起点到起点的距离为0
+
+    // 松弛操作
+    bool flag;
+    for (int i = 0; i < n; i++) {
+        flag = false;
+        for (int j = 0; j < m; j++) {
+            int u, v, w; // u,v,w分别表示边的起点，终点，权值
+            if (dist[v] > dist[u] + w) {
+                dist[v] = dist[u] + w;
+                flag = true;
+            }
+        }
+        if (!flag) break;
+    }
+
+    // 输出
+    for (int i = 0; i < n; i++) {
+        cout << "从" << 0 << "到" << i << "的最短距离为：" << dist[i] << endl;
+    }
+    // 第 n 轮循环仍然可以松弛时说明 s 点可以抵达一个负环
+    return flag;
 }
