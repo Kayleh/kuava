@@ -22,6 +22,7 @@
 */
 
 #include <bits/stdc++.h>
+
 #define PI 3.14159265358979323846
 #define gcd(a, b) __gcd(a, b)             // 最大公约数
 #define bitcount(a) __builtin_popcount(a) // 二进制中1的个数
@@ -40,14 +41,18 @@
 #define randd(a, b) (rand() % (b - a + 1) + a) // [a, b]
 #define POW(a, b) (int)pow(a, b)
 #define toBinary(x) bitset<8 * sizeof(x)>((x)).to_string()
-#define fio                          \
-  ios::base::sync_with_stdio(false); \
-  cin.tie(NULL);
-template <class T>
+
+#define fio                            \
+    ios::base::sync_with_stdio(false); \
+    cin.tie(NULL);
+
+template<class T>
 inline void ckmin(T &a, T b) { a = min(a, b); }
-template <class T>
+
+template<class T>
 inline void ckmax(T &a, T b) { a = max(a, b); }
-template <class T>
+
+template<class T>
 void COPY(T a[], const T b[], int n) { memcpy(a, b, n * sizeof(T)); }
 
 /* template <class T>
@@ -59,93 +64,61 @@ inline void MEMSET(T a, int b) { memset(a, b, sizeof(a)); } */
 #ifdef DEBUG
 struct TreeNode
 {
-  int val;
-  TreeNode *left;
-  TreeNode *right;
-  TreeNode() : val(0), left(nullptr), right(nullptr) {}
-  TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
-  TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode() : val(0), left(nullptr), right(nullptr) {}
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
 };
 #endif
 
 using namespace std;
+
 #include <bits/stdc++.h>
 
-class Solution
-{
-private:
-  vector<int> parent;
-  vector<int> rank;
-  int cnt;
-  vector<int> nodes; // 记录每个连通分量的节点数
-  vector<int> edges; // 记录每个连通分量的边数
+struct Node {
+    int to, next;
+} edge[1000000];
+int cnt;
+int head[1000000];
 
-  void init(int n)
-  {
-    cnt = n;
-    parent.resize(n);
-    for (int i = 0; i < n; i++)
-      parent[i] = i;
-    rank.resize(n, 1);
-    nodes.resize(n, 1);
-    edges.resize(n, 0);
-  }
+void add(int from, int to) {
+    edge[cnt].to = to;
+    edge[cnt].next = head[from];
+    head[from] = cnt++;
+}
 
-  void connt(int a, int b)
-  {
-    int fa = find(a);
-    int fb = find(b);
-    if (fa != fb)
-    {
-      if (rank[fa] < rank[fb])
-      {
-        parent[fa] = fb;
-        nodes[fb] += nodes[fa];
-        edges[fb] += edges[fa] + 1;
-      }
-      else
-      {
-        parent[fb] = fa;
-        nodes[fa] += nodes[fb];
-        edges[fa] += edges[fb] + 1;
-        if (rank[fa] == rank[fb])
-          rank[fa]++;
-      }
-      cnt--;
-    }
-    else
-    {
-      edges[fa]++; // 如果是同一个连通分量，那么边数+1
-    }
-  }
-
-  int find(int x)
-  {
-    if (parent[x] != x)
-      parent[x] = find(parent[x]);
-    return parent[x];
-  }
-
+class Solution {
 public:
-  int countCompleteComponents(int n, vector<vector<int>> &edgess)
-  {
+    long long minimumFuelCost(vector<vector<int>> &roads, int seats) {
+        int n = roads.size() + 1;
 
-    init(n);
-    for (auto &e : edgess)
-    {
-      connt(e[0], e[1]);
-    }
+        // 初始化
+        cnt = 0;
+        memset(head, -1, sizeof(head));
+        for (int i = 0; i < n - 1; i++) {
+            add(roads[i][0], roads[i][1]);
+            add(roads[i][1], roads[i][0]);
+        }
 
-    int ans = 0;
-    for (int i = 0; i < n; i++)
-    {
-      if (find(i) == i) // 根节点
-      {
-        // 如果是完全图，那么边数为节点数*(节点数-1)/2
-        if (edges[i] == nodes[i] * (nodes[i] - 1) / 2)
-          ans++;
-      }
+        long long ans = 0;
+        bool vis[n];
+        memset(vis, false, sizeof(vis));
+        // DFS 统计子树大小，同时统计答案
+        function<int(int)> dfs = [&](int root) {
+            int sum = 1; // 子树大小
+            vis[root] = true;
+            for (int i = head[root]; i != -1; i = edge[i].next) {
+                int fn = edge[i].to;
+                if (vis[fn]) continue;
+                int tSum = dfs(fn);
+                ans += (tSum + seats - 1) / seats; // 向上取整,保证每个人都能上车
+                sum += tSum;
+            }
+            return sum;
+        };
+        dfs(0);
+        return ans;
     }
-    return ans;
-  }
 };
