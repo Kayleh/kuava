@@ -79,8 +79,7 @@ void SET(int a[], int val, int n) { memset(a, val, n * sizeof(int)); }
 using namespace std;
 
 #include <bits/stdc++.h>
-
-//@start——————————————————————————————————————————————————————————————————————
+#define ull long long
 
 int main()
 {

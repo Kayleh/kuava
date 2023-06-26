@@ -19,6 +19,10 @@ foreach (file ${files})
     add_executable(${name} ${file})
 endforeach ()
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON) # 生成compile_commands.json文件
+
+
+
 # 设置输出目录为/mnt/d/project/kayleh/kuava/out/mybin
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "/mnt/d/project/kayleh/kuava/out/mybi")
 
