@@ -78,47 +78,43 @@ using namespace std;
 #include <bits/stdc++.h>
 
 struct Node {
-    int to, next;
+    int to, next, w;
 } edge[1000000];
 int cnt;
 int head[1000000];
 
-void add(int from, int to) {
+void add(int from, int to, int w) {
     edge[cnt].to = to;
+    edge[cnt].w = w;
     edge[cnt].next = head[from];
     head[from] = cnt++;
 }
 
 class Solution {
 public:
-    long long minimumFuelCost(vector<vector<int>> &roads, int seats) {
-        int n = roads.size() + 1;
-
-        // 初始化
+    int minReorder(int n, vector<vector<int>> &connections) {
         cnt = 0;
         memset(head, -1, sizeof(head));
-        for (int i = 0; i < n - 1; i++) {
-            add(roads[i][0], roads[i][1]);
-            add(roads[i][1], roads[i][0]);
+        for (auto &connection: connections) {
+            add(connection[0], connection[1], 1);// 反向边,需要重新规划1次（因为题目要求从0开始，
+            add(connection[1], connection[0], 0);
         }
-
-        long long ans = 0;
-        bool vis[n];
-        memset(vis, false, sizeof(vis));
-        // DFS 统计子树大小，同时统计答案
-        function<int(int)> dfs = [&](int root) {
-            int sum = 1; // 子树大小
-            vis[root] = true;
-            for (int i = head[root]; i != -1; i = edge[i].next) {
-                int fn = edge[i].to;
-                if (vis[fn]) continue;
-                int tSum = dfs(fn);
-                ans += (tSum + seats - 1) / seats; // 向上取整,保证每个人都能上车
-                sum += tSum;
+        int ans = 0;
+        queue<int> q;
+        q.push(0);
+        vector<bool> vis(n);
+        vis[0] = true;
+        while (!q.empty()) {
+            int u = q.front();
+            q.pop();
+            for (int i = head[u]; ~i; i = edge[i].next) {
+                int v = edge[i].to;
+                if (vis[v]) continue;
+                vis[v] = true;
+                ans += edge[i].w;
+                q.push(v);
             }
-            return sum;
-        };
-        dfs(0);
+        }
         return ans;
     }
 };
