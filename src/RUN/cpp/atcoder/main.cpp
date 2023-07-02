@@ -21,6 +21,7 @@
 @Date: 2020/6/14 19:34
 */
 #include <bits/stdc++.h>
+
 #define PI 3.14159265358979323846
 #define gcd(a, b) __gcd(a, b)             // 最大公约数
 #define bitcount(a) __builtin_popcount(a) // 二进制中1的个数
@@ -79,39 +80,48 @@ void SET(int a[], int val, int n) { memset(a, val, n * sizeof(int)); }
 using namespace std;
 
 #include <bits/stdc++.h>
-#define ull long long
+
+/**
+ * 给定一个长度为 N 的字符串 S，由小写英文字母组成。确定是否可以将 S 分成两个或多个连续的子串，使它们严格按字典顺序递增。
+ * 准确的说，判断是否存在满足以下所有条件的字符串序列∨ = (t1, ta, . . - , t)。 « 序列 k 的长度至少为 2。 « tiisnotempty.(1 < i < k) « 连接 t1, a, . - . , t 按此顺序产生 S。 « 按词典顺序小于 t; 。对于每个整数 i，使得 1 < i < k。给你T个测试用例。找出每个问题的答案
+ */
 
 int main()
 {
     fio;
-    int N = 3;                                // 工作表 A B X
-    vector<vector<int>> g(N, vector<int>(N)); // .表示清澈，#表示黑色
-    for (int i = 0; i < N; i++)
+    int T;
+    cin >> T;
+
+    while (T--)
     {
-        int N1, M1;
-        cin >> N1 >> M1;
-        vector<vector<char>> g1(N1, vector<char>(M1));
-        for (int j = 0; j < N1; j++)
+        int N;
+        cin >> N;
+        string s;
+        cin >> s;
+        cout << "Case #" << s << ": " << endl;
+        // 判断s是否能够被分割成多个子串，使得子串严格按照字典序递增, 每个子串的长度至少为2
+        // 贪心算法
+        // 从左到右遍历，如果当前字符比前一个字符小，那么就可以将当前字符加入到前一个字符组成的子串中
+
+        int len = s.length();
+        string ans = "";
+        ans += s[0];
+        for (int i = 1; i < len; i++)
         {
-            string s;
-            cin >> s;
-            for (int k = 0; k < M1; k++)
+            if (s[i] >= s[i - 1])
             {
-                g1[j][k] = s[k];
+                ans += s[i];
+            }
+            else
+            {
+                ans = s[i] + ans;
             }
         }
+
+        cout << ans << endl;
+
+        // << "Yes" << endl;
     }
-    // 从工作表A和B中的黑色方块创建 X 工作表，再给一张无限大的清澈的工作表C：
-    // 1. 沿着网格将A和B纸片粘贴到C纸片上。每张纸可以通过平移粘贴到任何地方，但不能剪切或旋转。
-    // 2.从C纸上沿网格切出一个Hx * Wx区域。在这里，如果粘贴了A或B表的黑色方块，那么切出的表的一个方块将是黑色的，否则就是透明的。
 
-    // 判断高桥是否能通过适当地选择粘贴纸片的位置和切出的区域来实现他的目标，也就是说、
-    // 他是否能满足以下两个条件。
-    // 切出的纸张包括纸张A和B的所有黑色方块，纸张A和B的黑色方块可能在切出的纸张上重叠。
-    // 切出的纸片与_X纸片重合，不需要旋转或翻转。
-
-      
-      
-       
     return 0;
 }

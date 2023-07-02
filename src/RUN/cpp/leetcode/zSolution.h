@@ -46,13 +46,13 @@
     ios::base::sync_with_stdio(false); \
     cin.tie(NULL);
 
-template<class T>
+template <class T>
 inline void ckmin(T &a, T b) { a = min(a, b); }
 
-template<class T>
+template <class T>
 inline void ckmax(T &a, T b) { a = max(a, b); }
 
-template<class T>
+template <class T>
 void COPY(T a[], const T b[], int n) { memcpy(a, b, n * sizeof(T)); }
 
 /* template <class T>
@@ -67,9 +67,20 @@ struct TreeNode
     int val;
     TreeNode *left;
     TreeNode *right;
+
     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+
     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+
     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+};
+
+struct ListNode
+{
+    int val;
+    ListNode *next;
+
+    ListNode(int x) : val(x), next(NULL) {}
 };
 #endif
 
@@ -77,43 +88,44 @@ using namespace std;
 
 #include <bits/stdc++.h>
 
-struct Node {
-    int to, next, w;
-} edge[1000000];
-int cnt;
-int head[1000000];
+struct Edge
+{
+    int to, next;
+} edges[500];
 
-void add(int from, int to, int w) {
-    edge[cnt].to = to;
-    edge[cnt].w = w;
-    edge[cnt].next = head[from];
+int head[20];
+int cnt;
+
+void add(int from, int to)
+{
+    edges[cnt].to = to;
+    edges[cnt].next = head[from];
     head[from] = cnt++;
 }
 
-class Solution {
+class Solution
+{
 public:
-    int minReorder(int n, vector<vector<int>> &connections) {
-        cnt = 0;
-        memset(head, -1, sizeof(head));
-        for (auto &connection: connections) {
-            add(connection[0], connection[1], 1);// 反向边,需要重新规划1次（因为题目要求从0开始，
-            add(connection[1], connection[0], 0);
-        }
-        int ans = 0;
-        queue<int> q;
-        q.push(0);
-        vector<bool> vis(n);
-        vis[0] = true;
-        while (!q.empty()) {
-            int u = q.front();
-            q.pop();
-            for (int i = head[u]; ~i; i = edge[i].next) {
-                int v = edge[i].to;
-                if (vis[v]) continue;
-                vis[v] = true;
-                ans += edge[i].w;
-                q.push(v);
+    int secondsToRemoveOccurrences(string s)
+    {
+        int n = s.size(), ans = 0;
+        while (true)
+        {
+            for (int i = 0; i + 1 < n; i++)
+                if (s[i] == '0' && s[i + 1] == '1')
+                    goto GOON;
+            break;
+        GOON: // GOON 是什么意思？ 用于，goto 语句的标签，用于跳转到标签处
+            ans++;
+            string t;
+            for (int i = 0; i < n;)
+            {
+                if (i + 1 < n && s[i] == '0' && s[i + 1] == '1')
+                    t.push_back('1'), t.push_back('0'), i += 2;
+                else
+                    t.push_back(s[i]), i++;
             }
+            s = t;
         }
         return ans;
     }
