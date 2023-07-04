@@ -46,13 +46,13 @@
     ios::base::sync_with_stdio(false); \
     cin.tie(NULL);
 
-template <class T>
+template<class T>
 inline void ckmin(T &a, T b) { a = min(a, b); }
 
-template <class T>
+template<class T>
 inline void ckmax(T &a, T b) { a = max(a, b); }
 
-template <class T>
+template<class T>
 void COPY(T a[], const T b[], int n) { memcpy(a, b, n * sizeof(T)); }
 
 /* template <class T>
@@ -61,9 +61,10 @@ inline void MEMSET(T a, int b) { memset(a, b, sizeof(a)); } */
 // auto cmpp = [](const pair<int, int> &a, const pair<int, int> &b)
 //{ return a.second < b.second; };
 
+
 #ifdef DEBUG
-struct TreeNode
-{
+
+struct TreeNode {
     int val;
     TreeNode *left;
     TreeNode *right;
@@ -75,58 +76,60 @@ struct TreeNode
     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
 };
 
-struct ListNode
-{
+struct ListNode {
     int val;
     ListNode *next;
 
     ListNode(int x) : val(x), next(NULL) {}
 };
+
 #endif
 
 using namespace std;
 
 #include <bits/stdc++.h>
 
-struct Edge
-{
+struct Edge {
     int to, next;
 } edges[500];
 
 int head[20];
 int cnt;
 
-void add(int from, int to)
-{
+void add(int from, int to) {
     edges[cnt].to = to;
     edges[cnt].next = head[from];
     head[from] = cnt++;
 }
 
-class Solution
-{
+class Solution {
 public:
-    int secondsToRemoveOccurrences(string s)
-    {
-        int n = s.size(), ans = 0;
-        while (true)
-        {
-            for (int i = 0; i + 1 < n; i++)
-                if (s[i] == '0' && s[i + 1] == '1')
-                    goto GOON;
-            break;
-        GOON: // GOON 是什么意思？ 用于，goto 语句的标签，用于跳转到标签处
-            ans++;
-            string t;
-            for (int i = 0; i < n;)
-            {
-                if (i + 1 < n && s[i] == '0' && s[i + 1] == '1')
-                    t.push_back('1'), t.push_back('0'), i += 2;
-                else
-                    t.push_back(s[i]), i++;
-            }
-            s = t;
+    ListNode *addTwoNumbers(ListNode *l1, ListNode *l2) {
+        // 先反转链表
+        ListNode *p1 = reverse(l1);
+        ListNode *p2 = reverse(l2);
+        ListNode *dummy = new ListNode(-1);
+        ListNode *p = dummy;
+        int carry = 0;
+        while (p1 || p2 || carry) {
+            int sum = (p1 ? p1->val : 0) + (p2 ? p2->val : 0) + carry;
+            carry = sum / 10; // 进位
+            p->next = new ListNode(sum % 10); // 余数
+            p = p->next; // 指针后移
+            if (p1) p1 = p1->next;
+            if (p2) p2 = p2->next;
         }
-        return ans;
+        return reverse(dummy->next);
+    }
+
+    ListNode *reverse(ListNode *head) {
+        //递归
+        if (head == nullptr || head->next == nullptr) {
+            return head;
+        }
+        ListNode *p = reverse(head->next);
+        head->next->next = head; //反转
+        head->next = nullptr; //断开
+        return p;
     }
 };
