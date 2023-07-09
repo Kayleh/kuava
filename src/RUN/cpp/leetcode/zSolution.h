@@ -46,13 +46,13 @@
     ios::base::sync_with_stdio(false); \
     cin.tie(NULL);
 
-template<class T>
+template <class T>
 inline void ckmin(T &a, T b) { a = min(a, b); }
 
-template<class T>
+template <class T>
 inline void ckmax(T &a, T b) { a = max(a, b); }
 
-template<class T>
+template <class T>
 void COPY(T a[], const T b[], int n) { memcpy(a, b, n * sizeof(T)); }
 
 /* template <class T>
@@ -61,10 +61,10 @@ inline void MEMSET(T a, int b) { memset(a, b, sizeof(a)); } */
 // auto cmpp = [](const pair<int, int> &a, const pair<int, int> &b)
 //{ return a.second < b.second; };
 
-
 #ifdef DEBUG
 
-struct TreeNode {
+struct TreeNode
+{
     int val;
     TreeNode *left;
     TreeNode *right;
@@ -76,7 +76,8 @@ struct TreeNode {
     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
 };
 
-struct ListNode {
+struct ListNode
+{
     int val;
     ListNode *next;
 
@@ -89,47 +90,64 @@ using namespace std;
 
 #include <bits/stdc++.h>
 
-struct Edge {
+/**
+给你一个下标从 0 开始的整数数组 nums ，表示一些石块的初始位置。再给你两个长度 相等 下标从 0 开始的整数数组 moveFrom 和 moveTo 。
+
+在 moveFrom.length 次操作内，你可以改变石块的位置。在第 i 次操作中，你将位置在 moveFrom[i] 的所有石块移到位置 moveTo[i] 。
+
+完成这些操作后，请你按升序返回所有 有 石块的位置。
+
+注意：
+
+如果一个位置至少有一个石块，我们称这个位置 有 石块。
+一个位置可能会有多个石块。
+*/
+
+struct Node
+{
     int to, next;
-} edges[500];
+} edge[100005];
 
-int head[20];
-int cnt;
+int head[100005], cnt;
 
-void add(int from, int to) {
-    edges[cnt].to = to;
-    edges[cnt].next = head[from];
-    head[from] = cnt++;
+void add(int u, int v)
+{
+    edge[++cnt].to = v;
+    edge[cnt].next = head[u];
+    head[u] = cnt;
 }
 
-class Solution {
-public:
-    ListNode *addTwoNumbers(ListNode *l1, ListNode *l2) {
-        // 先反转链表
-        ListNode *p1 = reverse(l1);
-        ListNode *p2 = reverse(l2);
-        ListNode *dummy = new ListNode(-1);
-        ListNode *p = dummy;
-        int carry = 0;
-        while (p1 || p2 || carry) {
-            int sum = (p1 ? p1->val : 0) + (p2 ? p2->val : 0) + carry;
-            carry = sum / 10; // 进位
-            p->next = new ListNode(sum % 10); // 余数
-            p = p->next; // 指针后移
-            if (p1) p1 = p1->next;
-            if (p2) p2 = p2->next;
-        }
-        return reverse(dummy->next);
-    }
+void init(int n)
+{
+    cnt = 0;
+    for (int i = 0; i <= n; i++)
+        head[i] = -1;
+}
 
-    ListNode *reverse(ListNode *head) {
-        //递归
-        if (head == nullptr || head->next == nullptr) {
-            return head;
+class Solution
+{
+public:
+    bool uniqueOccurrences(vector<int> &arr)
+    {
+        int *vis = new int[1005]; // vis[i] = 1 表示出现了i次的数有多个
+        int *cnt = new int[2005]; // cnt[i] = j 表示i出现了j次
+        memset(cnt, 0, sizeof(cnt));
+        memset(vis, 0, sizeof(vis));
+        for (int i = 0; i < arr.size(); i++)
+        {
+            cnt[arr[i] + 1000]++;
         }
-        ListNode *p = reverse(head->next);
-        head->next->next = head; //反转
-        head->next = nullptr; //断开
-        return p;
+
+        /* for (int i = 0; i < 2005; i++)
+        {
+            if (cnt[i] != 0)
+            {
+                if (vis[cnt[i]] == 1)
+                    return false;
+                vis[cnt[i]] = 1;
+            }
+        } */
+        return true;
     }
 };
+;
