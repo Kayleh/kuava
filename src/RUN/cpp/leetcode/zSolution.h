@@ -93,12 +93,20 @@ using namespace std;
 class Solution
 {
 public:
-    int minFallingPathSum(vector<vector<int>> &matrix)
+    long long maxAlternatingSum(vector<int> &nums)
     {
-        // 01背包
-        int n = matrix.size();
-        vector<vector<int>> dp(n, vector<int>(n, 0));
-        for (int i = 0; i < n; i++)
-            dp[0][i] = matrix[0][i];
+        int n = nums.size();
+        ll NINF2 = NINF / 2;
+        vector<vector<ll>> dp(n + 1, vector<ll>(2, NINF2)); // dp[i][0]前i个数，奇数序列的最大值，dp[i][1]前i个数，偶数序列的最大值
+        dp[0][0] = 0;
+        dp[0][1] = 0;
+        for (int i = 1; i <= n; i++)
+        {
+            // 1。不选nums[i-1]，则dp[i][0] = dp[i-1][0]
+            // 2。选nums[i-1]，则dp[i][0] = dp[i-1][1] + nums[i-1]
+            dp[i][0] = max(dp[i - 1][0], dp[i - 1][1] + nums[i - 1]);
+            dp[i][1] = max(dp[i - 1][1], dp[i - 1][0] - nums[i - 1]);
+        }
+        return max(dp[n][0], dp[n][1]);
     }
 };

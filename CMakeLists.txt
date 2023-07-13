@@ -16,7 +16,7 @@ file(GLOB files "${CMAKE_CURRENT_SOURCE_DIR}/*.c ${CMAKE_CURRENT_SOURCE_DIR}/*.h
 # 遍历files把它们添加成可执行程序
 foreach (file ${files})
     get_filename_component(name ${file} NAME)
-    add_executable(${name} ${file} src/template/动态规划/背包/完全背包.cpp)
+    add_executable(${name} ${file} src/RUN/cpp/leetcode/zSolution.h src/RUN/cpp/leetcode/zSolution.h)
 endforeach ()
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON) # 生成compile_commands.json文件
