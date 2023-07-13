@@ -87,7 +87,7 @@ void dijkstra() {
 void dijkstra_heap() {
     int n, m; // n表示点数，m表示边数
     cin >> n >> m;
-    vector<pair<int, int>> g[n]; // g[i][j]表示i到j的边的权值
+    vector <pair<int, int>> g[n]; // g[i][j]表示i到j的边的权值
     int dist[n];                 // dist[i]表示从起点到i的最短距离为dist[i]
     bool vis[n];                 // vis[i]表示i是否已经访问过
 
@@ -105,7 +105,7 @@ void dijkstra_heap() {
     // 第一个参数pair<int, int>表示点的编号和距离
     // 第二个参数vector<pair<int, int>>表示比较方式，距离小的优先级高
     // 第三个参数greater<pair<int, int>>表示使用greater作为比较方式，优先级高的在队首
-    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> heap;
+    priority_queue < pair < int, int >, vector < pair < int, int >>, greater < pair < int, int>>> heap;
     // 起点为0，距离为0
     heap.push({0, 0});
     // 起点到起点的距离为0
@@ -165,4 +165,54 @@ bool bellmanFord() {
     }
     // 第 n 轮循环仍然可以松弛时说明 s 点可以抵达一个负环
     return flag;
+}
+
+/**
+ * 无权有向图的最短路（BFS）
+ */
+void bfs() {
+    int n, m; // n表示点数，m表示边数
+    cin >> n >> m;
+    vector<int> g[n]; // g[i][j]表示i到j的边的权值
+    int dist[n];      // dist[i]表示从起点到i的最短距离为dist[i]
+    bool vis[n];      // vis[i]表示i是否已经访问过
+
+    for (int i = 0; i < m; i++) {
+        int u, v; // u,v分别表示边的起点，终点
+        cin >> u >> v;
+        g[u].push_back(v);
+    }
+
+    // bfs
+    memset(dist, INF, sizeof(dist)); // 初始化dist数组为无穷大
+    memset(vis, false, sizeof(vis));  // 初始化vis数组为false
+
+    // 优先队列，把距离最小的点放在队首
+    // 第一个参数pair<int, int>表示点的编号和距离
+    // 第二个参数vector<pair<int, int>>表示比较方式，距离小的优先级高
+    // 第三个参数greater<pair<int, int>>表示使用greater作为比较方式，优先级高的在队首
+    queue<int> q;
+    // 起点为0，距离为0
+    q.push(0);
+    // 起点到起点的距离为0
+    dist[0] = 0;
+
+    while (!q.empty()) {
+        int t = q.front();
+        q.pop();
+        if (vis[t])
+            continue;
+        vis[t] = true;
+        for (auto &e: g[t]) {
+            if (dist[e] > dist[t] + 1) {
+                dist[e] = dist[t] + 1;
+                q.push(e);
+            }
+        }
+    }
+
+    // 输出
+    for (int i = 0; i < n; i++) {
+        cout << "从" << 0 << "到" << i << "的最短距离为：" << dist[i] << endl;
+    }
 }
