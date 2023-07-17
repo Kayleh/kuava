@@ -81,47 +81,98 @@ using namespace std;
 
 #include <bits/stdc++.h>
 
+/*
+
+AtCoder Shop 有 N 个产品。第 i 个产品 (1 < i < N) 的价格为 P；。
+第 i 个产品 (1 < i < N) 有 C 功能。
+第 i 个产品 (1 < i < N) 的第 j 个功能 (1 < j < C}) 表示为整数 F； j 介于 1 和 M 之间（含）。
+
+高桥想知道是否有一种产品完全优于另一种产品。如果有 i 和 j ( 1 <= i, j <= N) 使得第 i 个和第 j 个产品满足以下所有条件，则打印 Yes；否则，打印No
+
+- pi >= pj
+- 第j个产品包含第i个产品的所有功能
+*/
+int N; // N 个产品
+struct Node
+{
+    int P;
+    vector<int> F;
+};
+vector<Node> nodes;
+
 /**
- * 给定一个长度为 N 的字符串 S，由小写英文字母组成。确定是否可以将 S 分成两个或多个连续的子串，使它们严格按字典顺序递增。
- * 准确的说，判断是否存在满足以下所有条件的字符串序列∨ = (t1, ta, . . - , t)。 « 序列 k 的长度至少为 2。 « tiisnotempty.(1 < i < k) « 连接 t1, a, . - . , t 按此顺序产生 S。 « 按词典顺序小于 t; 。对于每个整数 i，使得 1 < i < k。给你T个测试用例。找出每个问题的答案
+ * 判断j是否完全超过i，或i是否完全超过j
  */
+bool isSuperior(Node &i, Node &j)
+{
+    // 如果功能一样，价格不同，就是完全超过
+    // 如果（价格一样），其中一个的功能是另一个的子集，就是完全超过
+    bool bigJ = includes(all(i.F), all(j.F));
+    bool bigI = includes(all(j.F), all(i.F));
+    if (bigI && i.P > j.P)
+    { // i的功能是j的子集,且i的价格大于j的价格
+        return true;
+    }
+
+    if (bigJ && i.P < j.P)
+    {
+        return true;
+    }
+    if (i.P == j.P)
+    {
+        if (bigI && j.F.size() > i.F.size())
+        {
+            return true;
+        }
+        if (bigJ && i.F.size() > j.F.size())
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+int M; // M 个功能
 
 int main()
 {
     fio;
-    int T;
-    cin >> T;
-
-    while (T--)
+    cin >> N >> M;
+    nodes.resize(N);
+    for (int i = 0; i < N; i++)
     {
-        int N;
-        cin >> N;
-        string s;
-        cin >> s;
-        cout << "Case #" << s << ": " << endl;
-        // 判断s是否能够被分割成多个子串，使得子串严格按照字典序递增, 每个子串的长度至少为2
-        // 贪心算法
-        // 从左到右遍历，如果当前字符比前一个字符小，那么就可以将当前字符加入到前一个字符组成的子串中
-
-        int len = s.length();
-        string ans = "";
-        ans += s[0];
-        for (int i = 1; i < len; i++)
+        nodes[i].F = vector<int>();
+    }
+    for (int i = 0; i < N; i++)
+    {
+        cin >> nodes[i].P;
+        int c;
+        cin >> c;
+        for (int j = 0; j < c; j++)
         {
-            if (s[i] >= s[i - 1])
+            int f;
+            cin >> f;
+            nodes[i].F.push_back(f);
+        }
+    }
+
+    // 价格从大到小排序
+    sort(all(nodes), [](const Node &a, const Node &b)
+         { return a.P > b.P; });
+
+    // 从大到小，如果j完全超过i，就是完全超过
+    for (int i = 0; i < N; i++)
+    {
+        for (int j = i + 1; j < N; j++)
+        {
+            if (isSuperior(nodes[i], nodes[j]))
             {
-                ans += s[i];
-            }
-            else
-            {
-                ans = s[i] + ans;
+                cout << "Yes" << endl;
+                return 0;
             }
         }
-
-        cout << ans << endl;
-
-        // << "Yes" << endl;
     }
+    cout << "No" << endl;
 
     return 0;
 }
