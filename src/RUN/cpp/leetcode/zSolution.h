@@ -46,13 +46,13 @@
     ios::base::sync_with_stdio(false); \
     cin.tie(NULL);
 
-template <class T>
+template<class T>
 inline void ckmin(T &a, T b) { a = min(a, b); }
 
-template <class T>
+template<class T>
 inline void ckmax(T &a, T b) { a = max(a, b); }
 
-template <class T>
+template<class T>
 void COPY(T a[], const T b[], int n) { memcpy(a, b, n * sizeof(T)); }
 
 /* template <class T>
@@ -90,25 +90,18 @@ using namespace std;
 
 #include <bits/stdc++.h>
 
-class Solution
-{
+class Solution {
 public:
-    ListNode *detectCycle(ListNode *head)
-    {
-        ListNode *slow = head, *fast = head;
-        while (fast != nullptr)
-        {
-            for (int j = 1; j <= amount; j++)
-            {
-                ListNode *ptr = head; // ptr从头开始走, slow继续走, 相遇时即为环的入口
-                while (ptr != slow)
-                {
-                    ptr = ptr->next;
-                    slow = slow->next;
-                }
-                return ptr;
+    int change(int amount, vector<int> &coins) {
+        int n = coins.size();
+        int dp[amount + 1]; // dp[i] 表示凑成总金额为i的硬币组合数
+        memset(dp, 0, sizeof(dp));
+        dp[0] = 1; // 凑成总金额为0的硬币组合数为1
+        for (int i = 0; i < n; i++) { // 枚举硬币
+            for (int j = coins[i]; j <= amount; j++) { // 枚举金额
+                dp[j] += dp[j - coins[i]];
             }
         }
-        return nullptr;
+        return dp[amount];
     }
 };

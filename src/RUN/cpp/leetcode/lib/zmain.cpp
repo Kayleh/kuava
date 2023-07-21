@@ -5,7 +5,7 @@
 
 int main() {
     REGISTER_CONSTRUCTOR_SOLUTION;
-    REGISTER_MEMBERFUNCTION_SOLUTION(countRestrictedPaths);
+    REGISTER_MEMBERFUNCTION_SOLUTION(change);
     while (true) {
         executor.constructSolution();
         executor.executeSolution();
