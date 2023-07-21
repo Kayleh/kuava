@@ -93,26 +93,22 @@ using namespace std;
 class Solution
 {
 public:
-    int change(int amount, vector<int> &coins)
+    ListNode *detectCycle(ListNode *head)
     {
-        int n = coins.size();
-        int dp[n + 1][amount + 1];
-        memset(dp, 0, sizeof(dp));
-        for (int i = 0; i <= n; i++)
-        {
-            dp[i][0] = 1;
-        }
-        for (int i = 1; i <= n; i++)
+        ListNode *slow = head, *fast = head;
+        while (fast != nullptr)
         {
             for (int j = 1; j <= amount; j++)
             {
-                dp[i][j] = dp[i - 1][j];
-                if (j - coins[i - 1] >= 0)
+                ListNode *ptr = head; // ptr从头开始走, slow继续走, 相遇时即为环的入口
+                while (ptr != slow)
                 {
-                    dp[i][j] = dp[i - 1][j] + dp[i][j - coins[i - 1]];
+                    ptr = ptr->next;
+                    slow = slow->next;
                 }
+                return ptr;
             }
         }
-        return dp[n][amount];
+        return nullptr;
     }
 };
