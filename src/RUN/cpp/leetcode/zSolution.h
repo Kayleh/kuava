@@ -93,26 +93,29 @@ using namespace std;
 class Solution
 {
 public:
-    ListNode *detectCycle(ListNode *head)
+    int coinChange(vector<int> &coins, int amount)
     {
-        ListNode *slow = head, *fast = head;
-        while (fast != nullptr)
+        int n = coins.size();
+        int dp[n + 1][amount + 1];
+        memset(dp, 0x3f, sizeof(dp));
+        for (int i = 0; i <= n; i++)
+            dp[i][0] = 0;
+        // 01背包：dp[i][j] = max(dp[i - 1][j], dp[i - 1][j - v[i]] + w[i]);
+        // 完全背包：dp[i][j] = max(dp[i - 1][j], dp[i][j - v[i]] + w[i]);
+        // 01背包和完全背包的区别在于，01背包每个物品只能选一次，完全背包每个物品可以选无数次
+        for (int i = 1; i <= n; i++)
         {
-            slow = slow->next;
-            if (fast->next == nullptr)
-                return nullptr;
-            fast = fast->next->next;
-            if (fast == slow) // 有环, 且此时fast和slow相遇
+            for (int j = 1; j <= amount; j++)
             {
-                ListNode *ptr = head; // ptr从头开始走, slow继续走, 相遇时即为环的入口
-                while (ptr != slow)
-                {
-                    ptr = ptr->next;
-                    slow = slow->next;
-                }
-                return ptr;
+                if (j >= coins[i - 1])
+                    dp[i][j] = min(dp[i - 1][j], dp[i][j - coins[i - 1]] + 1);
+                else
+                    dp[i][j] = dp[i - 1][j];
             }
         }
-        return nullptr;
+        int ans = dp[n][amount];
+        if (ans == 0x3f3f3f3f)
+            return -1;
+        return ans;
     }
 };
