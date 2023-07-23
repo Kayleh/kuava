@@ -90,18 +90,57 @@ using namespace std;
 
 #include <bits/stdc++.h>
 
+/**
+[2,3,6,1,9,2]
+5
+[2,4,6,8]
+3
+[38,92,23,30,25,96,6,71,78,77,33,23,71,48,87,77,53,28,6,20,90,83,42,21,64,95,84,29,22,21,33,36,53,51,85,25,80,56,71,69,5,21,4,84,28,16,65,7]
+52
+[9,58,17,54,91,90,32,6,13,67,24,80,8,56,29,66,85,38,45,13,20,73,16,98,28,56,23,2,47,85,11,97,72,2,28,52,33]
+90
+ */
+
+/**
+给你一个下标从 0 开始的整数数组 nums 和一个正整数 x 。
+你 一开始 在数组的位置 0 处，你可以按照下述规则访问数组中的其他位置：
+1.如果你当前在位置 i ，那么你可以移动到满足 i < j 的 任意 位置 j 。
+2.对于你访问的位置 i ，你可以获得分数 nums[i] 。
+3.如果你从位置 i 移动到位置 j 且 nums[i] 和 nums[j] 的 奇偶性 不同，那么你将失去分数 x 。
+请你返回你能得到的 最大 得分之和。
+
+注意 ，你一开始的分数为 nums[0] 。
+ */
 class Solution {
 public:
-    int change(int amount, vector<int> &coins) {
-        int n = coins.size();
-        int dp[amount + 1]; // dp[i] 表示凑成总金额为i的硬币组合数
+    long long maxScore(vector<int> &nums, int x) {
+        int n = nums.size();
+        long long dp[n][2]; // dp[i][0] 表示到第i个位置，且最后一个数是偶数的最大得分, dp[i][1] 表示到第i个位置，且最后一个数是奇数的最大得分
         memset(dp, 0, sizeof(dp));
-        dp[0] = 1; // 凑成总金额为0的硬币组合数为1
-        for (int i = 0; i < n; i++) { // 枚举硬币
-            for (int j = coins[i]; j <= amount; j++) { // 枚举金额
-                dp[j] += dp[j - coins[i]];
+        dp[0][nums[0] % 2] = nums[0];
+        dp[0][nums[0] % 2 ^ 1] = nums[0];
+        for (int i = 1; i < n; ++i) {
+            for (int j = i - 1; j >= 0 ; --j) {
+                if (nums[i] % 2 == nums[j] % 2) {
+                    dp[i][nums[i] % 2] = max(dp[i][nums[i] % 2], dp[j][nums[j] % 2] + nums[i]);
+                    dp[i][nums[i] % 2 ^ 1] = max(dp[i][nums[i] % 2 ^ 1], dp[j][nums[j] % 2 ^ 1] + nums[i]);
+                } else {
+                    dp[i][nums[i] % 2] = max(dp[i][nums[i] % 2], dp[j][nums[j] % 2] + nums[i] - x);
+                    dp[i][nums[i] % 2 ^ 1] = max(dp[i][nums[i] % 2 ^ 1], dp[j][nums[j] % 2 ^ 1] + nums[i] - x);
+                }
             }
         }
-        return dp[amount];
+
+        // print dp
+        for (int i = 0; i < n; i++) {
+            cout << dp[i][0] << " " << dp[i][1] << endl;
+        }
+
+        long long ans = nums[0];
+        for (int i = 0; i < n; i++) {
+            ans = max(ans, dp[i][0]);
+            ans = max(ans, dp[i][1]);
+        }
+        return ans;
     }
 };
