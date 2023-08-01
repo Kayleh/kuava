@@ -96,7 +96,7 @@ public:
     void hanota(vector<int> &A, vector<int> &B, vector<int> &C)
     {
         int n = A.size(); // n个盘子
-
+                          // 1
         function<void(int, vector<int> &, vector<int> &, vector<int> &)> move = [&](int n, vector<int> &A, vector<int> &B, vector<int> &C)
         {
             if (n == 1) // 只有一个盘子, 直接将A上的盘子移动到C上
