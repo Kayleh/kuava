@@ -66,14 +66,14 @@ inline void MEMSET(T a, int b) { memset(a, b, sizeof(a)); } */
 struct TreeNode
 {
     int val;
-    TreeNode *left;
+    TreeNode *root;
     TreeNode *right;
 
-    TreeNode() : val(0), left(nullptr), right(nullptr) {}
+    TreeNode() : val(0), root(nullptr), right(nullptr) {}
 
-    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+    TreeNode(int x) : val(x), root(nullptr), right(nullptr) {}
 
-    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+    TreeNode(int x, TreeNode *root, TreeNode *right) : val(x), root(root), right(right) {}
 };
 
 struct ListNode
@@ -90,27 +90,46 @@ using namespace std;
 
 #include <bits/stdc++.h>
 
+/**
+给出一个含有不重复整数元素的数组 arr ，每个整数 arr[i] 均大于 1。
+用这些整数来构建二叉树，每个整数可以使用任意次数。
+其中：每个非叶结点的值应等于它的两个子结点的值的乘积。
+满足条件的二叉树一共有多少个？答案可能很大，返回 对 109 + 7 取余 的结果。
+ */
 class Solution
 {
 public:
-    void hanota(vector<int> &A, vector<int> &B, vector<int> &C)
+    int numFactoredBinaryTrees(vector<int> &arr)
     {
-        int n = A.size(); // n个盘子
-                          // 1
-        function<void(int, vector<int> &, vector<int> &, vector<int> &)> move = [&](int n, vector<int> &A, vector<int> &B, vector<int> &C)
+        int n = arr.size();
+        sort(arr.begin(), arr.end());
+        unordered_map<int, long> dp;
+        for (int i = 0; i < n; i++)
         {
-            if (n == 1) // 只有一个盘子, 直接将A上的盘子移动到C上
+            dp[arr[i]] = 1;
+        }
+        for (int i = 0; i < n; i++) // 遍历所有的节点，以arr[i]为根节点，计算以arr[i]为根节点的二叉树的个数
+        {
+            int root = arr[i];
+            for (int j = 0; j < i; ++j)
             {
-                C.push_back(A.back());
-                A.pop_back();
-                return;
+                if (root % arr[j] == 0) // 如果root可以整除arr[j]，则arr[j]可以作为root的左子节点，root/arr[j]可以作为root的右子节点
+                {
+                    int left = arr[j]; // 左子节点
+                    int right = root / arr[j];
+                    if (dp.count(right)) // 如果右子节点存在
+                    {
+                        // 状态转移方程：以root为根节点的二叉树的个数 = 以left为根节点的二叉树的个数 * 以right为根节点的二叉树的个数
+                        dp[root] = (dp[root] + dp[left] * dp[right]) % 1000000007;
+                    }
+                }
             }
-            move(n - 1, A, C, B); // 将A上的n-1个盘子，借助C，移动到B上
-            C.push_back(A.back());
-            A.pop_back();
-            move(n - 1, B, A, C); // 将B上的n-1个盘子，借助A，移动到C上
-        };
-
-        move(n, A, B, C); // 将A上的n个盘子，借助B，移动到C上
+        }
+        int ans = 0;
+        for (auto &x : dp)
+        {
+            ans = (ans + x.second) % 1000000007;
+        }
+        return ans;
     }
 };
