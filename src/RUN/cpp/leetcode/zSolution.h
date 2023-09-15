@@ -90,45 +90,35 @@ using namespace std;
 
 #include <bits/stdc++.h>
 
-/**
-给出一个含有不重复整数元素的数组 arr ，每个整数 arr[i] 均大于 1。
-用这些整数来构建二叉树，每个整数可以使用任意次数。
-其中：每个非叶结点的值应等于它的两个子结点的值的乘积。
-满足条件的二叉树一共有多少个？答案可能很大，返回 对 109 + 7 取余 的结果。
- */
 class Solution
 {
 public:
-    int numFactoredBinaryTrees(vector<int> &arr)
+    vector<vector<int>> levelOrder(Node *root)
     {
-        int n = arr.size();
-        sort(arr.begin(), arr.end());
-        unordered_map<int, long> dp;
-        for (int i = 0; i < n; i++)
+        vector<vector<int>> ans;
+        if (root == nullptr)
+            return ans;
+        queue<Node*> q;
+        vector<int> roots;
+        roots.push_back(root->val);
+        ans.push_back(roots);
+        q.push(root);
+        while (!q.empty())
         {
-            dp[arr[i]] = 1;
-        }
-        for (int i = 0; i < n; i++) // 遍历所有的节点，以arr[i]为根节点，计算以arr[i]为根节点的二叉树的个数
-        {
-            int root = arr[i];
-            for (int j = 0; j < i; ++j)
+            vector<int> tmp;
+            int size = q.size();
+            for (int i = 0; i < size; i++)
             {
-                if (root % arr[j] == 0) // 如果root可以整除arr[j]，则arr[j]可以作为root的左子节点，root/arr[j]可以作为root的右子节点
+                Node *node = q.front();
+                q.pop();
+                for (auto &child : node->children)
                 {
-                    int left = arr[j]; // 左子节点
-                    int right = root / arr[j];
-                    if (dp.count(right)) // 如果右子节点存在
-                    {
-                        // 状态转移方程：以root为根节点的二叉树的个数 = 以left为根节点的二叉树的个数 * 以right为根节点的二叉树的个数
-                        dp[root] = (dp[root] + dp[left] * dp[right]) % 1000000007;
-                    }
+                    tmp.push_back(child->val);
+                    q.push(child);
                 }
             }
-        }
-        int ans = 0;
-        for (auto &x : dp)
-        {
-            ans = (ans + x.second) % 1000000007;
+            if (!tmp.empty())
+                ans.push_back(tmp);
         }
         return ans;
     }
