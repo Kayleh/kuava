@@ -63,116 +63,93 @@ struct TreeNode
 };
 #endif
 
-template <class T>
-inline void ckmin(T &a, T b)
-{
-    a = min(a, b);
-}
-
-template <class T>
-inline void ckmax(T &a, T b) { a = max(a, b); }
-
-template <class T>
-void COPY(T a[], const T b[], int n) { memcpy(a, b, n * sizeof(T)); }
-
-void SET(int a[], int val, int n) { memset(a, val, n * sizeof(int)); }
-
 using namespace std;
-
-#include <bits/stdc++.h>
-
-/*
-
-AtCoder Shop 有 N 个产品。第 i 个产品 (1 < i < N) 的价格为 P；。
-第 i 个产品 (1 < i < N) 有 C 功能。
-第 i 个产品 (1 < i < N) 的第 j 个功能 (1 < j < C}) 表示为整数 F； j 介于 1 和 M 之间（含）。
-
-高桥想知道是否有一种产品完全优于另一种产品。如果有 i 和 j ( 1 <= i, j <= N) 使得第 i 个和第 j 个产品满足以下所有条件，则打印 Yes；否则，打印No
-
-- pi >= pj
-- 第j个产品包含第i个产品的所有功能
-*/
-int N; // N 个产品
-struct Node
-{
-    int P;
-    vector<int> F;
-};
-vector<Node> nodes;
-
-/**
- * 判断j是否完全超过i，或i是否完全超过j
- */
-bool isSuperior(Node &i, Node &j)
-{
-    // 如果功能一样，价格不同，就是完全超过
-    // 如果（价格一样），其中一个的功能是另一个的子集，就是完全超过
-    bool bigJ = includes(all(i.F), all(j.F));
-    bool bigI = includes(all(j.F), all(i.F));
-    if (bigI && i.P > j.P)
-    { // i的功能是j的子集,且i的价格大于j的价格
-        return true;
-    }
-
-    if (bigJ && i.P < j.P)
-    {
-        return true;
-    }
-    if (i.P == j.P)
-    {
-        if (bigI && j.F.size() > i.F.size())
-        {
-            return true;
-        }
-        if (bigJ && i.F.size() > j.F.size())
-        {
-            return true;
-        }
-    }
-    return false;
-}
-
-int M; // M 个功能
 
 int main()
 {
     fio;
-    cin >> N >> M;
-    nodes.resize(N);
-    for (int i = 0; i < N; i++)
+    // 9行9列的二维数组
+    // 一个二维码的样式是：左上角3*3、右下角3*3的格子是黑色的，这些黑色相邻的（14个格子）是白色的
+    // 黑色是#，白色是.
+    // 输出一张图中的二维码的左上角的坐标
+    // 二维码的左上角的坐标是(1,1)
+
+    int n, m;
+    cin >> n >> m;
+    char map[n + 1][m + 1];
+    rep(i, 1, n)
     {
-        nodes[i].F = vector<int>();
-    }
-    for (int i = 0; i < N; i++)
-    {
-        cin >> nodes[i].P;
-        int c;
-        cin >> c;
-        for (int j = 0; j < c; j++)
+        string s;
+        cin >> s;
+        rep(j, 1, m)
         {
-            int f;
-            cin >> f;
-            nodes[i].F.push_back(f);
+            // 
         }
     }
 
-    // 价格从大到小排序
-    sort(all(nodes), [](const Node &a, const Node &b)
-         { return a.P > b.P; });
+    // 1. 前3行的前3个格子是###.
+    // 2. 第4行的前4个格子是....
+    // 3. 第7、8、9行的后3个格子是.###
+    // 4. 第6行的后4个格子是....
 
-    // 从大到小，如果j完全超过i，就是完全超过
-    for (int i = 0; i < N; i++)
+    for (int i = 1; i <= n - 8; i++)
     {
-        for (int j = i + 1; j < N; j++)
+        for (int j = 0; j < m - 8; j++)
         {
-            if (isSuperior(nodes[i], nodes[j]))
+            bool isQRCode = true;
+            for (int row = i; row <= i + 8; row++)
             {
-                cout << "Yes" << endl;
-                return 0;
+                for (int col = j; col <= j + 8; col++)
+                {
+                    // 1. 前3行的前3个格子是###.
+                    for (int k = 1; k <= 3; k++)
+                    {
+                        if (row <= i + 2 && col <= j + 2 && map[row][col] != '#')
+                        {
+                            isQRCode = false;
+                            break;
+                        }
+                    }
+                    // 2. 第4行的前4个格子是....
+                    for (int k = 1; k <= 4; k++)
+                    {
+                        if (row == i + 3 && col <= j + 3 && map[row][col] != '.')
+                        {
+                            isQRCode = false;
+                            break;
+                        }
+                    }
+                    // 3. 第7、8、9行的后3个格子是.###
+                    for (int k = 1; k <= 3; k++)
+                    {
+                        if (row >= i + 6 && col >= j + 6 && map[row][col] != '#')
+                        {
+                            isQRCode = false;
+                            break;
+                        }
+                    }
+                    // 4. 第6行的后4个格子是....
+                    for (int k = 1; k <= 4; k++)
+                    {
+                        if (row == i + 5 && col >= j + 5 && map[row][col] != '.')
+                        {
+                            isQRCode = false;
+                            break;
+                        }
+                    }
+                }
+                if (!isQRCode)
+                {
+                    break;
+                }
+            }
+
+            if (isQRCode)
+            {
+                cout << i << " " << j + 1 << endl;
             }
         }
     }
-    cout << "No" << endl;
 
     return 0;
 }

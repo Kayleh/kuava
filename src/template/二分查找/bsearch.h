@@ -162,4 +162,30 @@ public:
         }
         return -1;
     }
+
+    /**
+     * 变种：给定一个包含 n + 1 个整数的数组 nums ，其数字都在 [1, n] 范围内（包括 1 和 n），可知至少存在一个重复的整数。
+     * 假设 nums 只有 一个重复的整数 ，返回 这个重复的数 。
+     *
+     */
+    int findDuplicate(vector<int> &nums)
+    {
+        // 思路：二分答案，假设左边的数比右边的数多，那么重复的数肯定在左边，否则在右边
+        int l = 1, r = nums.size() - 1;
+        while (l < r)
+        {
+            int mid = (l + (r - l)) >> 1;
+            int cnt = 0;
+            for (int num : nums)
+            {
+                if (num <= mid)
+                    cnt++;
+            }
+            if (cnt > mid)
+                r = mid;
+            else
+                l = mid + 1;
+        }
+        return l;
+    }
 };

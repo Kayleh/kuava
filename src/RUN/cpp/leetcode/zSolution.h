@@ -24,7 +24,7 @@
 #include <bits/stdc++.h>
 
 #define PI 3.14159265358979323846
-#define gcd(a, b) __gcd(a, b)             // 最大公约数
+#define gcd(a, b) __gcd(a, b)             // 最大公约数。（互质，最大公约数为1）
 #define bitcount(a) __builtin_popcount(a) // 二进制中1的个数
 #define lcm(a, b) (a * b / gcd(a, b))     // 最小公倍数
 // #define max(a, b) (a > b ? a : b)                         // 最大值
@@ -41,7 +41,7 @@
 #define randd(a, b) (rand() % (b - a + 1) + a) // [a, b]
 #define POW(a, b) (int)pow(a, b)
 #define toBinary(x) bitset<8 * sizeof(x)>((x)).to_string()
-
+#define check2D(x, y, n, m) (x >= 0 && x < n && y >= 0 && y < m) // 二维数组的边界条件
 #define fio                            \
     ios::base::sync_with_stdio(false); \
     cin.tie(NULL);
@@ -60,22 +60,22 @@ inline void MEMSET(T a, int b) { memset(a, b, sizeof(a)); } */
 
 // auto cmpp = [](const pair<int, int> &a, const pair<int, int> &b)
 //{ return a.second < b.second; };
-// #define DEBUG
+
+#define DEBUG
 
 #ifdef DEBUG
 struct TreeNode
 {
     int val;
-    TreeNode *left;
+    TreeNode *root;
     TreeNode *right;
 
-    TreeNode() : val(0), left(nullptr), right(nullptr) {}
+    TreeNode() : val(0), root(nullptr), right(nullptr) {}
 
-    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+    TreeNode(int x) : val(x), root(nullptr), right(nullptr) {}
 
-    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+    TreeNode(int x, TreeNode *root, TreeNode *right) : val(x), root(root), right(right) {}
 };
-
 struct ListNode
 {
     int val;
@@ -83,7 +83,6 @@ struct ListNode
 
     ListNode(int x) : val(x), next(NULL) {}
 };
-
 #endif
 
 using namespace std;
@@ -93,26 +92,22 @@ using namespace std;
 class Solution
 {
 public:
-    int change(int amount, vector<int> &coins)
+    int maxAncestorDiff(TreeNode *root)
     {
-        int n = coins.size();
-        int dp[n + 1][amount + 1];
-        memset(dp, 0, sizeof(dp));
-        for (int i = 0; i <= n; i++)
+        int ans = 0;
+
+        function<void(TreeNode *, int, int)> dfs = [&](TreeNode *root, int min, int max)
         {
-            dp[i][0] = 1;
-        }
-        for (int i = 1; i <= n; i++)
-        {
-            for (int j = 1; j <= amount; j++)
-            {
-                dp[i][j] = dp[i - 1][j];
-                if (j - coins[i - 1] >= 0)
-                {
-                    dp[i][j] = dp[i - 1][j] + dp[i][j - coins[i - 1]];
-                }
-            }
-        }
-        return dp[n][amount];
+            if (!root)
+                return;
+            min = std::min(min, root->val);
+            max = std::max(max, root->val);
+            ans = std::max(ans, max - min);
+            dfs(root->left, min, max);
+            dfs(root->right, min, max);
+        };
+
+        dfs(root, root->val, root->val);
+        return ans;
     }
 };
