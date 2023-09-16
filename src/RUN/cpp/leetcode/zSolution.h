@@ -92,22 +92,33 @@ using namespace std;
 class Solution
 {
 public:
-    int maxAncestorDiff(TreeNode *root)
+    vector<vector<int>> levelOrder(Node *root)
     {
-        int ans = 0;
-
-        function<void(TreeNode *, int, int)> dfs = [&](TreeNode *root, int min, int max)
+        vector<vector<int>> ans;
+        if (root == nullptr)
+            return ans;
+        queue<Node*> q;
+        vector<int> roots;
+        roots.push_back(root->val);
+        ans.push_back(roots);
+        q.push(root);
+        while (!q.empty())
         {
-            if (!root)
-                return;
-            min = std::min(min, root->val);
-            max = std::max(max, root->val);
-            ans = std::max(ans, max - min);
-            dfs(root->left, min, max);
-            dfs(root->right, min, max);
-        };
-
-        dfs(root, root->val, root->val);
+            vector<int> tmp;
+            int size = q.size();
+            for (int i = 0; i < size; i++)
+            {
+                Node *node = q.front();
+                q.pop();
+                for (auto &child : node->children)
+                {
+                    tmp.push_back(child->val);
+                    q.push(child);
+                }
+            }
+            if (!tmp.empty())
+                ans.push_back(tmp);
+        }
         return ans;
     }
 };

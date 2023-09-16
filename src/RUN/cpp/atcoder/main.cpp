@@ -65,89 +65,62 @@ struct TreeNode
 
 using namespace std;
 
-int main()
-{
-    fio;
-    // 9行9列的二维数组
-    // 一个二维码的样式是：左上角3*3、右下角3*3的格子是黑色的，这些黑色相邻的（14个格子）是白色的
-    // 黑色是#，白色是.
-    // 输出一张图中的二维码的左上角的坐标
-    // 二维码的左上角的坐标是(1,1)
+#include <bits/stdc++.h>
 
-    int n, m;
-    cin >> n >> m;
-    char map[n + 1][m + 1];
-    rep(i, 1, n)
+vector<vector<int>> graph;
+vector<bool> visited;
+vector<int> cycle; // 存储找到的环上的点
+bool foundCycle = false;
+
+void dfs(int node)
+{
+    visited[node] = true;
+    cycle.push_back(node);
+
+    for (int neighbor : graph[node])
     {
-        string s;
-        cin >> s;
-        rep(j, 1, m)
+        if (!visited[neighbor])
         {
-            // 
+            dfs(neighbor);
+        }
+        else if (!foundCycle)
+        {
+            // 找到环上的点
+            int startIndex = cycle.size() - 1;
+            while (cycle[startIndex] != neighbor)
+            {
+                startIndex--;
+            }
+            foundCycle = true;
+            cout << cycle.size() - startIndex << endl;
+            for (int i = startIndex; i < cycle.size(); ++i)
+            {
+                cout << cycle[i] + 1 << " ";
+            }
+            cout << endl;
         }
     }
 
-    // 1. 前3行的前3个格子是###.
-    // 2. 第4行的前4个格子是....
-    // 3. 第7、8、9行的后3个格子是.###
-    // 4. 第6行的后4个格子是....
+    cycle.pop_back();
+}
 
-    for (int i = 1; i <= n - 8; i++)
+int main()
+{
+    fio;
+    cin >> N >> M;
+    nodes.resize(N);
+    for (int i = 0; i < N; i++)
     {
-        for (int j = 0; j < m - 8; j++)
+        nodes[i].F = vector<int>();
+    }
+    for (int i = 0; i < N; i++)
+    {
+        cin >> nodes[i].P;
+        int c;
+        cin >> c;
+        for (int j = 0; j < c; j++)
         {
-            bool isQRCode = true;
-            for (int row = i; row <= i + 8; row++)
-            {
-                for (int col = j; col <= j + 8; col++)
-                {
-                    // 1. 前3行的前3个格子是###.
-                    for (int k = 1; k <= 3; k++)
-                    {
-                        if (row <= i + 2 && col <= j + 2 && map[row][col] != '#')
-                        {
-                            isQRCode = false;
-                            break;
-                        }
-                    }
-                    // 2. 第4行的前4个格子是....
-                    for (int k = 1; k <= 4; k++)
-                    {
-                        if (row == i + 3 && col <= j + 3 && map[row][col] != '.')
-                        {
-                            isQRCode = false;
-                            break;
-                        }
-                    }
-                    // 3. 第7、8、9行的后3个格子是.###
-                    for (int k = 1; k <= 3; k++)
-                    {
-                        if (row >= i + 6 && col >= j + 6 && map[row][col] != '#')
-                        {
-                            isQRCode = false;
-                            break;
-                        }
-                    }
-                    // 4. 第6行的后4个格子是....
-                    for (int k = 1; k <= 4; k++)
-                    {
-                        if (row == i + 5 && col >= j + 5 && map[row][col] != '.')
-                        {
-                            isQRCode = false;
-                            break;
-                        }
-                    }
-                }
-                if (!isQRCode)
-                {
-                    break;
-                }
-            }
-
-            if (isQRCode)
-            {
-                cout << i << " " << j + 1 << endl;
-            }
+            dfs(i);
         }
     }
 
