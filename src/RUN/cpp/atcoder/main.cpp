@@ -85,7 +85,6 @@ void dfs(int node)
         }
         else if (!foundCycle)
         {
-            // 找到环上的点
             int startIndex = cycle.size() - 1;
             while (cycle[startIndex] != neighbor)
             {
@@ -100,7 +99,6 @@ void dfs(int node)
             cout << endl;
         }
     }
-
     cycle.pop_back();
 }
 
@@ -108,21 +106,23 @@ int main()
 {
     fio;
     cin >> N >> M;
+    graph.resize(N);
     nodes.resize(N);
     for (int i = 0; i < N; i++)
     {
         nodes[i].F = vector<int>();
     }
+
     for (int i = 0; i < N; i++)
-    {
-        cin >> nodes[i].P;
-        int c;
-        cin >> c;
-        for (int j = 0; j < c; j++)
-        {
-            dfs(i);
+    { 
+
+        cin >> nodes[i].P; 
+        int c; 
+        cin >> c; 
+        for (int j = 0; j < c; j++) 
+        { 
+            dfs(i); 
         }
     }
-
     return 0;
 }
