@@ -42,12 +42,13 @@ class DsuFind // 并查集
 {
 private:
     vector<int> parent; // 记录父节点 parent[i] = j 表示 i 的父节点是 j
-    vector<int> rank;   // 记录树的高度 rank[i] 表示以 i 为根的集合所表示的树的层数
+    vector<int> rank;   // 记录树的高度 rank[i] 表示以 i 为根的集合所表示的树的层数, 表示查询路径的长度
     int count;          // 连通分量的个数
     // vector<int> nodes;  // 记录每个连通分量的节点数
     // vector<int> edges;  // 记录每个连通分量的边数
 public:
-    DsuFind(int n) {
+    DsuFind(int n)
+    {
         count = n;
         parent.resize(n);
         rank.resize(n, 1);
@@ -65,31 +66,39 @@ public:
          */
     }
 
-    int find(int p) {
+    int find(int p)
+    {
         if (p != parent[p])
             parent[p] = find(parent[p]); // 路径压缩: 将路径上的每个节点都指向根节点, 从而缩短查询路径, 优化查询性能
         return parent[p];
     }
 
-    void connect(int p, int q) {
+    void connect(int p, int q)
+    {
         int rootP = find(p);
         int rootQ = find(q);
 
-        if (rootP == rootQ) {
+        if (rootP == rootQ)
+        {
             // edges[rootP]++;
             return;
         }
 
         // 按秩合并：将高度小的树合并到高度大的树上, 可以避免出现树的高度过大的情况（树的左右子树高度差过大），从而优化查询性能
-        if (rank[rootP] > rank[rootQ]) {
+        if (rank[rootP] > rank[rootQ])
+        {
             parent[rootQ] = rootP;
             // nodes[rootP] += nodes[rootQ];
             // edges[rootP] += edges[rootQ] + 1;
-        } else if (rank[rootP] < rank[rootQ]) {
+        }
+        else if (rank[rootP] < rank[rootQ])
+        {
             parent[rootP] = rootQ;
             // nodes[rootQ] += nodes[rootP];
             // edges[rootQ] += edges[rootP] + 1;
-        } else {
+        }
+        else
+        {
             parent[rootQ] = rootP;
             // nodes[rootP] += nodes[rootQ];
             // edges[rootP] += edges[rootQ] + 1;
@@ -99,16 +108,19 @@ public:
         count--; // 每次 union 操作后, 连通分量的个数减一
     }
 
-    bool isConnected(int p, int q) {
+    bool isConnected(int p, int q)
+    {
         return find(p) == find(q);
     }
 
-    int getCount() {
+    int getCount()
+    {
         return count; // 返回连通分量的个数
     }
 };
 
-int main() {
+int main()
+{
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
@@ -119,7 +131,8 @@ int main() {
     cin >> opr;
 
     DsuFind uf(N);
-    while (opr-- > 0) {
+    while (opr-- > 0)
+    {
         int type;
         cin >> type;
         if (type == 1) // union (x,y)
@@ -127,7 +140,8 @@ int main() {
             int x, y;
             cin >> x >> y;
             uf.connect(x, y);
-        } else if (type == 2) //  is connect ( x, y)
+        }
+        else if (type == 2) //  is connect ( x, y)
         {
             int x, y;
             cin >> x >> y;
