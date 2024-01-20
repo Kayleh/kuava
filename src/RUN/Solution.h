@@ -90,18 +90,7 @@ using namespace std;
 class Solution
 {
 public:
-    int similarPairs(vector<string> &words)
+    int minSubarray(vector<int> &nums, int p)
     {
-        unordered_map<int, int> mp;
-        int ans = 0;
-        for (string w : words)
-        {
-            int mask = 0;
-            for (char c : w)
-                mask |= 1 << (c - 'a');
-            ans += mp[mask];
-            mp[mask]++;
-        }
-        return ans;
     }
 };
