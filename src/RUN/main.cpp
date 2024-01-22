@@ -69,7 +69,7 @@ int main()
     bool vis[n + 1];
     int dis[n + 1];
 
-    // dijkstra
+    // dijkstra 
     priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> q;
     for (int i = 1; i <= n; i++)
     {

@@ -87,21 +87,36 @@ using namespace std;
 
 #include <bits/stdc++.h>
 
+/**
+现在输入一个公司的所有员工信息，以及单个员工 id ，返回这个员工和他所有下属的重要度之和。
+*/
+class Employee
+{
+public:
+    int id;
+    int importance;
+    vector<int> subordinates; // 直系下属的id
+};
+
 class Solution
 {
 public:
-    int similarPairs(vector<string> &words)
+    int getImportance(vector<Employee *> employees, int id)
     {
-        unordered_map<int, int> mp;
         int ans = 0;
-        for (string w : words)
+        unordered_map<int, Employee *> employees_map;
+        for (auto employee : employees)
         {
-            int mask = 0;
-            for (char c : w)
-                mask |= 1 << (c - 'a');
-            ans += mp[mask];
-            mp[mask]++;
+            employees_map[employee->id] = employee;
         }
+        function<void(int)> dfs = [&](int id)
+        {
+            auto subtance = employees_map[id];
+            ans += subtance->importance;
+            for (auto sub_id : subtance->subordinates)
+                dfs(sub_id);
+        };
+        dfs(id);
         return ans;
     }
 };
