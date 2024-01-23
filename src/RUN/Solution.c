@@ -54,28 +54,31 @@ int max(int a, int b)
 }
 
 /**
-如果出现下述两种情况，交易 可能无效：
-
-1 交易金额超过 $1000
-2 或者，它和 另一个城市 中 同名 的另一笔交易相隔不超过 60 分钟（包含 60 分钟整）
-
-给定字符串数组交易清单 transaction 。
-transactions[i] = 交易的名称，时间（分钟），金额以及城市。
-
-返回 transactions，返回可能无效的交易列表。你可以按 任何顺序 返回答案。
-**/
-char **invalidTransactions(char **transactions, int n, int *returnSize)
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+struct TreeNode *lowestCommonAncestor(struct TreeNode *root, struct TreeNode *p, struct TreeNode *q)
 {
-    HashItem *hash = NULL;
-    for (int i = 0; i < n; i++)
+    // LCA
+    if (root == NULL)
+        return NULL;
+    if (root->val == p->val || root->val == q->val)
+        return root;
+    if (root->val > p->val && root->val > q->val)
     {
-        char *str = transactions[i];
-        char **spilt = strtok(str, ',');
-
-        char *name = spilt[0];
-        int time = atoi(spilt[1]);
-        int money = atoi(spilt[2]);
-        char *city = spilt[3];
+        return lowestCommonAncestor(root->left, p, q);
+    }
+    else if (root->val < p->val && root->val < q->val)
+    {
+        return lowestCommonAncestor(root->right, p, q);
+    }
+    else
+    {
+        return root;
     }
     return NULL;
 }

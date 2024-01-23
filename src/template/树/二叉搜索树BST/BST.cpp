@@ -1,5 +1,4 @@
-using namespace std;
-#include <bits/stdc++.h>
+#include "../Tree.h"
 
 class Solution
 {
@@ -12,6 +11,7 @@ public:
      */
     TreeNode *balanceBST(vector<int> nodes)
     {
+        TreeNode *root;
         sort(nodes.begin(), nodes.end());
         function<TreeNode *(int, int)> build = [&](int l, int r)
         {
