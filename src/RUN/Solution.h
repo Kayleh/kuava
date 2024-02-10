@@ -87,10 +87,9 @@ using namespace std;
 
 #include <bits/stdc++.h>
 
-class Solution
-{
+class Solution {
 public:
-    int minSubarray(vector<int> &nums, int p)
-    {
+    int alternatingSubarray(vector<int>& nums) {
+        
     }
 };

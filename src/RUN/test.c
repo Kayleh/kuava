@@ -1,7 +1,5 @@
 #include <cstdio>
 
-int arrangeCoins(int n)
+int alternatingSubarray(int *nums, int n)
 {
-  printf("%s"); 
-  1
 }
