@@ -1,8 +1,5 @@
 // #include "uthash.h"
 
-#define INF 0x3f3f3f3f  // 无穷大
-#define NINF 0xc0c0c0c0 // 无穷小
-
 typedef struct
 {
     int key;
@@ -56,20 +53,32 @@ int max(int a, int b)
     return a > b ? a : b;
 }
 
-bool checkXMatrix(int **grid, int gridSize, int *gridColSize)
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+struct TreeNode *lowestCommonAncestor(struct TreeNode *root, struct TreeNode *p, struct TreeNode *q)
 {
-    int n = gridSize;
-    int m = *gridColSize;
-    for (int i = 0; i < n; i++)
+    // LCA
+    if (root == NULL)
+        return NULL;
+    if (root->val == p->val || root->val == q->val)
+        return root;
+    if (root->val > p->val && root->val > q->val)
     {
-        int *row = *(grid + i);
-        for (int j = 0; j < m; j++)
-        {
-            if (row[j] == 0)
-            {
-                return false;
-            }
-        }
+        return lowestCommonAncestor(root->left, p, q);
     }
-    return true;
+    else if (root->val < p->val && root->val < q->val)
+    {
+        return lowestCommonAncestor(root->right, p, q);
+    }
+    else
+    {
+        return root;
+    }
+    return NULL;
 }
