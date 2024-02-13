@@ -61,7 +61,7 @@ inline void MEMSET(T a, int b) { memset(a, b, sizeof(a)); } */
 // auto cmpp = [](const pair<int, int> &a, const pair<int, int> &b)
 //{ return a.second < b.second; };
 
-#define DEBUG
+// #define DEBUG
 
 #ifdef DEBUG
 
@@ -90,7 +90,9 @@ using namespace std;
 class Solution
 {
 public:
-    string defangIPaddr(string address)
+    int maxPalindromesAfterOperations(vector<string> &words)
     {
+        int n = words.size();
+        
     }
 };

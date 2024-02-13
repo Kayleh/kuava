@@ -56,15 +56,20 @@ int max(int a, int b)
     return a > b ? a : b;
 }
 
-int alternatingSubarray(int *nums, int n)
+bool checkXMatrix(int **grid, int gridSize, int *gridColSize)
 {
-    int ans = INF;
-    int l = 0, r = 0;
-    while (l != r && r < n)
+    int n = gridSize;
+    int m = *gridColSize;
+    for (int i = 0; i < n; i++)
     {
-        r++;
-        ans = min(ans, r - l + 1);
-        l++;
-        r++;
+        int *row = *(grid + i);
+        for (int j = 0; j < m; j++)
+        {
+            if (row[j] == 0)
+            {
+                return false;
+            }
+        }
     }
+    return true;
 }
