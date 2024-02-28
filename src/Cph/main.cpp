@@ -49,8 +49,10 @@ using namespace std;
 
 //@start——————————————————————————————————————————————————————————————————————
 
-int main()
+class Solution
 {
-    fio;
-    cout << "Hello World!" << endl;
-}
+public:
+    int countPrefixSuffixPairs(vector<string> &words)
+    {
+    }
+};
